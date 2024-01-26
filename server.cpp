@@ -1,8 +1,8 @@
 #include <iostream>
 #include <cstring>
 #include <sys/socket.h>
-#include <unistd.h>
 #include <netinet/in.h>
+#include <unistd.h>
 
 int main() {
     int server_fd, new_socket;
@@ -10,34 +10,31 @@ int main() {
     int opt = 1;
     int addrlen = sizeof(address);
     char buffer[1024] = {0};
-
-    // Soket oluşturma
-    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    const char *end_word = "QUIT";
     
-    // Soket seçeneklerini ayarlama
-    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
+    // Sunucu soketi oluşturma
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
 
+    // Sunucu soketi yapılandırma
     address.sin_family = AF_INET;
-    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_addr.s_addr = inet_addr("192.168.1.100"); // Sunucu IP adresi
     address.sin_port = htons(8080);
 
-    // Soketi bağlama
+    // Soketi belirli bir porta bağlama
     bind(server_fd, (struct sockaddr *)&address, sizeof(address));
 
-    // Dinleme
+    // Bağlantıları dinleme
     listen(server_fd, 3);
 
-    // Bağlantıyı kabul etme
+    // Gelen bağlantıyı kabul etme
     new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
 
+    // İstemciden gelen mesajları okuma
     while (true) {
         memset(buffer, 0, 1024);
         read(new_socket, buffer, 1024);
-        std::cout << "Mesaj alındı: " << buffer << std::endl;
-        
-        // Belirli bir kelimeyi kontrol etme
-        if (std::string(buffer) == "dur") {
-            std::cout << "Durduruldu" << std::endl;
+        std::cout << "Mesaj: " << buffer << std::endl;
+        if (strcmp(buffer, end_word) == 0) {
             break;
         }
     }
@@ -45,5 +42,6 @@ int main() {
     // Soketi kapatma
     close(new_socket);
     close(server_fd);
+
     return 0;
 }

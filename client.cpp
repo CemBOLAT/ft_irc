@@ -1,39 +1,39 @@
 #include <iostream>
 #include <cstring>
 #include <sys/socket.h>
-#include <arpa/inet.h>
+#include <netinet/in.h>
 #include <unistd.h>
 
 int main() {
     struct sockaddr_in serv_addr;
     int sock = 0;
-    char buffer[1024] = {0};
-
-    // Soket oluşturma
+    const char *end_word = "QUIT";
+    
+    // İstemci soketi oluşturma
     sock = socket(AF_INET, SOCK_STREAM, 0);
 
+    // Sunucu adresini yapılandırma
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(8080);
-
-    // Sunucu adresini çözümleme
-    inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr);
+    inet_pton(AF_INET, "192.168.1.100", &serv_addr.sin_addr); // Sunucu IP adresi
 
     // Sunucuya bağlanma
     connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
+    // Kullanıcıdan gelen mesajları sunucuya gönderme
     while (true) {
-        std::string mesaj;
-        std::cout << "Mesaj girin: ";
-        std::getline(std::cin, mesaj);
+        char buffer[1024] = {0};
+        std::cout << "Mesajınızı yazın: ";
+        std::cin.getline(buffer, 1024);
+        send(sock, buffer, strlen(buffer), 0);
 
-        send(sock, mesaj.c_str(), mesaj.length(), 0);
-
-        if (mesaj == "dur") {
+        if (strcmp(buffer, end_word) == 0) {
             break;
         }
     }
 
     // Soketi kapatma
     close(sock);
+
     return 0;
 }
