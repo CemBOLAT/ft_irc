@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sys/socket.h>
 #include <unistd.h>
-Client::Client(int socket, int port) : socket(socket), port(port)
+Client::Client(int socket, int port) : socket(socket), port(port), password(false)
 {}
 
 Client::~Client()

@@ -2,10 +2,9 @@
 #include "../includes/Client.hpp"
 #include <sys/socket.h>
 
-Room::Room(Client *_c, string name, string password) {
+Room::Room(Client *_c, string name) {
 	this->admin = _c;
 	this->name = name;
-	this->password = password;
 	this->isPrivate = false;
 	this->clientCount = 1;
 	this->maxClientCount = 10;

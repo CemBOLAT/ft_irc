@@ -1,45 +1,27 @@
-# irc_commands.txt
+#FT_IRC-Internet_Relay_Chat
+usage şu şekilde önce port sonra password
 
-# IRC Sunucusu Başlatma
-./ircserv 6667 mypassword
-
-# Bağlantı Kurma
-nc localhost 6667
-
-# password
-// syntax: PASS <password>
-
-# Kullanıcı Bilgilerini Ayarlama
-// syntax: NICK <nickname>
-// stntax: USER <username> <hostname> <servername> <realname>
+nc localhost port atın (bu bizim konuşma terminalimiz)
 
 
-# Kanala Katılma
-JOIN <channels> 
+dümdüz ./ircserv port password (kullanım)
 
-# Özel Mesaj Gönderme
+
+bazı komutlar
+
+
+NICK assg00k
+USER assg00k 0 * :Real Name
+JOIN #kanal_adı
 /PRIVMSG hedef_kullanici :Merhaba, nasılsın?
-
-# Kanaldan Ayrılma
 /PART #kanal_adı
-
-# Sunucudan Çıkma
 /QUIT [neden]
-
-# Kullanıcı Hakkında Bilgi Alma
 /WHOIS kullanici_adi
-
-# Kanal Modları
 /MODE #kanal_adı +o kullanici_adi
-
-# Aktif Kanalları Listeleme
 /LIST
-
-# Kanal Konusunu Ayarlama
 /TOPIC #kanal_adı [yeni_konu]
-
-# Kullanıcıya Not Gönderme
 /NOTICE kullanici_adi :Bu bir nottur.
-
-# Kullanıcıyı Kanaldan Atma
 /KICK #kanal_adı kullanici_adi [neden]
+
+
+https://chat.openai.com/share/c8e6b6b4-e785-4678-b56c-28d6d593a7c1

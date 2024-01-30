@@ -1,4 +1,5 @@
 #include "../includes/Server.hpp"
+#include "../includes/Utils.hpp"
 #include "../includes/Client.hpp"
 #include <iostream>
 #include <stdexcept>
@@ -105,14 +106,16 @@ void	Server::run() {
 				}
 				buffer[ret] = '\0';
 				string msg = buffer;
-				cout << "Message received: " << msg << endl;
-				for (size_t i = 0; i < clientList.size(); i++)
-				{
-					if (clientList[i]->getSocket() == fds[i].fd)
-					{
-						clientList[i]->sendMessage(msg, fds[i].fd);
-					}
-				}
+				vector<string> commands = Utils::split(msg, ' ');
+				if (commands.size() > 0)
+					functionGenerator(commands, fds[i].fd);
+				//for (size_t i = 0; i < clientList.size(); i++)
+				//{
+				//	if (clientList[i]->getSocket() == fds[i].fd)
+				//	{
+				//		clientList[i]->sendMessage(msg, fds[i].fd);
+				//	}
+				//}
 			}
 		}
 	}
@@ -125,4 +128,70 @@ Server::~Server() {
 		delete *it;
 	}
 	close(this->serverSocket); // close socket
+}
+
+void	Server::functionGenerator(const vector<string> &command, int fd){
+	if (command[0] == "PASS"){ // true olduğunda pass döndürme
+		if (command.size() == 2)
+			this->pass(command, fd);
+		else
+			sendMessage("530 Incorrect password\n", fd);
+	}
+	else if (command[0] == "JOIN") {
+		if (getClientBySocket(fd)->getPassword() == true)
+			this->join(command, fd);
+		else
+			sendMessage("530 Please login with USER and PASS\n", fd);
+	}
+}
+
+void	Server::pass(const vector<string> &commands, int fd){
+	if (commands[1] == to_string(this->password)){
+		sendMessage("230 Password ok, continue\n", fd);
+		getClientBySocket(fd)->setPassword(true);
+	}
+	else{
+		sendMessage("530 Incorrect password\n", fd);
+	}
+}
+
+void	Server::sendMessage(const string &msg, int socket){
+	for (size_t i = 0; i < clientList.size(); i++)
+	{
+		if (clientList[i]->getSocket() == socket)
+		{
+			clientList[i]->sendMessage(msg, socket);
+		}
+	}
+}
+
+Client	*Server::getClientBySocket(int socket){
+	for (size_t i = 0; i < clientList.size(); i++)
+	{
+		if (clientList[i]->getSocket() == socket)
+		{
+			return (clientList[i]);
+		}
+	}
+	return (NULL);
+}
+
+void	Server::join(const vector<string> &coms, int fd){
+	if (coms.size() == 2){
+		string chanelName = coms[1];
+		for (size_t i = 0; i < roomList.size(); i++)
+		{
+			if (roomList[i]->getName() == chanelName){
+				roomList[i]->addClient(getClientBySocket(fd));
+				sendMessage("correct chanel\n", fd);
+				return ;
+			}
+		}
+		roomList.push_back(new Room(getClientBySocket(fd), chanelName));
+		roomList[roomList.size() - 1]->addClient(getClientBySocket(fd));
+		sendMessage("correct chanel\n", fd);
+	}
+	else{
+		sendMessage("530 Incorrect channel name\n", fd);
+	}
 }

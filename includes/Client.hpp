@@ -19,7 +19,7 @@ class Client
 		string getUsername() const { return username; }
 		string getRealname() const { return realname; }
 		string getHostname() const { return hostname; }
-		string getPassword() const { return password; }
+		bool getPassword() const { return password; }
 		vector<Chanel *> getChanelList() const { return chanelList; }
 
 		void setSocket(int socket) { this->socket = socket; }
@@ -28,7 +28,7 @@ class Client
 		void setUsername(const string &username) { this->username = username; }
 		void setRealname(const string &realname) { this->realname = realname; }
 		void setHostname(const string &hostname) { this->hostname = hostname; }
-		void setPassword(const string &password) { this->password = password; }
+		void setPassword(bool password) { this->password = password; }
 
 		string	getWrittenName() const;
 
@@ -43,7 +43,7 @@ class Client
 		string username;
 		string realname;
 		string hostname;
-		string password;
+		bool password;
 
 		vector<Chanel *> chanelList;
 

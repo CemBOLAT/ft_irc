@@ -4,6 +4,7 @@ Src :=	main.cpp \
 		./src/Client.cpp \
 		./src/Server.cpp \
 		./src/Room.cpp \
+		./src/Utils.cpp \
 	
 Obj := $(Src:.cpp=.o)
 

@@ -16,6 +16,12 @@ class Server{
 		~Server();
 		void run();
 		int socketCreate(sockaddr_in &serverAddress) const;
+		void functionGenerator(const vector<string> &commands, int fd);
+
+		void	pass(const vector<string> &commands, int fd);
+		void	sendMessage(const string &msg, int socket);
+		Client	*getClientBySocket(int socket);
+		void	join(const vector<string> &commands, int fd);
 	private:
 		vector<Room *>			roomList;
 		vector<Client *>		clientList;
