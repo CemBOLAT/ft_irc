@@ -6,12 +6,16 @@
 # Bağlantı Kurma
 nc localhost 6667
 
+# password
+// syntax: PASS <password>
+
 # Kullanıcı Bilgilerini Ayarlama
-NICK assg00k
-USER assg00k 0 * :Real Name
+// syntax: NICK <nickname>
+// stntax: USER <username> <hostname> <servername> <realname>
+
 
 # Kanala Katılma
-JOIN #kanal_adı
+JOIN <channels> 
 
 # Özel Mesaj Gönderme
 /PRIVMSG hedef_kullanici :Merhaba, nasılsın?
