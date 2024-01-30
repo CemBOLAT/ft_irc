@@ -1,4 +1,5 @@
 #include "../includes/Room.hpp"
+#include "../includes/Client.hpp"
 #include <sys/socket.h>
 
 Room::Room(Client *_c, string name, string password) {

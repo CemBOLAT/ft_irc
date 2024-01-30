@@ -15,7 +15,6 @@ class Client
 
 		int getSocket() const { return socket; }
 		int getPort() const { return port; }
-		int getStatus() const { return _status; }
 		string getNickname() const { return nickname; }
 		string getUsername() const { return username; }
 		string getRealname() const { return realname; }
@@ -25,7 +24,6 @@ class Client
 
 		void setSocket(int socket) { this->socket = socket; }
 		void setPort(int port) { this->port = port; }
-		void setStatus(int status) { this->_status = status; }
 		void setNickname(const string &nickname) { this->nickname = nickname; }
 		void setUsername(const string &username) { this->username = username; }
 		void setRealname(const string &realname) { this->realname = realname; }
