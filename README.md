@@ -1,5 +1,5 @@
 #FT_IRC-Internet_Relay_Chat
-usage şu şekilde önce port sonra password
+usage şu şekilde önce port sonra  password
 
 nc localhost port atın (bu bizim konuşma terminalimiz)
 
