@@ -1,25 +1,34 @@
-Name := ircserv
+NAME := ircserv
 
-Src :=	main.cpp \
-		./src/Client.cpp \
-		./src/Server.cpp \
-		./src/Room.cpp \
-		./src/Utils.cpp \
-	
-Obj := $(Src:.cpp=.o)
+SRC_DIR := src
 
-all : $(Name)
+SRC := $(wildcard $(SRC_DIR)/*.cpp)
 
+OBJ_DIR := obj
 
-$(Name) : $(Src)
-	clang++ -Wall -Wextra -Werror -std=c++98 -g -o $(Name) $(Src)
+OBJ := $(addprefix $(OBJ_DIR)/,$(notdir $(SRC:.cpp=.o)))
 
-clean :
-	rm -f $(Obj)
+INC := -I include
 
-fclean : clean
-	rm -f $(Name)
+CC := c++
 
-re : fclean all
+CFLAGS := -Wall -Wextra -Werror -std=c++98 -g
 
-.PHONY : all clean fclean re
+all: $(NAME)
+
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+
+clean:
+	rm -rf $(OBJ_DIR)
+
+fclean: clean
+	rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re

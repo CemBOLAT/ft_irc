@@ -1,39 +1,63 @@
-#include "../includes/Utils.hpp"
-#include <iostream>
-#include <cstring>
-#include <string>
+#include "../include/Utils.hpp"
+#include "../include/Exception.hpp"
 
-vector<string> Utils::split(string &str, char delim)
+#include <string>
+#include <iostream>
+#include <vector>
+
+using namespace std;
+#define VECT_STR std::vector<std::string>
+
+int	Utils::ft_stoi(const std::string& str)
 {
-    vector<string> res;
-    string  tmp;
-    size_t  i = 0;
-    size_t  size = str.size();
-    for (size = str.size(); size > 0 && (str[size - 1] == '\r' || str[size - 1] == '\n'); size--);
-    for (; i < size && str[i] == delim; i++);
-    for (; i < size; i++)
-    {
-        if (str[i] == delim)
-        {
-            res.push_back(tmp);
-            tmp.clear();
-            for (; i < size && str[i] == delim; i++);
-        }
-        if (i < size)
-            tmp += str[i];
-    }
-    if (!tmp.empty())
-        res.push_back(tmp);
-    return (res);
+	int		result = 0;
+	int		sign = 1;
+	int		i = 0;
+
+	if (str[i] == '-')
+	{
+		sign = -1;
+		i++;
+	}
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+		{
+			throw Exception("Invalid Port Conversion");
+		}
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
+	return (result * sign);
 }
 
-//int main ()
-//{
-//    string str = "PASS 555 ";
-//    vector<string> res = Utils::split(str, ' ');
-//    for (size_t i = 0; i < res.size(); i++)
-//    {
-//        cout << res[i] << endl;
-//    }
-//    return (0);
-//}
+
+string	Utils::ft_trim(const string& str, const string &delims){
+	size_t first = str.find_first_not_of(delims);
+	size_t last = str.find_last_not_of(delims);
+	return str.substr(first, (last - first + 1));
+}
+
+void	Utils::clearBuffer(char *buffer, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		buffer[i] = '\0';
+	}
+}
+
+VECT_STR	Utils::ft_split(const string& str, const string &delims){
+	VECT_STR	result;
+	size_t		start = 0;
+	size_t		end = 0;
+
+	while (end != string::npos)
+	{
+		start = str.find_first_not_of(delims, end);
+		if (start == string::npos)
+			break ;
+		end = str.find_first_of(delims, start);
+		result.push_back(str.substr(start, end - start));
+	}
+	return (result);
+}
