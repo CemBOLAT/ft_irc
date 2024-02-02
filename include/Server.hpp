@@ -10,6 +10,7 @@
 using std::vector;
 using std::string;
 
+#define VECT_STR std::vector<std::string>
 class Client;
 
 class Server {
@@ -23,7 +24,7 @@ class Server {
 		Server& operator=(const Server& other);
 		void	initSocket();
 		void	runCommand(const string& command, Client& client);
-
+		void	hexChatEntry(VECT_STR &, Client&);
 
 		int					port;
 		string				password;

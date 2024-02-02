@@ -61,3 +61,16 @@ VECT_STR	Utils::ft_split(const string& str, const string &delims){
 	}
 	return (result);
 }
+
+
+bool	Utils::isEqualNonSensitive(const string& str1, const string& str2)
+{
+	if (str1.size() != str2.size())
+		return false;
+	for (size_t i = 0; i < str1.size(); i++)
+	{
+		if (tolower(str1[i]) != tolower(str2[i]))
+			return false;
+	}
+	return true;
+}

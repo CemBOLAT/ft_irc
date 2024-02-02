@@ -135,7 +135,7 @@ void Server::run()
 				// Write to socket
 				if (a->getBuffer().length() > 0)
 				{
-					int bytesWritten = write(a->getFd(), a->getBuffer().c_str(), a->getBuffer().length());
+					int bytesWritten = write(a->getFd(), a->mesagesFromServer()[0].c_str(), a->mesagesFromServer()[0].length());
 					if (bytesWritten < 0)
 					{
 						throw Exception("Write failed");
@@ -149,6 +149,7 @@ void Server::run()
 						TextEngine::blue("Client ", cout) << a->_ip << ":" << a->getPort() << " disconnected" << std::endl;
 					}
 					a->setBuffer(a->getBuffer().substr(bytesWritten));
+					a->mesagesFromServer().erase(a->mesagesFromServer().begin());
 				}
 				Utils::clearBuffer(this->buffer, 1024);
 				isReadyToSelect = true;
@@ -193,14 +194,14 @@ void Server::initSocket()
 	// Little Endian : 5 4 3 2 1
 
 	// htons: Host to network short
-	// bind socket to port 
+	// bind socket to port
 	if (bind(this->_socket, (struct sockaddr *)&address, sizeof(address)) < 0)
 	{
 		throw Exception("Socket bind failed");
 	} else {
 		TextEngine::green("Socket binded successfully", cout) << std::endl;
 	}
-	
+
 	/*
 	* Maximum queue length specifiable by listen.
 	*/
@@ -214,17 +215,75 @@ void Server::initSocket()
 
 void Server::runCommand(const std::string &command, Client &client)
 {
-	string trimmed = Utils::ft_trim(command, " \n\t\r");
+	string trimmed = Utils::ft_trim(command, " \r");
 	//cout << "trimmed:#" << trimmed << "#" << std::endl;
 
-	VECT_STR  params = Utils::ft_split(trimmed, " \n\t\r");
-	for (VECT_STR::iterator a = params.begin(); a != params.end(); a++)
-	{
-		cout << "param:#" << *a << "#" << std::endl;
+	VECT_STR softSplit = Utils::ft_split(trimmed, "\n");
+
+	for (size_t i = 0; i < softSplit.size(); i++ ){
+		VECT_STR  params = Utils::ft_split(softSplit[i], " \t");
+		cout << "params[0]:" << params[0] << std::endl;
+		if (params.size() == 0)
+		{
+			return;
+		}
+		if (Utils::isEqualNonSensitive(params[0], "quit")){
+			std::cout << "quit" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "part")){
+			std::cout << "part" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "nick")){
+			std::cout << "nick" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "user")){
+			std::cout << "user" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "join")){
+			std::cout << "join" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "privmsg")){
+			std::cout << "privmsg" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "notice")){
+			std::cout << "notice" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "whois")){
+			std::cout << "whois" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "list")){
+			std::cout << "list" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "topic")){
+			std::cout << "topic" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "kick")){
+			std::cout << "kick" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "mode")){
+			std::cout << "mode" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "oper")){
+			std::cout << "oper" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "who")){
+			std::cout << "who" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "ison")){
+			std::cout << "ison" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "userhost")){
+			std::cout << "userhost" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "version")){
+			std::cout << "version" << std::endl;
+		} else if (Utils::isEqualNonSensitive(params[0], "pass")){
+			std::cout << "pass" << std::endl;
+		}
+		else
+		{
+			std::cout << "Unknown command" << std::endl;
+		}
 	}
-	//for (size_t i = 0; i < params.size(); ++i){
-	//	string &param = params[i];
-	//	
-	//}
+	hexChatEntry(softSplit, client);
+
 	(void)client;
+}
+
+void Server::hexChatEntry(VECT_STR &params, Client &client)
+{
+	if (params[0] != "CAP" && params.size() != 1){
+		if (client.getIsPassworded() == false){
+			FD_CLR(client.getFd(), &readfds);
+			FD_CLR(client.getFd(), &writefds);
+			std::cout << "Invalid password" << std::endl;
+			close(client.getFd());
+			std::cout << "Client " << client._ip << ":" << client.getPort() << " disconnected" << std::endl;
+			this->clients.erase(this->clients.begin() + client.getFd() - 4); // maybe wrong
+		}
+	}
 }
