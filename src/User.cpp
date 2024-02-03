@@ -1,0 +1,27 @@
+#include "../include/Client.hpp"
+#include "../include/Executor.hpp"
+#include "../include/Exception.hpp"
+#include <iostream>
+#include <string>
+#include <vector>
+
+namespace Executor
+{
+	void	user(C_VECT_STR_R params, Client &client)
+	{
+		if (params.size() < 4)
+		{
+			client.getmesagesFromServer().push_back("USER :Not enough parameters");
+			return;
+		}
+		if (client.getIsRegistered())
+		{
+			client.getmesagesFromServer().push_back("Unauthorized command (already registered)");
+			return;
+		}
+		client.setUserName(params[0]);
+		client.setRealName(params[3]);
+		client.setRegistered(true);
+		client.getmesagesFromServer().push_back("Welcome to the Internet Relay Network " + client.getNick() + "!" + client.getUserName() + "@" + client.getRealName() + "\n");
+	}
+}

@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <string>
 #include <vector>
 #include <sys/socket.h>
@@ -13,12 +12,14 @@ using std::vector;
 using std::string;
 
 class Client;
+class Room;
 
 class Server {
 	public:
 		Server(const string& port, const string& password);
 		virtual	~Server();
 		void	run();
+		void	join(C_VECT_STR_R params, Client &client);
 	private:
 		Server();
 		Server(const Server& other);
@@ -49,6 +50,7 @@ class Server {
 		fd_set				readFdsCopy;
 
 		vector<Client>		clients;
+		vector<Room>		channels;
 
 		char				buffer[1024];
 };

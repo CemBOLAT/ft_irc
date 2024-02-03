@@ -4,6 +4,7 @@
 #include "../include/TextEngine.hpp"
 #include "../include/Client.hpp"
 #include "../include/Executor.hpp"
+#include "../include/Room.hpp"
 #include <string>
 #include <iostream>
 #include <sys/socket.h>
@@ -245,25 +246,31 @@ void Server::runCommand(const std::string &command, Client &client)
 		{
 			Executor::pass(params, client, this->password);
 		}
+		else if (client.getIsPassworded() == false){
+			client.getmesagesFromServer().push_back("First you need to pass the password\n");
+		}
 		else if (Utils::isEqualNonSensitive(params[0], "cap"))
 		{
 			Executor::cap(params, client);
 		}
-		else if (Utils::isEqualNonSensitive(params[0], "part"))
-		{
-			std::cout << "part" << std::endl;
-		}
 		else if (Utils::isEqualNonSensitive(params[0], "nick"))
 		{
-			std::cout << "nick" << std::endl;
+			Executor::nick(params, client);
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "user"))
 		{
-			std::cout << "user" << std::endl;
+			Executor::user(params, client);
+		}
+		else if (client.getIsRegistered() == false){
+			client.getmesagesFromServer().push_back("First you need to register\n");
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "join"))
 		{
-			std::cout << "join" << std::endl;
+			this->join(params, client);
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "part"))
+		{
+			std::cout << "part" << std::endl;
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "privmsg"))
 		{
@@ -315,7 +322,7 @@ void Server::runCommand(const std::string &command, Client &client)
 		}
 		else
 		{
-			std::cout << "Unknown command" << std::endl;
+			client.getmesagesFromServer().push_back("Invalid command\n");
 		}
 	}
 	hexChatEntry(softSplit, client);
