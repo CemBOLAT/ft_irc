@@ -16,4 +16,5 @@ namespace Utils {
 	std::string	ft_trim(const std::string& str, const std::string &delims);
 	VECT_STR	ft_split(const std::string& str, const std::string &delims);
 	bool		isEqualNonSensitive(const string& str1, const string& str2);
+	void 		getTime();
 }
