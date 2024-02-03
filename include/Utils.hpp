@@ -4,6 +4,7 @@
 #define USAGE "./ircserv [port] [password]"
 
 #include <string>
+#include <vector>
 
 #define VECT_STR std::vector<std::string>
 

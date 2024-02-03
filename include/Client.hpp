@@ -1,9 +1,11 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <netinet/in.h>
 
 using std::string;
+using std::vector;
 
 // #include in.h
 
@@ -29,7 +31,7 @@ public:
     bool &getIsRegistered() { return isRegistered; }
     bool &getIsPassworded() { return isPassworded; }
     int &getType() { return _type; }
-    vector<string> &mesagesFromServer() { return _messagesFromServer; }
+    vector<string> &getmesagesFromServer() { return _messagesFromServer; }
 
     void setRegistered(bool val) { isRegistered = val; }
     void setPassworded(bool val) { isPassworded = val; }

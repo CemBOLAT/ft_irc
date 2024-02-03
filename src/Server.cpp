@@ -12,11 +12,9 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <sys/select.h>
+#include "../include/Define.hpp"
 
 using std::cout;
-
-#define VECT_ITER std::vector<Client>::iterator
-#define VECT_STR std::vector<std::string>
 
 Server::Server(const std::string &port, const std::string &password)
 	: port(0), password(password)
@@ -36,7 +34,8 @@ Server::Server(const std::string &port, const std::string &password)
 	}
 }
 
-Server::~Server(){
+Server::~Server()
+{
 	if (this->_socket > 0)
 	{
 		close(this->_socket);
@@ -46,17 +45,18 @@ Server::~Server(){
 void Server::run()
 {
 	sockaddr_in clientAddress;
-	bool		isReadyToSelect = true;
-	int			bytesRead = 0;
+	bool isReadyToSelect = true;
+	int bytesRead = 0;
 
 	FD_ZERO(&readfds);
 	FD_ZERO(&writefds);
 	FD_ZERO(&readFdsCopy);
 	FD_ZERO(&writeFdsCopy);
 
-	FD_SET(this->_socket, &readfds); // Add socket to readfds set
+	FD_SET(this->_socket, &readfds);  // Add socket to readfds set
 	FD_SET(this->_socket, &writefds); // Add socket to writefds set
-	while (true) {
+	while (true)
+	{
 		while (isReadyToSelect)
 		{
 			readFdsCopy = readfds;
@@ -66,21 +66,23 @@ void Server::run()
 				3 server socket
 				4 is for select function
 			*/
-			if (select(clients.size() + 4, &readFdsCopy, &writeFdsCopy, nullptr, nullptr) < 0)
+			// nullptr is a C++11 feature
+			if (select(clients.size() + 4, &readFdsCopy, &writeFdsCopy, NULL, NULL) < 0)
 			{
 				throw Exception("Select failed");
 			}
 			isReadyToSelect = false;
 		}
-		if (FD_ISSET(this->_socket, &this->readFdsCopy)){
+		if (FD_ISSET(this->_socket, &this->readFdsCopy))
+		{
 			// Accept new connection
-			socklen_t	templen = sizeof(sockaddr_in);
+			socklen_t templen = sizeof(sockaddr_in);
 			int newSocket = accept(this->_socket, (sockaddr *)&clientAddress, &templen);
 			if (newSocket < 0)
 			{
 				throw Exception("Accept failed");
 			}
-			int	port = ntohs(clientAddress.sin_port);
+			int port = ntohs(clientAddress.sin_port);
 			Client newClient(newSocket, port);
 			inet_ntop(AF_INET, &(clientAddress.sin_addr), newClient._ip, INET_ADDRSTRLEN); // Convert IP to string and save it to newClient
 			clients.push_back(newClient);
@@ -97,7 +99,8 @@ void Server::run()
 			{
 				// Read from socket
 				bytesRead = read(a->getFd(), this->buffer, 1024);
-				if (bytesRead <= 0){
+				if (bytesRead <= 0)
+				{
 					FD_CLR(a->getFd(), &readfds);
 					FD_CLR(a->getFd(), &writefds);
 					close(a->getFd());
@@ -105,14 +108,17 @@ void Server::run()
 					clients.erase(a);
 					isReadyToSelect = true;
 				}
-				else {
+				else
+				{
 					this->buffer[bytesRead] = '\0';
 					string msg = this->buffer;
-					if (msg == "\n"){
+					if (msg == "\n")
+					{
 						isReadyToSelect = true;
 						break; // Continue to next client if message is empty
 					}
-					if (msg[msg.length() - 1] != '\n'){
+					if (msg[msg.length() - 1] != '\n')
+					{
 						a->setBuffer(a->getBuffer() + msg);
 						isReadyToSelect = true;
 						break;
@@ -121,21 +127,21 @@ void Server::run()
 						komutu ele alacan
 					*/
 					runCommand(msg, *a);
-					//isReadyToSelect = true;
+					// isReadyToSelect = true;
 				}
 				isReadyToSelect = true;
 				break;
 			}
-			//isReadyToSelect = true;
+			// isReadyToSelect = true;
 		}
 		for (VECT_ITER a = clients.begin(); a != clients.end() && !isReadyToSelect; a++)
 		{
 			if (FD_ISSET(a->getFd(), &this->writeFdsCopy))
 			{
 				// Write to socket
-				if (a->getBuffer().length() > 0)
+				if (a->getmesagesFromServer().size() > 0)
 				{
-					int bytesWritten = write(a->getFd(), a->mesagesFromServer()[0].c_str(), a->mesagesFromServer()[0].length());
+					int bytesWritten = write(a->getFd(), a->getmesagesFromServer()[0].c_str(), a->getmesagesFromServer()[0].length());
 					if (bytesWritten < 0)
 					{
 						throw Exception("Write failed");
@@ -148,8 +154,7 @@ void Server::run()
 						this->clients.erase(a);
 						TextEngine::blue("Client ", cout) << a->_ip << ":" << a->getPort() << " disconnected" << std::endl;
 					}
-					a->setBuffer(a->getBuffer().substr(bytesWritten));
-					a->mesagesFromServer().erase(a->mesagesFromServer().begin());
+					a->getmesagesFromServer().erase(a->getmesagesFromServer().begin());
 				}
 				Utils::clearBuffer(this->buffer, 1024);
 				isReadyToSelect = true;
@@ -169,7 +174,9 @@ void Server::initSocket()
 	if (_socket < 0)
 	{
 		throw Exception("Socket creation failed");
-	} else {
+	}
+	else
+	{
 		TextEngine::green("Socket created successfully", cout) << std::endl;
 	}
 	int opt = 1;
@@ -181,12 +188,14 @@ void Server::initSocket()
 	if (setsockopt(this->_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(int)) < 0)
 	{
 		throw Exception("Socket option failed");
-	} else {
+	}
+	else
+	{
 		TextEngine::green("Socket option set successfully", cout) << std::endl;
 	}
 
 	memset(&address, 0, sizeof(address)); // Zeroing address
-	address.sin_family = AF_INET; // IPv4
+	address.sin_family = AF_INET;		  // IPv4
 	address.sin_addr.s_addr = INADDR_ANY; // TCP
 	address.sin_port = htons(this->port); // ENDIANNESS
 
@@ -198,17 +207,21 @@ void Server::initSocket()
 	if (bind(this->_socket, (struct sockaddr *)&address, sizeof(address)) < 0)
 	{
 		throw Exception("Socket bind failed");
-	} else {
+	}
+	else
+	{
 		TextEngine::green("Socket binded successfully", cout) << std::endl;
 	}
 
 	/*
-	* Maximum queue length specifiable by listen.
-	*/
+	 * Maximum queue length specifiable by listen.
+	 */
 	if (listen(this->_socket, SOMAXCONN) < 0)
 	{
 		throw Exception("Socket listen failed");
-	} else {
+	}
+	else
+	{
 		TextEngine::green("Socket listening successfully", cout) << std::endl;
 	}
 }
@@ -216,53 +229,89 @@ void Server::initSocket()
 void Server::runCommand(const std::string &command, Client &client)
 {
 	string trimmed = Utils::ft_trim(command, " \r");
-	//cout << "trimmed:#" << trimmed << "#" << std::endl;
+	// cout << "trimmed:#" << trimmed << "#" << std::endl;
 
 	VECT_STR softSplit = Utils::ft_split(trimmed, "\n");
 
-	for (size_t i = 0; i < softSplit.size(); i++ ){
-		VECT_STR  params = Utils::ft_split(softSplit[i], " \t");
+	for (size_t i = 0; i < softSplit.size(); i++)
+	{
+		VECT_STR params = Utils::ft_split(softSplit[i], " \t");
 		cout << "params[0]:" << params[0] << std::endl;
 		if (params.size() == 0)
 		{
 			return;
 		}
-		if (Utils::isEqualNonSensitive(params[0], "quit")){
-			std::cout << "quit" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "part")){
+		if (Utils::isEqualNonSensitive(params[0], "pass"))
+		{
+			Executor::pass(params, client, this->password);
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "cap"))
+		{
+			Executor::cap(params, client);
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "part"))
+		{
 			std::cout << "part" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "nick")){
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "nick"))
+		{
 			std::cout << "nick" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "user")){
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "user"))
+		{
 			std::cout << "user" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "join")){
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "join"))
+		{
 			std::cout << "join" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "privmsg")){
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "privmsg"))
+		{
 			std::cout << "privmsg" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "notice")){
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "notice"))
+		{
 			std::cout << "notice" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "whois")){
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "whois"))
+		{
 			std::cout << "whois" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "list")){
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "list"))
+		{
 			std::cout << "list" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "topic")){
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "topic"))
+		{
 			std::cout << "topic" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "kick")){
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "kick"))
+		{
 			std::cout << "kick" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "mode")){
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "mode"))
+		{
 			std::cout << "mode" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "oper")){
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "oper"))
+		{
 			std::cout << "oper" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "who")){
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "who"))
+		{
 			std::cout << "who" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "ison")){
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "ison"))
+		{
 			std::cout << "ison" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "userhost")){
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "userhost"))
+		{
 			std::cout << "userhost" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "version")){
+		}
+		else if (Utils::isEqualNonSensitive(params[0], "version"))
+		{
 			std::cout << "version" << std::endl;
-		} else if (Utils::isEqualNonSensitive(params[0], "pass")){
-			std::cout << "pass" << std::endl;
 		}
 		else
 		{
@@ -270,14 +319,14 @@ void Server::runCommand(const std::string &command, Client &client)
 		}
 	}
 	hexChatEntry(softSplit, client);
-
-	(void)client;
 }
 
 void Server::hexChatEntry(VECT_STR &params, Client &client)
 {
-	if (params[0] != "CAP" && params.size() != 1){
-		if (client.getIsPassworded() == false){
+	if (params[0] != "CAP" && params.size() != 1)
+	{
+		if (client.getIsPassworded() == false)
+		{
 			FD_CLR(client.getFd(), &readfds);
 			FD_CLR(client.getFd(), &writefds);
 			std::cout << "Invalid password" << std::endl;

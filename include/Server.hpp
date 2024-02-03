@@ -7,10 +7,11 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+#include "Define.hpp"
+
 using std::vector;
 using std::string;
 
-#define VECT_STR std::vector<std::string>
 class Client;
 
 class Server {

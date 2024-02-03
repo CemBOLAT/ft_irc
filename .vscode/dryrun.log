@@ -3,16 +3,15 @@ make: Entering directory `/Users/cembolat/Desktop/FT_IRC-Internet_Relay_Chat'
 mkdir -p obj
 c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/Client.cpp -o obj/Client.o
 mkdir -p obj
-c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/Executor.cpp -o obj/Executor.o
+c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/Pass.cpp -o obj/Pass.o
 mkdir -p obj
 c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/Server.cpp -o obj/Server.o
- 
 mkdir -p obj
 c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/TextEngine.cpp -o obj/TextEngine.o
 mkdir -p obj
 c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/Utils.cpp -o obj/Utils.o
 mkdir -p obj
 c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/main.cpp -o obj/main.o
-c++ -Wall -Wextra -Werror -std=c++98 -g obj/Client.o obj/Executor.o obj/Server.o obj/TextEngine.o obj/Utils.o obj/main.o -o ircserv
+c++ -Wall -Wextra -Werror -std=c++98 -g obj/Client.o obj/Pass.o obj/Server.o obj/TextEngine.o obj/Utils.o obj/main.o -o ircserv
 make: Leaving directory `/Users/cembolat/Desktop/FT_IRC-Internet_Relay_Chat'
  

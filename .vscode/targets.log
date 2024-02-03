@@ -8,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This program built for i386-apple-darwin11.3.0
  
 
-# Make data base, printed on Sat Feb  3 01:25:35 2024
+# Make data base, printed on Sat Feb  3 18:08:40 2024
 
 # Variables
 
@@ -17,11 +17,11 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # automatic
 ?F = $(notdir $?)
 # makefile (from `Makefile', line 9)
-OBJ := obj/Client.o obj/Executor.o obj/Server.o obj/TextEngine.o obj/Utils.o obj/main.o
+OBJ := obj/Client.o obj/Pass.o obj/Server.o obj/TextEngine.o obj/Utils.o obj/main.o
 # environment
 VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
 # makefile (from `Makefile', line 5)
-SRC := src/Client.cpp src/Executor.cpp src/Server.cpp src/TextEngine.cpp src/Utils.cpp src/main.cpp
+SRC := src/Client.cpp src/Pass.cpp src/Server.cpp src/TextEngine.cpp src/Utils.cpp src/main.cpp
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # automatic
@@ -33,7 +33,7 @@ CURDIR := /Users/cembolat/Desktop/FT_IRC-Internet_Relay_Chat
 # makefile
 SHELL = /bin/sh
 # environment
-VSCODE_NLS_CONFIG = {"locale":"tr","osLocale":"tr-tr","availableLanguages":{"*":"tr"},"_languagePackId":"f47d82d2bef35473602695487287ef2b.tr","_translationsConfigFile":"/Users/cembolat/Library/Application Support/Code/clp/f47d82d2bef35473602695487287ef2b.tr/tcf.json","_cacheRoot":"/Users/cembolat/Library/Application Support/Code/clp/f47d82d2bef35473602695487287ef2b.tr","_resolvedLanguagePackCoreLocation":"/Users/cembolat/Library/Application Support/Code/clp/f47d82d2bef35473602695487287ef2b.tr/8b3775030ed1a69b13e4f4c628c612102e30a681","_corruptedFile":"/Users/cembolat/Library/Application Support/Code/clp/f47d82d2bef35473602695487287ef2b.tr/corrupted.info","_languagePackSupport":true}
+VSCODE_NLS_CONFIG = {"locale":"tr","osLocale":"tr-tr","availableLanguages":{"*":"tr"},"_languagePackId":"f47d82d2bef35473602695487287ef2b.tr","_translationsConfigFile":"/Users/cembolat/Library/Application Support/Code/clp/f47d82d2bef35473602695487287ef2b.tr/tcf.json","_cacheRoot":"/Users/cembolat/Library/Application Support/Code/clp/f47d82d2bef35473602695487287ef2b.tr","_resolvedLanguagePackCoreLocation":"/Users/cembolat/Library/Application Support/Code/clp/f47d82d2bef35473602695487287ef2b.tr/05047486b6df5eb8d44b2ecd70ea3bdf775fd937","_corruptedFile":"/Users/cembolat/Library/Application Support/Code/clp/f47d82d2bef35473602695487287ef2b.tr/corrupted.info","_languagePackSupport":true}
 # environment
 _ = /usr/bin/make
 # makefile (from `Makefile', line 15)
@@ -75,7 +75,7 @@ HOME = /Users/cembolat
 # default
 MAKEFILEPATH := /Applications/Xcode.app/Contents/Developer/Makefiles
 # environment
-VSCODE_CODE_CACHE_PATH = /Users/cembolat/Library/Application Support/Code/CachedData/8b3775030ed1a69b13e4f4c628c612102e30a681
+VSCODE_CODE_CACHE_PATH = /Users/cembolat/Library/Application Support/Code/CachedData/05047486b6df5eb8d44b2ecd70ea3bdf775fd937
 # environment
 LOGNAME = cembolat
 # environment
@@ -115,7 +115,7 @@ TMPDIR = /var/folders/fl/4cbxkn7160543t0kxp8dwt5r0000gn/T/
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /Users/cembolat/Library/Application Support/Code/1.85-main.sock
+VSCODE_IPC_HOOK = /Users/cembolat/Library/Application Support/Code/1.86-main.sock
 # environment
 MallocNanoZone = 0
 # makefile
@@ -125,7 +125,7 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.19887653.19887659
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.20305958.20305964
 # environment
 HOMEBREW_PREFIX = /opt/homebrew
 # automatic
@@ -159,7 +159,7 @@ CLICOLOR = 1
 # environment
 LANG = C
 # environment
-VSCODE_PID = 16849
+VSCODE_PID = 20139
 # variable set hash-table stats:
 # Load=74/1024=7%, Rehash=0, Collisions=3/106=3%
 
@@ -169,10 +169,10 @@ VSCODE_PID = 16849
 
 # Directories
 
-# . (device 16777233, inode 20224696): 11 files, no impossibilities.
-# src (device 16777233, inode 20224784): 8 files, no impossibilities.
+# . (device 16777233, inode 20327366): 11 files, no impossibilities.
+# src (device 16777233, inode 20327387): 9 files, no impossibilities.
 
-# 19 files, no impossibilities in 2 directories.
+# 20 files, no impossibilities in 2 directories.
 
 # Implicit Rules
 
@@ -184,13 +184,12 @@ obj/%.o: src/%.cpp
 
 # 1 implicit rules, 0 (0.0%) terminal.
 
- 
 # Files
 
 obj/Server.o: src/Server.cpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `Server'
-#  Last modified 2024-02-03 01:21:55
+#  Last modified 2024-02-03 14:52:28
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -215,23 +214,10 @@ all: ircserv
 #  Modification time never checked.
 #  File has not been updated.
 
-obj/Executor.o: src/Executor.cpp
-#  Implicit rule search has been done.
-#  Implicit/static pattern stem: `Executor'
-#  Last modified 2024-02-03 01:16:52
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
-#  commands to execute (from `Makefile', line 23):
-	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(INC) -c $< -o $@
-	
-
 obj/Utils.o: src/Utils.cpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `Utils'
-#  Last modified 2024-02-03 01:16:53
+#  Last modified 2024-02-03 14:48:13
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -244,7 +230,7 @@ obj/Utils.o: src/Utils.cpp
 obj/main.o: src/main.cpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `main'
-#  Last modified 2024-02-03 01:16:53
+#  Last modified 2024-02-03 14:48:13
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -263,15 +249,15 @@ obj/main.o: src/main.cpp
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-03 00:08:56
+#  Last modified 2024-02-03 14:48:28
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
-ircserv: obj/Client.o obj/Executor.o obj/Server.o obj/TextEngine.o obj/Utils.o obj/main.o
+ircserv: obj/Client.o obj/Pass.o obj/Server.o obj/TextEngine.o obj/Utils.o obj/main.o
 #  Implicit rule search has not been done.
-#  Last modified 2024-02-03 01:21:55
+#  Last modified 2024-02-03 14:52:28
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -283,7 +269,7 @@ ircserv: obj/Client.o obj/Executor.o obj/Server.o obj/TextEngine.o obj/Utils.o o
 obj/TextEngine.o: src/TextEngine.cpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `TextEngine'
-#  Last modified 2024-02-03 01:16:53
+#  Last modified 2024-02-03 14:48:13
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -295,12 +281,26 @@ obj/TextEngine.o: src/TextEngine.cpp
 
 # Not a target:
 src/Client.cpp:
+ 
 #  Implicit rule search has been done.
-#  Last modified 2024-02-03 00:08:56
+#  Last modified 2024-02-03 14:33:07
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+obj/Pass.o: src/Pass.cpp
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: `Pass'
+#  Last modified 2024-02-03 14:52:28
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 23):
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	
 
 fclean: clean
 #  Phony target (prerequisite of .PHONY).
@@ -314,7 +314,7 @@ fclean: clean
 # Not a target:
 src/Server.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-03 01:21:52
+#  Last modified 2024-02-03 14:50:37
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -327,18 +327,9 @@ src/Server.cpp:
 #  File has not been updated.
 
 # Not a target:
-src/Executor.cpp:
-#  Implicit rule search has been done.
-#  Last modified 2024-02-03 00:08:56
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
-
-# Not a target:
 src/Utils.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-03 01:05:29
+#  Last modified 2024-02-03 14:33:07
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -362,7 +353,7 @@ clean:
 # Not a target:
 src/main.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-03 00:08:56
+#  Last modified 2024-02-03 14:33:07
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -371,7 +362,16 @@ src/main.cpp:
 # Not a target:
 src/TextEngine.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-03 00:08:56
+#  Last modified 2024-02-03 14:33:07
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
+src/Pass.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2024-02-03 14:52:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -380,7 +380,7 @@ src/TextEngine.cpp:
 obj/Client.o: src/Client.cpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `Client'
-#  Last modified 2024-02-03 01:16:52
+#  Last modified 2024-02-03 14:48:12
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -403,6 +403,6 @@ obj/Client.o: src/Client.cpp
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Sat Feb  3 01:25:35 2024
+# Finished Make data base on Sat Feb  3 18:08:40 2024
 
  
