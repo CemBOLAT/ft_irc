@@ -16,3 +16,6 @@
 #define hexchat 1
 #define nc 2
 #define bot 3
+
+
+#define NickAccepted 

@@ -55,7 +55,7 @@ void Server::run()
 	FD_ZERO(&writeFdsCopy);
 
 	FD_SET(this->_socket, &readfds);  // Add socket to readfds set
-	FD_SET(this->_socket, &writefds); // Add socket to writefds set
+	//FD_SET(this->_socket, &writefds); // Add socket to writefds set
 	while (true)
 	{
 		while (isReadyToSelect)
@@ -88,7 +88,7 @@ void Server::run()
 			inet_ntop(AF_INET, &(clientAddress.sin_addr), newClient._ip, INET_ADDRSTRLEN); // Convert IP to string and save it to newClient
 			clients.push_back(newClient);
 			FD_SET(newSocket, &readfds);
-			FD_SET(newSocket, &writefds);
+			//FD_SET(newSocket, &writefds);
 
 			TextEngine::green("New connection from ", cout) << newClient._ip << ":" << newClient.getPort() << std::endl;
 			isReadyToSelect = true;
@@ -147,6 +147,9 @@ void Server::run()
 					{
 						throw Exception("Write failed");
 					}
+					if (a->getmesagesFromServer().empty()){
+						FD_CLR(a->getFd(), &writefds);
+					}
 					if (bytesWritten == 0)
 					{
 						FD_CLR(a->getFd(), &writefds);
@@ -167,7 +170,7 @@ void Server::run()
 
 void Server::initSocket()
 {
-	this->_socket = socket(AF_INET, SOCK_STREAM, 0);
+	this->_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP); // Create socket 0 for macos
 	// AF_INE IPV4
 	// SOCK_STREAM TCP //SOCK_DGRAM UDP
 	// TCP: Transmission Control Protocol : Veri paketlerinin karşı tarafa ulaşmasını garanti eder. Yavaştır.
@@ -254,7 +257,7 @@ void Server::runCommand(const std::string &command, Client &client)
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "nick"))
 		{
-			Executor::nick(params, client);
+			Executor::nick(params, client, writefds);
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "user"))
 		{

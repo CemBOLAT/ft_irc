@@ -5,18 +5,58 @@
 #include <string>
 #include <vector>
 
+#define RPL_NICK(nick, user, ip, newnick) ":" + nick + "!" + user + "@" + ip + " NICK :" + newnick + "\r\n"
+
 namespace Executor
 {
-	void nick(C_VECT_STR_R params, Client &client)
+	void nick(C_VECT_STR_R params, Client &client, fd_set &fd)
 	{
-		if (params.size() != 2)
-		{
-			client.getmesagesFromServer().push_back("Invalid Number of Arg\n");
+		FD_SET(client.getFd(), &fd);
+		if (params.size() < 2){
+			client.getmesagesFromServer().push_back(RPL_NICK(client.getNick(), client.getUserName(), client._ip, ""));
 		}
-		else
-		{
+		else if (params[1].empty()){
+			client.getmesagesFromServer().push_back(RPL_NICK(client.getNick(), client.getUserName(), client._ip, ""));
+		}
+		else{
+			client.getmesagesFromServer().push_back(RPL_NICK(client.getNick(), client.getUserName(), client._ip, params[1]));
 			client.setNick(params[1]);
-			client.getmesagesFromServer().push_back("Nick accepted as " + params[1] + "\n");
 		}
 	}
 }
+
+
+/*
+
+#include "Server.hpp"
+
+int     Server::Nick(std::string &s, Client &cli) {
+    std::stringstream ss(s);
+    ss >> s;
+    if (!s.empty() && !isNickExist(s)) {
+        cli.messageBox.push_back(RPL_NICK(cli.nick, cli.user, cli.ip, s));
+        FD_SET(cli.cliFd, &this->writeFds);
+        for (ChanelIterator it = this->chanels.begin(); it != this->chanels.end(); ++it) {
+            std::string msg;
+            for (ClientIterator cit = (*it).clients.begin(); cit != (*it).clients.end(); ++cit) {
+                if (cli.nick == cit->nick)
+                {
+                    cit->nick = s;
+                    break;
+                }
+            }
+            showRightGui(cli, *it);
+        }
+        cli.nick = s;
+    }
+    else {
+        if(s.empty())
+            Utilities::writeRpl(cli.cliFd, ERR_NICKNAMEEMPTY(cli.getPrefix()));
+        else
+            Utilities::writeRpl(cli.cliFd, ERR_NICKNAMEINUSE(cli.getPrefix()));
+    }
+    return 0;
+}
+
+
+*/
