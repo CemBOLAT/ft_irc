@@ -12,12 +12,17 @@ namespace Executor
 		FD_SET(client.getFd(), &fd);
 		if (params.size() < 4)
 		{
-			client.getmesagesFromServer().push_back("USER :Not enough parameters");
+			client.getmesagesFromServer().push_back("USER :Not enough parameters\n");
 			return;
 		}
 		if (client.getIsRegistered())
 		{
-			client.getmesagesFromServer().push_back("Unauthorized command (already registered)");
+			client.getmesagesFromServer().push_back("Unauthorized command (already registered)\n");
+			return;
+		}
+		if (params[1] == params[2])
+		{
+			client.getmesagesFromServer().push_back("Nick name and second choice cannot be the same\n");
 			return;
 		}
 		client.setUserName(params[1]);
