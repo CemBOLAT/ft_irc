@@ -7,6 +7,7 @@ using std::string;
 using std::vector;
 
 class Client;
+#include "Client.hpp"
 
 class Room
 {
@@ -26,11 +27,11 @@ public:
 	}
 
 	vector<Client *> &getClients() { return _clients; }
-	string &getName() { return _name; }
-	string &getTopic() { return _topic; }
-	Client *getOwner() { return owner; }
+	string getName() const { return _name; }
+	string getTopic() const { return _topic; }
+	Client *getOperator() { return Operator; }
 
-	void setOwner(Client *owner) { this->owner = owner; }
+	void setOperator(Client *Operator) { this->Operator = Operator; }
 	void setName(const string &name) { _name = name; }
 	void setTopic(const string &topic) { _topic = topic; }
 	void addClient(Client *client) { _clients.push_back(client); }
@@ -44,10 +45,19 @@ public:
 		}
 		return false;
 	}
+	Client *getClient(const string &nick)
+	{
+		for (size_t i = 0; i < _clients.size(); i++)
+		{
+			if (_clients[i]->getNick() == nick)
+				return _clients[i];
+		}
+		return NULL;
+	}
 
 private:
 	vector<Client*> _clients;
 	string	_name;
 	string 	_topic;
-	Client	*owner;
+	Client	*Operator;
 };

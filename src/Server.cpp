@@ -296,8 +296,7 @@ void Server::runCommand(const std::string &command, Client &client)
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "mode"))
 		{
-			Executor::mode(params, client);
-			
+			std::cout << "mode" << std::endl;
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "oper"))
 		{
