@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+using namespace std;
 
 class Exception : public std::exception
 {

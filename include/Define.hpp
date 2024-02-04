@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include <string>
+
 #define USAGE "./ircserv [port] [password]"
 #define VECT_STR std::vector<std::string>
 #define VECT_ITER std::vector<Client>::iterator

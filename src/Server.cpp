@@ -230,14 +230,13 @@ void Server::initSocket()
 void Server::runCommand(const std::string &command, Client &client)
 {
 	string trimmed = Utils::ft_trim(command, " \r");
-	// cout << "trimmed:#" << trimmed << "#" << std::endl;
+	cout << trimmed << "#" << std::endl;
 
 	VECT_STR softSplit = Utils::ft_split(trimmed, "\n");
 
 	for (size_t i = 0; i < softSplit.size(); i++)
 	{
-		VECT_STR params = Utils::ft_split(softSplit[i], " \t");
-		cout << "params[0]:" << params[0] << std::endl;
+		VECT_STR params = Utils::ft_split(softSplit[i], " \t\r");
 		if (params.size() == 0)
 		{
 			return;
@@ -246,12 +245,12 @@ void Server::runCommand(const std::string &command, Client &client)
 		{
 			Executor::pass(params, client, this->password);
 		}
-		else if (client.getIsPassworded() == false){
-			client.getmesagesFromServer().push_back("First you need to pass the password\n");
-		}
 		else if (Utils::isEqualNonSensitive(params[0], "cap"))
 		{
 			Executor::cap(params, client);
+		}
+		else if (client.getIsPassworded() == false){
+			client.getmesagesFromServer().push_back("First you need to pass the password\n");
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "nick"))
 		{
