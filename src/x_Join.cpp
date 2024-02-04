@@ -8,9 +8,13 @@
 #include <string>
 #include <vector>
 
+#define JOIN_RESPONSE(nick, ip, channel) ":" + nick + "!" + nick + "@" + ip + " JOIN " + channel + "\r\n"
+#define RPL_TOPIC(nick, ip, channel, topic) ":" + nick + "!" + nick + "@" + ip + " TOPIC " + channel + " :" + topic + "\r\n"
+
 void Server::join(C_VECT_STR_R params, Client &client)
 {
-	if (params.size() < 1)
+	FD_SET(client.getFd(), &writefds);
+	if (params.size() < 2)
 	{
 		client.getmesagesFromServer().push_back("JOIN :Not enough parameters\n");
 		return;
@@ -20,19 +24,30 @@ void Server::join(C_VECT_STR_R params, Client &client)
 		client.getmesagesFromServer().push_back("JOIN :Invalid channel name\n");
 		return;
 	}
+	std::string channelName = params[1].substr(1);
 	for (size_t i = 0; i < channels.size(); i++)
 	{
-		if (channels[i].getName() == params[0])
+		if (channels[i].getName() == channelName)
 		{
-			channels[i].addClient(client);
-			client.getmesagesFromServer().push_back("JOIN :" + channels[i].getName() + "\n");
+			if (channels[i].isClientInChannel(client.getNick()))
+			{
+				client.getmesagesFromServer().push_back("JOIN :You are already in this channel\n");
+				return;
+			}
+			channels[i].addClient(&client);
+			client.getmesagesFromServer().push_back("JOIN " + channelName + "\n");
+			client.getmesagesFromServer().push_back(JOIN_RESPONSE(client.getNick(), client._ip, channelName));
+			if (channels[i].getTopic() != "")
+				client.getmesagesFromServer().push_back(RPL_TOPIC(client.getNick(), client._ip, channelName, channels[i].getTopic()));
 			return;
 		}
 	}
 	Room newRoom;
-	newRoom.setName(params[1].substr(1));
-	newRoom.addClient(client);
+	newRoom.setName(channelName);
+	newRoom.addClient(&client);
 	channels.push_back(newRoom);
-	newRoom.setOwner(&client);
-	client.getmesagesFromServer().push_back("JOIN : " + newRoom.getName() + "\n");
+	client.getmesagesFromServer().push_back("JOIN " + channelName + "\n");
+	client.getmesagesFromServer().push_back(JOIN_RESPONSE(client.getNick(), client._ip, channelName));
+	if (newRoom.getTopic() != "")
+		client.getmesagesFromServer().push_back(RPL_TOPIC(client.getNick(), client._ip, channelName, newRoom.getTopic()));
 }

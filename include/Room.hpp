@@ -33,7 +33,17 @@ public:
 	void setOwner(Client *owner) { this->owner = owner; }
 	void setName(const string &name) { _name = name; }
 	void setTopic(const string &topic) { _topic = topic; }
-	void addClient(Client &client) { _clients.push_back(&client); }
+	void addClient(Client *client) { _clients.push_back(client); }
+
+	bool isClientInChannel(const string &nick)
+	{
+		for (size_t i = 0; i < _clients.size(); i++)
+		{
+			if (_clients[i]->getNick() == nick)
+				return true;
+		}
+		return false;
+	}
 
 private:
 	vector<Client*> _clients;
