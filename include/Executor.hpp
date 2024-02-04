@@ -13,4 +13,5 @@ namespace Executor
     void cap(C_VECT_STR_R params, Client &client);
     void nick(C_VECT_STR_R params, Client &client, fd_set &fd);
     void user(C_VECT_STR_R params, Client &client, fd_set &fd);
+    void mode(C_VECT_STR_R params, Client &client);
 }

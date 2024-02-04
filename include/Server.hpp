@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include "Chanel.hpp"
 
 #include "Define.hpp"
 
@@ -22,6 +23,8 @@ class Server {
 		void	join(C_VECT_STR_R params, Client &client);
 		void	part(C_VECT_STR_R params, Client &client);
 		void	privmsg(C_VECT_STR_R params, Client &client);
+
+		std::vector<Chanel>     chanels;
 	private:
 		Server();
 		Server(const Server& other);
