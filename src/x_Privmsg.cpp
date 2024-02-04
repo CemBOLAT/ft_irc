@@ -8,34 +8,47 @@
 #include <string>
 #include <vector>
 
+#define RPL_PRIVMSG(source, target, message)		":" + source + " PRIVMSG " + target + " :" + message + "\r\n"
+
+string	getMessage(C_VECT_STR_R params){
+	string message;
+	for (unsigned int i = 2; i < params.size(); i++){
+		message += params[i];
+		if (i + 1 < params.size())
+			message += " ";
+	}
+	if (message[0] == ':')
+		message = message.substr(1, message.size() - 1);
+	return message;
+}
+
 void	Server::privmsg(C_VECT_STR_R params, Client &client){
-	(void)params;
-	(void)client;
 	FD_SET(client.getFd(), &writefds);
 	if (params.size() < 3){
 		client.getmesagesFromServer().push_back("PRIVMSG :Not enough parameters\n");
 		return;
 	}
-	if (params[1][0] != '#'){
-		// message for a user
-		for (size_t i = 0; i < clients.size(); i++){
-			if (clients[i].getNick() == params[1]){
-				clients[i].getmesagesFromServer().push_back("PRIVMSG " + params[1] + " :" + params[2] + "\n");
-				return;
-			}
+	std::string message;
+	std::string target = params[1];
+	message = getMessage(params);
+
+	for (std::vector<Client>::iterator it = clients.begin(); it != clients.end(); ++it){
+		if (it->getNick() == target || it->getUserName() == target){
+			it->getmesagesFromServer().push_back(RPL_PRIVMSG(client.getUserByHexChat(), target, message));
+			FD_SET(it->getFd(), &writefds);
+			return;
 		}
-		client.getmesagesFromServer().push_back("PRIVMSG :User not found\n");
 	}
-	else{
-		// message for a channel
-		for (size_t i = 0; i < channels.size(); i++){
-			if (channels[i].getName() == params[1]){
-				for (size_t j = 0; j < channels[i].getClients().size(); j++){
-					channels[i].getClients()[j]->getmesagesFromServer().push_back("PRIVMSG " + params[1] + " :" + params[2] + "\n");
-				}
+	for (std::vector<Room>::iterator it = channels.begin(); it != channels.end(); ++it){
+		if (it->getName() == target){
+			if (it->isClientInChannel(client.getNick())){
+				client.getmesagesFromServer().push_back(RPL_PRIVMSG(client.getUserByHexChat(), target, message));
+				return;
+			}
+			else{
+				client.getmesagesFromServer().push_back("PRIVMSG :You are not in this room\n");
 				return;
 			}
 		}
-		client.getmesagesFromServer().push_back("PRIVMSG :You are not in this channel\n");
 	}
 }

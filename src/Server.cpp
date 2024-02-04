@@ -230,7 +230,7 @@ void Server::runCommand(const std::string &command, Client &client)
 	cout << trimmed << "#" << std::endl;
 
 	VECT_STR softSplit = Utils::ft_split(trimmed, "\n");
-
+	// iki splitin amacı \n ile gelen mesajları parçalamak
 	for (size_t i = 0; i < softSplit.size(); i++)
 	{
 		VECT_STR params = Utils::ft_split(softSplit[i], " \t\r");
@@ -320,6 +320,7 @@ void Server::runCommand(const std::string &command, Client &client)
 		}
 		else
 		{
+			FD_SET(client.getFd(), &writefds);
 			client.getmesagesFromServer().push_back("Invalid command\n");
 		}
 	}
