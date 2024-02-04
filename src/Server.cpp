@@ -270,11 +270,11 @@ void Server::runCommand(const std::string &command, Client &client)
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "part"))
 		{
-			std::cout << "part" << std::endl;
+			this->part(params, client);
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "privmsg"))
 		{
-			std::cout << "privmsg" << std::endl;
+			this->privmsg(params, client);
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "notice"))
 		{

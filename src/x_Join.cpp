@@ -30,8 +30,9 @@ void Server::join(C_VECT_STR_R params, Client &client)
 		}
 	}
 	Room newRoom;
-	newRoom.setName(params[1]);
+	newRoom.setName(params[1].substr(1));
 	newRoom.addClient(client);
 	channels.push_back(newRoom);
-	client.getmesagesFromServer().push_back("JOIN :" + newRoom.getName() + "\n");
+	newRoom.setOwner(&client);
+	client.getmesagesFromServer().push_back("JOIN : " + newRoom.getName() + "\n");
 }

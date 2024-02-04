@@ -35,7 +35,11 @@ public:
     string &getNick() { return _nick; }
     string &getUserName() { return _userName; }
     string &getRealName() { return _realName; }
+    string &getHostName() { return _hostName; }
+    string &getServerName() { return _serverName; }
 
+    void setHostName(const string &hostName) { _hostName = hostName; }
+    void setServerName(const string &serverName) { _serverName = serverName; }
     void setNick(const string &nick) { _nick = nick; }
     void setRegistered(bool val) { isRegistered = val; }
     void setPassworded(bool val) { isPassworded = val; }
@@ -55,6 +59,7 @@ private:
     bool isPassworded;
     string _nick;
     string _userName;
+    string _hostName;
+    string _serverName;
     string _realName;
-
 };

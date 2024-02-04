@@ -19,8 +19,10 @@ namespace Executor
 			client.getmesagesFromServer().push_back("Unauthorized command (already registered)");
 			return;
 		}
-		client.setUserName(params[0]);
-		client.setRealName(params[3]);
+		client.setUserName(params[1]);
+		client.setHostName(params[2]);
+		client.setServerName(params[3]);
+		client.setRealName(params[4]);
 		client.setRegistered(true);
 		client.getmesagesFromServer().push_back("Welcome to the Internet Relay Network " + client.getNick() + "!" + client.getUserName() + "@" + client.getRealName() + "\n");
 	}

@@ -20,6 +20,8 @@ class Server {
 		virtual	~Server();
 		void	run();
 		void	join(C_VECT_STR_R params, Client &client);
+		void	part(C_VECT_STR_R params, Client &client);
+		void	privmsg(C_VECT_STR_R params, Client &client);
 	private:
 		Server();
 		Server(const Server& other);

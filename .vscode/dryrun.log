@@ -4,6 +4,11 @@ mkdir -p obj
 c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/Cap.cpp -o obj/Cap.o
 mkdir -p obj
 c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/Client.cpp -o obj/Client.o
+ 
+mkdir -p obj
+c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/Join.cpp -o obj/Join.o
+mkdir -p obj
+c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/Nick.cpp -o obj/Nick.o
 mkdir -p obj
 c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/Pass.cpp -o obj/Pass.o
 mkdir -p obj
@@ -11,9 +16,11 @@ c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/Server.cpp -o obj/Serv
 mkdir -p obj
 c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/TextEngine.cpp -o obj/TextEngine.o
 mkdir -p obj
+c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/User.cpp -o obj/User.o
+mkdir -p obj
 c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/Utils.cpp -o obj/Utils.o
 mkdir -p obj
 c++ -Wall -Wextra -Werror -std=c++98 -g -I include -c src/main.cpp -o obj/main.o
-c++ -Wall -Wextra -Werror -std=c++98 -g obj/Cap.o obj/Client.o obj/Pass.o obj/Server.o obj/TextEngine.o obj/Utils.o obj/main.o -o ircserv
+c++ -Wall -Wextra -Werror -std=c++98 -g obj/Cap.o obj/Client.o obj/Join.o obj/Nick.o obj/Pass.o obj/Server.o obj/TextEngine.o obj/User.o obj/Utils.o obj/main.o -o ircserv
 make: Leaving directory `/Users/cembolat/Desktop/FT_IRC-Internet_Relay_Chat'
  
