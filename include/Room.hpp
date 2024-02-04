@@ -25,7 +25,7 @@ public:
 		return *this;
 	}
 
-	vector<Client> &getClients() { return _clients; }
+	vector<Client *> &getClients() { return _clients; }
 	string &getName() { return _name; }
 	string &getTopic() { return _topic; }
 	Client *getOwner() { return owner; }
@@ -33,10 +33,10 @@ public:
 	void setOwner(Client *owner) { this->owner = owner; }
 	void setName(const string &name) { _name = name; }
 	void setTopic(const string &topic) { _topic = topic; }
-	void addClient(const Client &client) { _clients.push_back(client); }
+	void addClient(Client &client) { _clients.push_back(&client); }
 
 private:
-	vector<Client> _clients;
+	vector<Client*> _clients;
 	string	_name;
 	string 	_topic;
 	Client	*owner;

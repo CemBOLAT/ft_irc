@@ -46,6 +46,7 @@ Server::~Server()
 void Server::run()
 {
 	sockaddr_in clientAddress;
+	socklen_t templen = sizeof(sockaddr_in);
 	bool isReadyToSelect = true;
 	int bytesRead = 0;
 
@@ -68,7 +69,7 @@ void Server::run()
 				4 is for select function
 			*/
 			// nullptr is a C++11 feature
-			if (select(clients.size() + 4, &readFdsCopy, &writeFdsCopy, NULL, NULL) < 0)
+			if (select(clients.size() + 4, &readFdsCopy, &writeFdsCopy, NULL, 0) < 0)
 			{
 				throw Exception("Select failed");
 			}
@@ -76,8 +77,6 @@ void Server::run()
 		}
 		if (FD_ISSET(this->_socket, &this->readFdsCopy))
 		{
-			// Accept new connection
-			socklen_t templen = sizeof(sockaddr_in);
 			int newSocket = accept(this->_socket, (sockaddr *)&clientAddress, &templen);
 			if (newSocket < 0)
 			{
@@ -88,7 +87,6 @@ void Server::run()
 			inet_ntop(AF_INET, &(clientAddress.sin_addr), newClient._ip, INET_ADDRSTRLEN); // Convert IP to string and save it to newClient
 			clients.push_back(newClient);
 			FD_SET(newSocket, &readfds);
-			//FD_SET(newSocket, &writefds);
 
 			TextEngine::green("New connection from ", cout) << newClient._ip << ":" << newClient.getPort() << std::endl;
 			isReadyToSelect = true;
@@ -135,30 +133,26 @@ void Server::run()
 			}
 			// isReadyToSelect = true;
 		}
-		for (VECT_ITER a = clients.begin(); a != clients.end() && !isReadyToSelect; a++)
+		for (VECT_ITER a = clients.begin(); a != clients.end() && !isReadyToSelect; ++a)
 		{
 			if (FD_ISSET(a->getFd(), &this->writeFdsCopy))
 			{
-				// Write to socket
-				if (a->getmesagesFromServer().size() > 0)
+				int bytesWritten = write(a->getFd(), a->getmesagesFromServer()[0].c_str(), a->getmesagesFromServer()[0].length());
+				a->getmesagesFromServer().erase(a->getmesagesFromServer().begin());
+				if (bytesWritten < 0)
 				{
-					int bytesWritten = write(a->getFd(), a->getmesagesFromServer()[0].c_str(), a->getmesagesFromServer()[0].length());
-					if (bytesWritten < 0)
-					{
-						throw Exception("Write failed");
-					}
-					if (a->getmesagesFromServer().empty()){
-						FD_CLR(a->getFd(), &writefds);
-					}
-					if (bytesWritten == 0)
-					{
-						FD_CLR(a->getFd(), &writefds);
-						FD_CLR(a->getFd(), &readfds);
-						close(a->getFd());
-						this->clients.erase(a);
-						TextEngine::blue("Client ", cout) << a->_ip << ":" << a->getPort() << " disconnected" << std::endl;
-					}
-					a->getmesagesFromServer().erase(a->getmesagesFromServer().begin());
+					throw Exception("Write failed");
+				}
+				if (a->getmesagesFromServer().empty()){
+					FD_CLR(a->getFd(), &writefds);
+				}
+				if (bytesWritten == 0)
+				{
+					FD_CLR(a->getFd(), &writefds);
+					FD_CLR(a->getFd(), &readfds);
+					close(a->getFd());
+					this->clients.erase(a);
+					TextEngine::blue("Client ", cout) << a->_ip << ":" << a->getPort() << " disconnected" << std::endl;
 				}
 				Utils::clearBuffer(this->buffer, 1024);
 				isReadyToSelect = true;
@@ -246,13 +240,14 @@ void Server::runCommand(const std::string &command, Client &client)
 		}
 		if (Utils::isEqualNonSensitive(params[0], "pass"))
 		{
-			Executor::pass(params, client, this->password);
+			Executor::pass(params, client, this->password, writefds);
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "cap"))
 		{
 			Executor::cap(params, client);
 		}
 		else if (client.getIsPassworded() == false){
+			FD_SET(client.getFd(), &writefds);
 			client.getmesagesFromServer().push_back("First you need to pass the password\n");
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "nick"))
@@ -261,9 +256,10 @@ void Server::runCommand(const std::string &command, Client &client)
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "user"))
 		{
-			Executor::user(params, client);
+			Executor::user(params, client, writefds);
 		}
 		else if (client.getIsRegistered() == false){
+			FD_SET(client.getFd(), &writefds);
 			client.getmesagesFromServer().push_back("First you need to register\n");
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "join"))

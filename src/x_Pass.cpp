@@ -7,8 +7,8 @@
 
 namespace Executor
 {
-	void pass(C_VECT_STR params, Client &client, C_STR_REF password){
-		std::cout << "client.getName() = " << client._ip << std::endl;
+	void pass(C_VECT_STR params, Client &client, C_STR_REF password, fd_set &fd){
+		FD_SET(client.getFd(), &fd);
 		if (params.size() != 2)
 		{
 			client.getmesagesFromServer().push_back("Invalid Number of Arg\n");

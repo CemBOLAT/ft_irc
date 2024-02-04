@@ -7,8 +7,9 @@
 
 namespace Executor
 {
-	void	user(C_VECT_STR_R params, Client &client)
+	void	user(C_VECT_STR_R params, Client &client, fd_set &fd)
 	{
+		FD_SET(client.getFd(), &fd);
 		if (params.size() < 4)
 		{
 			client.getmesagesFromServer().push_back("USER :Not enough parameters");
