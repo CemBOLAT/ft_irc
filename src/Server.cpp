@@ -274,49 +274,11 @@ void Server::runCommand(const std::string &command, Client &client)
 		{
 			this->privmsg(params, client);
 		}
-		else if (Utils::isEqualNonSensitive(params[0], "notice"))
+		else if (Utils::isEqualNonSensitive(params[0], "op"))
 		{
-			std::cout << "notice" << std::endl;
-		}
-		else if (Utils::isEqualNonSensitive(params[0], "whois"))
-		{
-			std::cout << "whois" << std::endl;
-		}
-		else if (Utils::isEqualNonSensitive(params[0], "list"))
-		{
-			std::cout << "list" << std::endl;
-		}
-		else if (Utils::isEqualNonSensitive(params[0], "topic"))
-		{
-			std::cout << "topic" << std::endl;
-		}
-		else if (Utils::isEqualNonSensitive(params[0], "kick"))
-		{
-			std::cout << "kick" << std::endl;
-		}
-		else if (Utils::isEqualNonSensitive(params[0], "mode"))
-		{
-			std::cout << "mode" << std::endl;
-		}
-		else if (Utils::isEqualNonSensitive(params[0], "oper"))
-		{
-			std::cout << "oper" << std::endl;
-		}
-		else if (Utils::isEqualNonSensitive(params[0], "who"))
-		{
-			std::cout << "who" << std::endl;
-		}
-		else if (Utils::isEqualNonSensitive(params[0], "ison"))
-		{
-			std::cout << "ison" << std::endl;
-		}
-		else if (Utils::isEqualNonSensitive(params[0], "userhost"))
-		{
-			std::cout << "userhost" << std::endl;
-		}
-		else if (Utils::isEqualNonSensitive(params[0], "version"))
-		{
-			std::cout << "version" << std::endl;
+			this->op(params, client);
+		} else if (Utils::isEqualNonSensitive(params[0], "mode")){
+			this->mode(params, client);
 		}
 		else
 		{
@@ -342,3 +304,39 @@ void Server::hexChatEntry(VECT_STR &params, Client &client)
 		}
 	}
 }
+
+#define RPL_NAMREPLY(nick, channel, users)			": 353 " + nick + " = " + channel + " :" + users + "\r\n"
+#define RPL_ENDOFNAMES(nick, channel)               ": 366 " + nick + " " + channel + " :End of /NAMES list\r\n"
+
+void Server::responseAllClientResponseToGui(Client &client, Room &room)  {
+	string message;
+	Room tmp = room;
+	if (tmp.getName().empty())
+		return;
+	for (std::vector<Client>::iterator it = tmp.getClients().begin(); it != tmp.getClients().end(); it++){
+		if (it->getFd() == tmp.getOperator()->getFd())
+			message += "@";
+		message += (*it).getNick() + " ";
+	}
+	Utils::instaWriteAll(tmp.getClients(), RPL_NAMREPLY(client.getNick(), room.getName(), message));
+	Utils::instaWriteAll(tmp.getClients(), RPL_ENDOFNAMES(client.getNick(), room.getName()));
+}
+
+
+/*
+
+void Server::showRightGui(Client &cli, Chanel &cha) {
+    std::string msg;
+    Chanel tmp = getChanel(cha.name);
+    if (tmp.name.empty())
+        return;
+    for(std::vector<Client>::iterator it = tmp.clients.begin() ; it != tmp.clients.end(); ++it) {
+        if (it->cliFd == tmp.op->cliFd)
+            msg += "@";
+        msg += (*it).nick + " ";
+    }
+    Utilities::writeAllRpl(tmp.getFds(), RPL_NAMREPLY(cli.nick, cha.name, msg));
+    Utilities::writeAllRpl(tmp.getFds(), RPL_ENDOFNAMES(cli.nick, cha.name));
+}
+
+*/

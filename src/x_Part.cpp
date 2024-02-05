@@ -27,7 +27,7 @@ void Server::part(C_VECT_STR_R params, Client &client)
 		{
 			for (size_t j = 0; j < channels[i].getClients().size(); j++)
 			{
-				if (channels[i].getClients()[j]->getNick() == client.getNick())
+				if (channels[i].getClients()[j].getNick() == client.getNick())
 				{
 					channels[i].getClients().erase(channels[i].getClients().begin() + j);
 					client.getmesagesFromServer().push_back("PART :" + channels[i].getName() + "\n");

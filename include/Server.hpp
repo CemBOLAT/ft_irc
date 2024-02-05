@@ -25,6 +25,7 @@ public:
 	void part(C_VECT_STR_R params, Client &client);
 	void privmsg(C_VECT_STR_R params, Client &client);
 	void op(C_VECT_STR_R params, Client &client);
+	void mode(C_VECT_STR_R params, Client &client);
 
 	Room &getRoom(const string &name){
 		vector<Room>::iterator it = this->channels.begin();
@@ -35,6 +36,24 @@ public:
 		}
 		return *it;
 	}
+
+	bool isRoom(const string &name){
+		vector<Room>::iterator it = this->channels.begin();
+		for (; it != this->channels.end(); ++it)
+		{
+			if (it->getName() == name)
+				return true;
+		}
+		return false;
+	}
+	void addRoom(const Room &room){
+		this->channels.push_back(room);
+	}
+	void addClient(const Client &client){
+		this->clients.push_back(client);
+	}
+
+	void	responseAllClientResponseToGui(Client &client, Room &room);
 
 private:
 	Server();

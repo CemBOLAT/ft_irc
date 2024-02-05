@@ -32,23 +32,26 @@ void	Server::privmsg(C_VECT_STR_R params, Client &client){
 	std::string target = params[1];
 	message = getMessage(params);
 
-	for (std::vector<Client>::iterator it = clients.begin(); it != clients.end(); ++it){
-		if (it->getNick() == target || it->getUserName() == target){
-			it->getmesagesFromServer().push_back(RPL_PRIVMSG(client.getUserByHexChat(), target, message));
-			FD_SET(it->getFd(), &writefds);
-			return;
-		}
-	}
 	for (std::vector<Room>::iterator it = channels.begin(); it != channels.end(); ++it){
 		if (it->getName() == target){
 			if (it->isClientInChannel(client.getNick())){
-				client.getmesagesFromServer().push_back(RPL_PRIVMSG(client.getUserByHexChat(), target, message));
+				for (std::vector<Client>::iterator it2 = it->getClients().begin(); it2 != it->getClients().end(); ++it2){
+					FD_SET(it2->getFd(), &writefds);
+					it2->getmesagesFromServer().push_back(RPL_PRIVMSG(client.getUserByHexChat(), target, message));
+				}
 				return;
 			}
 			else{
 				client.getmesagesFromServer().push_back("PRIVMSG :You are not in this room\n");
 				return;
 			}
+		}
+	}
+	for (std::vector<Client>::iterator it = clients.begin(); it != clients.end(); ++it){
+		if (it->getNick() == target || it->getUserName() == target){
+			FD_SET(it->getFd(), &writefds);
+			it->getmesagesFromServer().push_back(RPL_PRIVMSG(client.getUserByHexChat(), target, message));
+			return;
 		}
 	}
 }

@@ -15,7 +15,7 @@ namespace
 	{
 		for (size_t i = 0; i < room.getClients().size(); i++)
 		{
-			if (client.getNick() == room.getClients()[i]->getNick())
+			if (client.getNick() == room.getClients()[i].getNick())
 				return i;
 		}
 		return -1;
@@ -27,27 +27,28 @@ void Server::op(C_VECT_STR_R params, Client &client)
 	Room room = getRoom(params[1]);
 	if (client.getNick() == room.getOperator()->getNick())
 	{
-		vector<Client *>::iterator it = room.getClients().begin();
+		vector<Client>::iterator it = room.getClients().begin();
 		for (; it != room.getClients().end(); ++it)
 		{
-			if ((*it)->getNick() == params[2])
+			if ((*it).getNick() == params[2])
 				break;
 		}
 		if (it == room.getClients().end())
 			return;
-		Client *newOp = room.getClient(params[2]);
-		Client *oldOp = room.getClient(client.getNick());
+		Client newOp = room.getClient(params[2]);
+		Client oldOp = room.getClient(client.getNick());
 
 		for (vector<Room>::iterator it = channels.begin(); it != channels.end(); it++)
 		{
-			if (params[1] == it->getName() && getClientPosInRoom(*it, *oldOp) != -1 && getClientPosInRoom(*it, *newOp) != -1)
+			if (params[1] == it->getName() && getClientPosInRoom(*it, oldOp) != -1 && getClientPosInRoom(*it, newOp) != -1)
 			{
-				Client *tmp = it->getClients()[getClientPosInRoom(*it, *oldOp)];
-				it->getClients()[getClientPosInRoom(*it, *oldOp)] = it->getClients()[getClientPosInRoom(*it, *newOp)];
-				it->getClients()[getClientPosInRoom(*it, *newOp)] = tmp;
-				it->setOperator(it->getClients()[getClientPosInRoom(*it, *newOp)]);
+				Client tmp = it->getClients()[getClientPosInRoom(*it, oldOp)];
+				it->getClients()[getClientPosInRoom(*it, oldOp)] = it->getClients()[getClientPosInRoom(*it, newOp)];
+				it->getClients()[getClientPosInRoom(*it, newOp)] = tmp;
+				it->setOperator(&(it->getClients()[getClientPosInRoom(*it, newOp)]));
 			}
 		}
+		Server::responseAllClientResponseToGui(client, room);
 	}
 	else
 	{

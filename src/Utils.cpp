@@ -1,9 +1,12 @@
 #include "../include/Utils.hpp"
 #include "../include/Exception.hpp"
+#include "Client.hpp"
+#include "Room.hpp"
 
 #include <string>
 #include <iostream>
 #include <vector>
+#include <unistd.h>
 
 using namespace std;
 #define VECT_STR std::vector<std::string>
@@ -85,6 +88,23 @@ void	Utils::getTime()
         std::cout << ltm->tm_hour << ":" << "0" << ltm->tm_min << ":" << ltm->tm_sec << std::endl;
     else if (ltm->tm_sec < 10)
         std::cout <<  ltm->tm_hour << ":" << ltm->tm_min << ":" << "0" << ltm->tm_sec << std::endl;
-    else 
+    else
         std::cout << ltm->tm_hour << ":" << ltm->tm_min << ":" << ltm->tm_sec << std::endl;
 }
+
+void	Utils::instaWrite(int fd, std::string message)
+{
+	if (write(fd, message.c_str(), message.length()) < 0)
+	{
+		std::cout << "MSG cannot send" << std::endl;
+	}
+}
+
+void	Utils::instaWriteAll(std::vector<Client> clients, std::string message)
+{
+	for (std::vector<Client>::iterator it = clients.begin(); it != clients.end(); it++)
+	{
+		Utils::instaWrite((*it).getFd(), message);
+	}
+}
+
