@@ -32,6 +32,11 @@ namespace Executor
 			client.getmesagesFromServer().push_back("USER :Not enough parameters\n\r");
 			return;
 		}
+		if (username == hostname)
+		{
+			client.getmesagesFromServer().push_back("USER :Username and hostname cannot be the same\n\r");
+			return;
+		}
 		client.setUserName(username);
 		client.setHostName(hostname);
 		client.setServerName(servername);

@@ -249,10 +249,6 @@ void Server::runCommand(const std::string &command, Client &client)
 			FD_SET(client.getFd(), &writefds);
 			client.getmesagesFromServer().push_back("First you need to pass the password\n\r");
 		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "nick"))
-		{
-			nick(splitFirst[1], client, writefds);
-		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "user"))
 		{
 			Executor::user(splitFirst[1], client, writefds);
@@ -260,6 +256,10 @@ void Server::runCommand(const std::string &command, Client &client)
 		else if (client.getIsRegistered() == false){
 			FD_SET(client.getFd(), &writefds);
 			client.getmesagesFromServer().push_back("First you need to register\n\r");
+		}
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "nick"))
+		{
+			nick(splitFirst[1], client, writefds);
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "join"))
 		{
