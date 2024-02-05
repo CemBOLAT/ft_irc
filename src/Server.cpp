@@ -328,21 +328,3 @@ void Server::responseAllClientResponseToGui(Client &client, Room &room)  {
 	Utils::instaWriteAll(tmp.getClients(), RPL_ENDOFNAMES(client.getNick(), room.getName()));
 }
 
-
-/*
-
-void Server::showRightGui(Client &cli, Chanel &cha) {
-    std::string msg;
-    Chanel tmp = getChanel(cha.name);
-    if (tmp.name.empty())
-        return;
-    for(std::vector<Client>::iterator it = tmp.clients.begin() ; it != tmp.clients.end(); ++it) {
-        if (it->cliFd == tmp.op->cliFd)
-            msg += "@";
-        msg += (*it).nick + " ";
-    }
-    Utilities::writeAllRpl(tmp.getFds(), RPL_NAMREPLY(cli.nick, cha.name, msg));
-    Utilities::writeAllRpl(tmp.getFds(), RPL_ENDOFNAMES(cli.nick, cha.name));
-}
-
-*/
