@@ -26,5 +26,9 @@ JOIN #kanal_adı
 
 https://chat.openai.com/share/c8e6b6b4-e785-4678-b56c-28d6d593a7c1
 https://www.youtube.com/watch?v=5lMlYc8pdvY&t=1019s
+
+
 https://chat.openai.com/share/b561ee12-e0db-4e9f-9a56-890daf9d8edd
 https://chat.openai.com/share/24f69f0e-dd89-42e4-8c0c-c51ff80841eb
+
+https://miro.com/app/board/uXjVNzGHGCU=/?share_link_id=611077303311
