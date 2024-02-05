@@ -48,7 +48,7 @@ public:
 	void setKey(const string &key) { _key = key; }
 	void setChanelLimit(int limit) { _chanelLimit = limit; }
 
-	bool isClientInChannel(const string &nick)
+	bool isClientInChannel(const string &nick) const
 	{
 		for (size_t i = 0; i < _clients.size(); i++)
 		{
@@ -57,7 +57,7 @@ public:
 		}
 		return false;
 	}
-	bool isClientInChannel(int fd)
+	bool isClientInChannel(int fd) const
 	{
 		for (size_t i = 0; i < _clients.size(); i++)
 		{

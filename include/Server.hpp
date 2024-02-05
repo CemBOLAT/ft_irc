@@ -20,12 +20,14 @@ class Server
 public:
 	Server(const string &port, const string &password);
 	virtual ~Server();
-	void run();
-	void join(C_VECT_STR_R params, Client &client);
-	void part(C_VECT_STR_R params, Client &client);
-	void privmsg(C_VECT_STR_R params, Client &client);
-	void op(C_VECT_STR_R params, Client &client);
-	void mode(C_VECT_STR_R params, Client &client);
+	void	run();
+	void	join(C_VECT_STR_R params, Client &client);
+	void	part(C_VECT_STR_R params, Client &client);
+	void	privmsg(VECT_STR params, Client &client);
+	void	op(C_VECT_STR_R params, Client &client);
+	void	mode(C_VECT_STR_R params, Client &client);
+	void	nick(C_VECT_STR_R params, Client &client, fd_set &fd);
+	void	ping(VECT_STR params, Client &client);
 
 	Room &getRoom(const string &name){
 		vector<Room>::iterator it = this->channels.begin();
@@ -53,7 +55,36 @@ public:
 		this->clients.push_back(client);
 	}
 
+	vector<Client> &getClients(){
+		return this->clients;
+	}
+
 	void	responseAllClientResponseToGui(Client &client, Room &room);
+	bool	isClientInRoom(Room &room, const Client &client){
+		vector<Client>::iterator it = room.getClients().begin();
+		for (; it != room.getClients().end(); ++it)
+		{
+			if (it->getNick() == client.getNick())
+				return true;
+		}
+		return false;
+	}
+	bool	isClientInRoom(Client &client, string &room){
+		vector<Room>::iterator it = this->channels.begin();
+		for (; it != this->channels.end(); ++it)
+		{
+			if (it->getName() == room)
+			{
+				vector<Client>::iterator cit = it->getClients().begin();
+				for (; cit != it->getClients().end(); ++cit)
+				{
+					if (cit->getNick() == client.getNick())
+						return true;
+				}
+			}
+		}
+		return false;
+	}
 
 private:
 	Server();

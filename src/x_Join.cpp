@@ -4,6 +4,8 @@
 #include "../include/Client.hpp"
 #include "../include/Server.hpp"
 #include "../include/Room.hpp"
+#include "../include/Utils.hpp"
+
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -15,13 +17,6 @@
 #define ERR_BADCHANNELKEY(source, channel)			": 475 " + source + " " + channel + " :Cannot join channel (+k)" + "\r\n"           //JOIN
 
 namespace {
-	//nt findChanel(std::string& name, std::vector<Room> chanels) {
-	//	for (std::vector<Room>::iterator it = chanels.begin(); it != chanels.end(); it++) {
-	//		if (name == (*it).getName())
-	//			return 1;
-	//	}
-	//	return 0;
-	//
 	string	getMessage(C_VECT_STR_R params){
 		string message;
 		for (unsigned int i = 1; i < params.size(); i++){
@@ -38,6 +33,7 @@ namespace {
 void Server::join(C_VECT_STR_R params, Client &client)
 {
 	string message = getMessage(params) , roomName, key;
+	std::cout << "$" << message << "$" << std::endl;
 	std::stringstream ss(message);
 	if (!message.empty()){
 		ss >> roomName;
@@ -46,10 +42,10 @@ void Server::join(C_VECT_STR_R params, Client &client)
 		}
 		ss >> key;
 		if (isRoom(roomName)){
+			std::cout << "hay amq" << std::endl;
 			for (std::vector<Room>::iterator it = channels.begin(); it != channels.end(); it++){
 				if (roomName == (*it).getName()){
 					if (!it->isClientInChannel(client.getFd())){
-						std::cout << "You already in the chanel" << std::endl;
 						if ((it->getKeycode() & KEY_CODE) && (it->getKeycode() & LIMIT_CODE))
                         {
                             if (it->getChanelLimit() <= (int) it->getClients().size()) {
@@ -117,17 +113,17 @@ void Server::join(C_VECT_STR_R params, Client &client)
 				}
 			}
 		} else {
-			FD_SET(client.getFd(), &writefds);
+			std::cout << "hay amq2" << std::endl;
 			Room room;
 			room.setName(roomName);
 			room.setOperator(&client);
 			room.addClient(client);
 			channels.push_back(room);
-			client.getmesagesFromServer().push_back(JOIN_RESPONSE(client.getNick(), client._ip , roomName));
-
+			Utils::instaWrite(client.getFd(), JOIN_RESPONSE(client.getNick(), client._ip , roomName));
 		}
 	}
 	else {
+		std::cout << "hay amq3" << std::endl;
 		FD_SET(client.getFd(), &writefds);
 		client.getmesagesFromServer().push_back("JOIN :Not enough parameters");
 	}
@@ -135,14 +131,16 @@ void Server::join(C_VECT_STR_R params, Client &client)
 }
 
 /*
-#include "Server.hpp"
-#include "stdio.h"
-
 int    Server::Join(std::string &s, Client& cli) {
     std::stringstream ss(s);
     std::string chaName, key;
     std::string msg;
     if (!s.empty()) {
+        if(cli.nick.empty() || cli.user.empty()) {
+            cli.messageBox.push_back("You cannot joined chanel cause you don't have a nickname or username\n");
+            FD_SET(cli.cliFd, &this->writeFds);
+            return 0;
+        }
         ss >> chaName;
         ss >> key;
         std::cout << PURPLE << "s: " << s << " chaName: " << chaName << " name: " << cli.nick << RESET << std::endl;
@@ -154,7 +152,43 @@ int    Server::Join(std::string &s, Client& cli) {
             for (ChanelIterator it = chanels.begin(); it != chanels.end(); ++it) {
                 if (chaName == (*it).name) {//if chanel exist try ot join chanel
                     if (!isClientIn((*it), cli.cliFd)) {
-
+                        if ((it->keycode & K_CODE) && (it->keycode & L_CODE))
+                        {
+                            if (it->users <= (int) it->clients.size()) {
+                                Utilities::writeRpl(cli.cliFd, ERR_CHANNELISFULL(cli.nick, chaName));
+                            }
+                            else if (it->key != key) {
+                                Utilities::writeRpl(cli.cliFd, ERR_BADCHANNELKEY(cli.nick, chaName));
+                            }
+                            else {
+                                (*it).clients.push_back(cli);
+                                Utilities::writeRpl(cli.cliFd, RPL_JOIN(cli.nick, cli.ipAddr, chaName));
+                                if (!(*it).topic.empty())
+                                    Utilities::writeRpl(cli.cliFd, RPL_TOPIC(cli.nick, cli.ipAddr, chaName, (*it).topic));
+                            }
+                        }
+                        else if ((it->keycode & K_CODE)) {
+                            if (it->key != key) {
+                                Utilities::writeRpl(cli.cliFd, ERR_BADCHANNELKEY(cli.nick, chaName));
+                            }
+                            else {
+                                (*it).clients.push_back(cli);
+                                Utilities::writeRpl(cli.cliFd, RPL_JOIN(cli.nick, cli.ipAddr, chaName));
+                                if (!(*it).topic.empty())
+                                    Utilities::writeRpl(cli.cliFd, RPL_TOPIC(cli.nick, cli.ipAddr, chaName, (*it).topic));
+                            }
+                        }
+                        else if ((it->keycode & L_CODE)) {
+                            if (it->users <= (int) it->clients.size()) {
+                                Utilities::writeRpl(cli.cliFd, ERR_CHANNELISFULL(cli.nick, chaName));
+                            }
+                            else {
+                                (*it).clients.push_back(cli);
+                                Utilities::writeRpl(cli.cliFd, RPL_JOIN(cli.nick, cli.ipAddr, chaName));
+                                if (!(*it).topic.empty())
+                                    Utilities::writeRpl(cli.cliFd, RPL_TOPIC(cli.nick, cli.ipAddr, chaName, (*it).topic));
+                            }
+                        }
                         else {
                             (*it).clients.push_back(cli);
                             Utilities::writeRpl(cli.cliFd, RPL_JOIN(cli.nick, cli.ipAddr, chaName));
@@ -179,6 +213,10 @@ int    Server::Join(std::string &s, Client& cli) {
             Utilities::writeRpl(cli.cliFd, RPL_JOIN(cli.nick, cli.ipAddr, chaName));
         }
         showRightGui(cli, getChanel(chaName));
+    }
+    else {//if join command input empty write this message
+        cli.messageBox.push_back("you cannot joined chanel cause use command correct JOIN <chanel name>");
+        FD_SET(cli.cliFd, &this->writeFds);
     }
     return 0;
 }

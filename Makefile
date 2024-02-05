@@ -12,7 +12,7 @@ INC := -I include
 
 CC := c++
 
-CFLAGS := -Wall -Wextra -Werror -std=c++98 -g
+CFLAGS := -Wall -Wextra -Werror -std=c++98 -g -ggdb
 
 all: $(NAME)
 

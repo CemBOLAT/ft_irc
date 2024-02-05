@@ -252,7 +252,7 @@ void Server::runCommand(const std::string &command, Client &client)
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "nick"))
 		{
-			Executor::nick(params, client, writefds);
+			nick(params, client, writefds);
 		}
 		else if (Utils::isEqualNonSensitive(params[0], "user"))
 		{
@@ -279,6 +279,8 @@ void Server::runCommand(const std::string &command, Client &client)
 			this->op(params, client);
 		} else if (Utils::isEqualNonSensitive(params[0], "mode")){
 			this->mode(params, client);
+		} else if (Utils::isEqualNonSensitive(params[0], "ping")){
+			this->ping(params, client);
 		}
 		else
 		{
@@ -313,6 +315,11 @@ void Server::responseAllClientResponseToGui(Client &client, Room &room)  {
 	Room tmp = room;
 	if (tmp.getName().empty())
 		return;
+
+	std::cout << "********" << std::endl;
+	std::cout << room.getName() << std::endl;
+	std::cout << room.getClients().size()	<< std::endl;
+	std::cout << "********" << std::endl;
 	for (std::vector<Client>::iterator it = tmp.getClients().begin(); it != tmp.getClients().end(); it++){
 		if (it->getFd() == tmp.getOperator()->getFd())
 			message += "@";
