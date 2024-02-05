@@ -4,39 +4,39 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
 
 namespace Executor
 {
-	void	user(C_VECT_STR_R params, Client &client, fd_set &fd)
+	void	user(C_STR_REF params, Client &client, fd_set &fd)
 	{
 		FD_SET(client.getFd(), &fd);
-		if (params.size() < 4)
+		if (params.empty())
 		{
-			client.getmesagesFromServer().push_back("USER :Not enough parameters\n");
+			client.getmesagesFromServer().push_back("USER :Not enough parameters\n\r");
 			return;
 		}
 		if (client.getIsRegistered())
 		{
-			client.getmesagesFromServer().push_back("Unauthorized command (already registered)\n");
+			client.getmesagesFromServer().push_back("Unauthorized command (already registered)\n\r");
 			return;
 		}
-		if (params[1] == params[2])
+		std::stringstream ss(params);
+		std::string username, hostname, servername, realname;
+		ss >> username;
+		ss >> hostname;
+		ss >> servername;
+		ss >> realname;
+		if (username.empty() || hostname.empty() || servername.empty() || realname.empty())
 		{
-			client.getmesagesFromServer().push_back("Nick name and second choice cannot be the same\n");
+			client.getmesagesFromServer().push_back("USER :Not enough parameters\n\r");
 			return;
 		}
-		client.setUserName(params[1]);
-		client.setHostName(params[2]);
-		client.setServerName(params[3]);
-		std::string realName;
-		for (size_t i = 4; i < params.size(); i++)
-		{
-			realName += params[i];
-			if (i + 1 < params.size())
-				realName += " ";
-		}
-		client.setRealName(realName);
+		client.setUserName(username);
+		client.setHostName(hostname);
+		client.setServerName(servername);
+		client.setRealName(realname);
 		client.setRegistered(true);
-		client.getmesagesFromServer().push_back("Welcome to the Internet Relay Network " + client.getNick() + "!" + client.getUserName() + "@" + client.getRealName() + "\n");
+		client.getmesagesFromServer().push_back("Welcome to the Internet Relay Network " + client.getNick() + "!" + client.getUserName() + "@" + client.getRealName() + "\n\r");
 	}
 }

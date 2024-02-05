@@ -20,25 +20,26 @@ int	isNickExist(const std::string &s, const std::vector<Client> &clients) {
 	return 0;
 }
 
-void Server::nick(C_VECT_STR_R params, Client &client, fd_set &fd)
+void Server::nick(C_STR_REF params, Client &client, fd_set &fd)
 {
-	if (params[1].empty()){
+	if (params.empty()){
 		Utils::instaWrite(client.getFd(), ERR_NICKNAMEEMPTY(client.getUserByHexChat()));
 	}
-	else if (isNickExist(params[1], getClients())){
+	else if (isNickExist(params, getClients())){
 		Utils::instaWrite(client.getFd(), ERR_NICKNAMEINUSE(client.getUserByHexChat()));
 	}
 	else{
 		FD_SET(client.getFd(), &fd);
-		client.getmesagesFromServer().push_back(RPL_NICK(client.getNick(), client.getUserName(), client._ip, params[1]));
+		client.getmesagesFromServer().push_back(RPL_NICK(client.getNick(), client.getUserName(), client._ip, params));
 		for (std::vector<Room>::iterator it = channels.begin(); it != channels.end(); ++it) {
 			for (std::vector<Client>::iterator cit = it->getClients().begin(); cit != it->getClients().end(); ++cit) {
 				if (client.getNick() == cit->getNick())
 				{
-					cit->setNick(params[1]);
+					cit->setNick(params);
 					break;
 				}
 			}
 		}
+		client.setNick(params); // set new nick if not exist
 	}
 }

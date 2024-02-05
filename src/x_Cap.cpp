@@ -1,32 +1,32 @@
-#include "../include/Executor.hpp"
-#include "../include/Define.hpp"
-#include "../include/Client.hpp"
+#include "Executor.hpp"
+#include "Define.hpp"
+#include "Client.hpp"
 
 namespace Executor
 {
-	void cap(C_VECT_STR  &params, Client &client)
+	void cap(C_STR_REF params, Client &client)
 	{
-		if (params.size() < 2)
+		if (params.empty())
 		{
-			client.getmesagesFromServer().push_back("Invalid number of parameters for CAP\n");
+			client.getmesagesFromServer().push_back("Invalid number of parameters for CAP\n\r");
 		}
 		else
 		{
-			if (params[1] == "LS")
+			if (params == "LS")
 			{
 				client.setType(hexchat);
 			}
-			else if (params[1] == "NC")
+			else if (params == "NC")
 			{
 				client.setType(nc);
 			}
-			else if (params[1] == "BOT")
+			else if (params == "BOT")
 			{
 				client.setType(bot);
 			}
 			else
 			{
-				client.getmesagesFromServer().push_back("Invalid parameters for CAP\n");
+				client.getmesagesFromServer().push_back("Invalid parameters for CAP\n\r");
 			}
 		}
 	}

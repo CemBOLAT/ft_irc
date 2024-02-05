@@ -233,61 +233,60 @@ void Server::runCommand(const std::string &command, Client &client)
 	// iki splitin amacı \n ile gelen mesajları parçalamak
 	for (size_t i = 0; i < softSplit.size(); i++)
 	{
-		VECT_STR params = Utils::ft_split(softSplit[i], " \t\r");
-		if (params.size() == 0)
+		string trimmedLine = Utils::ft_trim(softSplit[i], " \t\r");
+		if (trimmedLine.empty()) return;
+		VECT_STR splitFirst = Utils::ft_firstWord(trimmedLine);
+		if (splitFirst.size() <= 1) return;
+		if (Utils::isEqualNonSensitive(splitFirst[0], "pass"))
 		{
-			return;
+			Executor::pass(splitFirst[1], client, this->password, writefds);
 		}
-		if (Utils::isEqualNonSensitive(params[0], "pass"))
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "cap"))
 		{
-			Executor::pass(params, client, this->password, writefds);
-		}
-		else if (Utils::isEqualNonSensitive(params[0], "cap"))
-		{
-			Executor::cap(params, client);
+			Executor::cap(splitFirst[1], client);
 		}
 		else if (client.getIsPassworded() == false){
 			FD_SET(client.getFd(), &writefds);
-			client.getmesagesFromServer().push_back("First you need to pass the password\n");
+			client.getmesagesFromServer().push_back("First you need to pass the password\n\r");
 		}
-		else if (Utils::isEqualNonSensitive(params[0], "nick"))
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "nick"))
 		{
-			nick(params, client, writefds);
+			nick(splitFirst[1], client, writefds);
 		}
-		else if (Utils::isEqualNonSensitive(params[0], "user"))
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "user"))
 		{
-			Executor::user(params, client, writefds);
+			Executor::user(splitFirst[1], client, writefds);
 		}
 		else if (client.getIsRegistered() == false){
 			FD_SET(client.getFd(), &writefds);
-			client.getmesagesFromServer().push_back("First you need to register\n");
+			client.getmesagesFromServer().push_back("First you need to register\n\r");
 		}
-		else if (Utils::isEqualNonSensitive(params[0], "join"))
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "join"))
 		{
-			this->join(params, client);
+			this->join(splitFirst[1], client);
 		}
-		else if (Utils::isEqualNonSensitive(params[0], "part"))
-		{
-			this->part(params, client);
-		}
-		else if (Utils::isEqualNonSensitive(params[0], "privmsg"))
-		{
-			this->privmsg(params, client);
-		}
-		else if (Utils::isEqualNonSensitive(params[0], "op"))
-		{
-			this->op(params, client);
-		} else if (Utils::isEqualNonSensitive(params[0], "mode")){
-			this->mode(params, client);
-		} else if (Utils::isEqualNonSensitive(params[0], "ping")){
-			this->ping(params, client);
-		}
-		else
-		{
-			FD_SET(client.getFd(), &writefds);
-			client.getmesagesFromServer().push_back("Invalid command\n");
-		}
-	}
+		//else if (Utils::isEqualNonSensitive(params[0], "part"))
+		//{
+		//	this->part(params, client);
+		//}
+		//else if (Utils::isEqualNonSensitive(params[0], "privmsg"))
+		//{
+		//	this->privmsg(params, client);
+		//}
+		//else if (Utils::isEqualNonSensitive(params[0], "op"))
+		//{
+		//	this->op(params, client);
+		//} else if (Utils::isEqualNonSensitive(params[0], "mode")){
+		//	this->mode(params, client);
+		//} else if (Utils::isEqualNonSensitive(params[0], "ping")){
+		//	this->ping(params, client);
+		//}
+		//else
+		//{
+		//	FD_SET(client.getFd(), &writefds);
+		//	client.getmesagesFromServer().push_back("Invalid command\n");
+		//}
+	}//
 	hexChatEntry(softSplit, client);
 }
 

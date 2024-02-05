@@ -21,12 +21,12 @@ public:
 	Server(const string &port, const string &password);
 	virtual ~Server();
 	void	run();
-	void	join(C_VECT_STR_R params, Client &client);
+	void	join(C_STR_REF params, Client &client);
 	void	part(C_VECT_STR_R params, Client &client);
 	void	privmsg(VECT_STR params, Client &client);
 	void	op(C_VECT_STR_R params, Client &client);
 	void	mode(C_VECT_STR_R params, Client &client);
-	void	nick(C_VECT_STR_R params, Client &client, fd_set &fd);
+	void	nick(C_STR_REF params, Client &client, fd_set &fd);
 	void	ping(VECT_STR params, Client &client);
 
 	Room &getRoom(const string &name){

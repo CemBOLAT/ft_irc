@@ -108,3 +108,26 @@ void	Utils::instaWriteAll(std::vector<Client> clients, std::string message)
 	}
 }
 
+VECT_STR	Utils::ft_firstWord(const std::string& str)
+{
+	VECT_STR	result;
+	size_t		start = 0;
+	size_t		end = 0;
+
+	for (size_t i = 0; i < str.size(); i++)
+	{
+		if (str[i] == ' ')
+		{
+			end = i;
+			break ;
+		}
+	}
+	if (end == 0)
+	{
+		result.push_back(ft_trim(str, " "));
+		return (result);
+	}
+	result.push_back(ft_trim(str.substr(start, end), " "));
+	result.push_back(ft_trim(str.substr(end, str.size() - end), " "));
+	return (result);
+}
