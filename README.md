@@ -10,7 +10,7 @@ dümdüz ./ircserv port password (kullanım)
 bazı komutlar
 
 
-NICK assg00k
+NICK assg00k 
 USER assg00k 0 * :Real Name
 JOIN #kanal_adı
 /PRIVMSG hedef_kullanici :Merhaba, nasılsın?
