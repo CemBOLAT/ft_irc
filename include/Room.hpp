@@ -87,6 +87,12 @@ public:
 		}
 		return *it;
 	}
+	bool	isOperator(const Client &client) const
+	{
+		if (Operator)
+			return Operator->getNick() == client.getNick();
+		return false;
+	}
 
 private:
 	vector<Client> _clients;

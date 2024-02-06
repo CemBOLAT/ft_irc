@@ -292,6 +292,14 @@ void Server::runCommand(const std::string &command, Client &client)
 		{
 			this->privmsg(splitFirst[1], client);
 		}
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "who"))
+		{
+			this->who(splitFirst[1], client);
+		}
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "topic"))
+		{
+			this->topic(splitFirst[1], client);
+		}
 		else
 		{
 			FD_SET(client.getFd(), &writefds);

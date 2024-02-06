@@ -27,6 +27,8 @@ public:
 	void	op(C_STR_REF params, Client &client);
 	void	mode(C_STR_REF params, Client &client);
 	void	nick(C_STR_REF params, Client &client, fd_set &fd);
+	void	who(const std::string &command, Client &client);
+	void 	topic(const std::string &command, Client &client);
 	//void	ping(C_STR_REF params, Client &client);
 
 	Room &getRoom(const string &name){
