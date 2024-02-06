@@ -285,9 +285,9 @@ void Server::runCommand(const std::string &command, Client &client)
 		} else if (Utils::isEqualNonSensitive(splitFirst[0], "mode")){
 			this->mode(splitFirst[1], client);
 		}
-		//else if (Utils::isEqualNonSensitive(splitFirst[0], "ping")){
-		//	this->ping(splitFirst[1], client);
-		//}
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "ping")){
+			this->ping(splitFirst[1], client);
+		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "privmsg"))
 		{
 			this->privmsg(splitFirst[1], client);
@@ -326,7 +326,7 @@ void Server::hexChatEntry(VECT_STR &params, Client &client)
 }
 
 #define RPL_NAMREPLY(nick, channel, users)			": 353 " + nick + " = " + channel + " :" + users + "\r\n"
-#define RPL_ENDOFNAMES(nick, channel)               ": 366 " + nick + " " + channel + " :End of /NAMES list\r\n"
+#define RPL_ENDOFNAMES(nick, channel)				": 366 " + nick + " " + channel + " :End of /NAMES list\r\n"
 
 void Server::responseAllClientResponseToGui(Client &client, Room &room)  {
 	string message;

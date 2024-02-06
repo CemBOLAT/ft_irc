@@ -81,15 +81,15 @@ bool	Utils::isEqualNonSensitive(const string& str1, const string& str2)
 void	Utils::getTime()
 {
 	time_t now = time(0);
-    tm *ltm = localtime(&now);
-    if (ltm->tm_hour < 10)
-        std::cout << "0" << ltm->tm_hour << ":" << ltm->tm_min << ":" << ltm->tm_sec << std::endl;
-    else if (ltm->tm_min < 10)
-        std::cout << ltm->tm_hour << ":" << "0" << ltm->tm_min << ":" << ltm->tm_sec << std::endl;
-    else if (ltm->tm_sec < 10)
-        std::cout <<  ltm->tm_hour << ":" << ltm->tm_min << ":" << "0" << ltm->tm_sec << std::endl;
-    else
-        std::cout << ltm->tm_hour << ":" << ltm->tm_min << ":" << ltm->tm_sec << std::endl;
+	tm *ltm = localtime(&now);
+	if (ltm->tm_hour < 10)
+		std::cout << "0" << ltm->tm_hour << ":" << ltm->tm_min << ":" << ltm->tm_sec << std::endl;
+	else if (ltm->tm_min < 10)
+		std::cout << ltm->tm_hour << ":" << "0" << ltm->tm_min << ":" << ltm->tm_sec << std::endl;
+	else if (ltm->tm_sec < 10)
+		std::cout <<  ltm->tm_hour << ":" << ltm->tm_min << ":" << "0" << ltm->tm_sec << std::endl;
+	else
+		std::cout << ltm->tm_hour << ":" << ltm->tm_min << ":" << ltm->tm_sec << std::endl;
 }
 
 void	Utils::instaWrite(int fd, std::string message)

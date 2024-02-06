@@ -23,13 +23,13 @@ public:
 	void	run();
 	void	join(C_STR_REF params, Client &client);
 	void	part(C_STR_REF params, Client &client);
-	void	privmsg(C_STR_REF params, Client &client);
+	void	privmsg(std::string &command, Client &client);
 	void	op(C_STR_REF params, Client &client);
 	void	mode(C_STR_REF params, Client &client);
 	void	nick(C_STR_REF params, Client &client, fd_set &fd);
 	void	who(const std::string &command, Client &client);
 	void 	topic(const std::string &command, Client &client);
-	//void	ping(C_STR_REF params, Client &client);
+	void	ping(C_STR_REF params, Client &client);
 
 	Room &getRoom(const string &name){
 		vector<Room>::iterator it = this->channels.begin();
@@ -39,6 +39,10 @@ public:
 				return *it;
 		}
 		return *it;
+	}
+
+	vector<Room> &getRooms(){
+		return this->channels;
 	}
 
 	bool isRoom(const string &name){

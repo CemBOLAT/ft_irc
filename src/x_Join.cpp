@@ -15,8 +15,8 @@ using namespace std;
 
 #define JOIN_RESPONSE(nick, ip, channel) ":" + nick + "!" + nick + "@" + ip + " JOIN " + channel + "\r\n"
 #define RPL_TOPIC(nick, ip, channel, topic) ":" + nick + "!" + nick + "@" + ip + " TOPIC " + channel + " :" + topic + "\r\n"
-#define ERR_CHANNELISFULL(source, channel)			": 471 " + source + " " + channel + " :Cannot join channel (+l)" + "\r\n"           //JOIN
-#define ERR_BADCHANNELKEY(source, channel)			": 475 " + source + " " + channel + " :Cannot join channel (+k)" + "\r\n"           //JOIN
+#define ERR_CHANNELISFULL(source, channel)			": 471 " + source + " " + channel + " :Cannot join channel (+l)" + "\r\n"			//JOIN
+#define ERR_BADCHANNELKEY(source, channel)			": 475 " + source + " " + channel + " :Cannot join channel (+k)" + "\r\n"			//JOIN
 
 void Server::join(C_STR_REF params, Client &client)
 {
@@ -30,8 +30,8 @@ void Server::join(C_STR_REF params, Client &client)
 			client.getmesagesFromServer().push_back("JOIN :Not enough parameters\n\r");
 			return;
 		}
-		if (roomName[0] == '#'){
-			roomName = roomName.substr(1, roomName.size() - 1);
+		if (roomName[0] != '#'){
+			roomName = "#" + roomName;
 		}
 		if (isRoom(roomName)){
 			for (vector<Room>::iterator it = channels.begin(); it != channels.end(); it++){
