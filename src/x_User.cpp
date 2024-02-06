@@ -41,7 +41,9 @@ namespace Executor
 		client.setHostName(hostname);
 		client.setServerName(servername);
 		client.setRealName(realname);
-		client.setRegistered(true);
-		client.getmesagesFromServer().push_back("Welcome to the Internet Relay Network " + client.getNick() + "!" + client.getUserName() + "@" + client.getRealName() + "\n\r");
+		if (!client.getNick().empty()){
+			client.setRegistered(true);
+			client.getmesagesFromServer().push_back("Welcome to the Internet Relay Network " + client.getNick() + "!" + client.getUserName() + "@" + client.getRealName() + "\n\r");
+		}
 	}
 }

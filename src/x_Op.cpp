@@ -3,6 +3,7 @@
 #include "../include/Executor.hpp"
 #include "../include/Exception.hpp"
 #include "Define.hpp"
+#include "Utils.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -22,25 +23,26 @@ namespace
 	}
 }
 
-void Server::op(C_VECT_STR_R params, Client &client)
+void Server::op(C_STR_REF params, Client &client)
 {
-	Room room = getRoom(params[1]);
+	std::vector<std::string> splitFirst = Utils::ft_split(params, " ");
+	Room room = getRoom(splitFirst[0]);
 	if (client.getNick() == room.getOperator()->getNick())
 	{
 		vector<Client>::iterator it = room.getClients().begin();
 		for (; it != room.getClients().end(); ++it)
 		{
-			if ((*it).getNick() == params[2])
+			if ((*it).getNick() == splitFirst[1])
 				break;
 		}
 		if (it == room.getClients().end())
 			return;
-		Client newOp = room.getClient(params[2]);
+		Client newOp = room.getClient(splitFirst[1]);
 		Client oldOp = room.getClient(client.getNick());
 
 		for (vector<Room>::iterator it = channels.begin(); it != channels.end(); it++)
 		{
-			if (params[1] == it->getName() && getClientPosInRoom(*it, oldOp) != -1 && getClientPosInRoom(*it, newOp) != -1)
+			if (splitFirst[0] == it->getName() && getClientPosInRoom(*it, oldOp) != -1 && getClientPosInRoom(*it, newOp) != -1)
 			{
 				Client tmp = it->getClients()[getClientPosInRoom(*it, oldOp)];
 				it->getClients()[getClientPosInRoom(*it, oldOp)] = it->getClients()[getClientPosInRoom(*it, newOp)];

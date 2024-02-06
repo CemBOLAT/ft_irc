@@ -22,12 +22,12 @@ public:
 	virtual ~Server();
 	void	run();
 	void	join(C_STR_REF params, Client &client);
-	void	part(C_VECT_STR_R params, Client &client);
-	void	privmsg(VECT_STR params, Client &client);
-	void	op(C_VECT_STR_R params, Client &client);
-	void	mode(C_VECT_STR_R params, Client &client);
+	void	part(C_STR_REF params, Client &client);
+	void	privmsg(C_STR_REF params, Client &client);
+	void	op(C_STR_REF params, Client &client);
+	void	mode(C_STR_REF params, Client &client);
 	void	nick(C_STR_REF params, Client &client, fd_set &fd);
-	void	ping(VECT_STR params, Client &client);
+	//void	ping(C_STR_REF params, Client &client);
 
 	Room &getRoom(const string &name){
 		vector<Room>::iterator it = this->channels.begin();

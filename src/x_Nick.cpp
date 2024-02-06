@@ -30,6 +30,7 @@ void Server::nick(C_STR_REF params, Client &client, fd_set &fd)
 	}
 	else{
 		FD_SET(client.getFd(), &fd);
+		std::cout << RPL_NICK(client.getNick(), client.getUserName(), client._ip, params); // debug
 		client.getmesagesFromServer().push_back(RPL_NICK(client.getNick(), client.getUserName(), client._ip, params));
 		for (std::vector<Room>::iterator it = channels.begin(); it != channels.end(); ++it) {
 			for (std::vector<Client>::iterator cit = it->getClients().begin(); cit != it->getClients().end(); ++cit) {
@@ -41,5 +42,9 @@ void Server::nick(C_STR_REF params, Client &client, fd_set &fd)
 			}
 		}
 		client.setNick(params); // set new nick if not exist
+	}
+	if (!client.getUserName().empty()){
+		client.setRegistered(true);
+		//client.getmesagesFromServer().push_back("Welcome to the Internet Relay Network " + client.getNick() + "!" + client.getUserName() + "@" + client.getRealName() + "\n\r");
 	}
 }

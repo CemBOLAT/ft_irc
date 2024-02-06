@@ -12,15 +12,15 @@ namespace Executor
 		}
 		else
 		{
-			if (params == "LS")
+			if (params == "LS 302")
 			{
 				client.setType(hexchat);
 			}
-			else if (params == "NC")
+			else if (params == "NC 302")
 			{
 				client.setType(nc);
 			}
-			else if (params == "BOT")
+			else if (params == "BOT 302")
 			{
 				client.setType(bot);
 			}

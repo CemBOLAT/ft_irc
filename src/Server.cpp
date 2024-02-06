@@ -253,40 +253,41 @@ void Server::runCommand(const std::string &command, Client &client)
 		{
 			Executor::user(splitFirst[1], client, writefds);
 		}
-		else if (client.getIsRegistered() == false){
-			FD_SET(client.getFd(), &writefds);
-			client.getmesagesFromServer().push_back("First you need to register\n\r");
-		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "nick"))
 		{
 			nick(splitFirst[1], client, writefds);
+		}
+		else if (client.getIsRegistered() == false){
+			FD_SET(client.getFd(), &writefds);
+			client.getmesagesFromServer().push_back("First you need to register\n\r");
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "join"))
 		{
 			this->join(splitFirst[1], client);
 		}
-		//else if (Utils::isEqualNonSensitive(params[0], "part"))
-		//{
-		//	this->part(params, client);
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "part"))
+		{
+			this->part(splitFirst[1], client);
+		}
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "op"))
+		{
+			this->op(splitFirst[1], client);
+		} else if (Utils::isEqualNonSensitive(splitFirst[0], "mode")){
+			this->mode(splitFirst[1], client);
+		}
+		//else if (Utils::isEqualNonSensitive(splitFirst[0], "ping")){
+		//	this->ping(splitFirst[1], client);
 		//}
-		//else if (Utils::isEqualNonSensitive(params[0], "privmsg"))
-		//{
-		//	this->privmsg(params, client);
-		//}
-		//else if (Utils::isEqualNonSensitive(params[0], "op"))
-		//{
-		//	this->op(params, client);
-		//} else if (Utils::isEqualNonSensitive(params[0], "mode")){
-		//	this->mode(params, client);
-		//} else if (Utils::isEqualNonSensitive(params[0], "ping")){
-		//	this->ping(params, client);
-		//}
-		//else
-		//{
-		//	FD_SET(client.getFd(), &writefds);
-		//	client.getmesagesFromServer().push_back("Invalid command\n");
-		//}
-	}//
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "privmsg"))
+		{
+			this->privmsg(splitFirst[1], client);
+		}
+		else
+		{
+			FD_SET(client.getFd(), &writefds);
+			client.getmesagesFromServer().push_back("Invalid command\n");
+		}
+	}
 	hexChatEntry(softSplit, client);
 }
 
@@ -315,10 +316,10 @@ void Server::responseAllClientResponseToGui(Client &client, Room &room)  {
 	if (tmp.getName().empty())
 		return;
 
-	std::cout << "********" << std::endl;
-	std::cout << room.getName() << std::endl;
-	std::cout << room.getClients().size()	<< std::endl;
-	std::cout << "********" << std::endl;
+	//std::cout << "********" << std::endl;
+	//std::cout << room.getName() << std::endl;
+	//std::cout << room.getClients().size()	<< std::endl;
+	//std::cout << "********" << std::endl;
 	for (std::vector<Client>::iterator it = tmp.getClients().begin(); it != tmp.getClients().end(); it++){
 		if (it->getFd() == tmp.getOperator()->getFd())
 			message += "@";
