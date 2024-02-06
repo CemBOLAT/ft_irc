@@ -22,5 +22,6 @@ namespace Utils {
 	void		instaWriteAll(std::vector<Client> clients, std::string message);
 	void		instaWrite(int fd, std::string message);
 	std::string	ft_join(const std::vector<std::string> &vec, const std::string &delim, int start);
+	void		instaSend(int fd, std::string message);
 
 }

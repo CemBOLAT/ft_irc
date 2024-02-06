@@ -100,6 +100,14 @@ void	Utils::instaWrite(int fd, std::string message)
 	}
 }
 
+void	Utils::instaSend(int fd, std::string message)
+{
+	if (send(fd, message.c_str(), message.length(), 0) < 0)
+	{
+		std::cout << "MSG cannot send" << std::endl;
+	}
+}
+
 void	Utils::instaWriteAll(std::vector<Client> clients, std::string message)
 {
 	for (std::vector<Client>::iterator it = clients.begin(); it != clients.end(); it++)

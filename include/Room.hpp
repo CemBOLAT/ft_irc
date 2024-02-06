@@ -21,7 +21,10 @@ public:
 	{
 		if (this != &other)
 		{
-			_clients = other._clients;
+			while (!_clients.empty())
+				_clients.pop_back();
+			for (size_t i = 0; i < other._clients.size(); i++)
+				_clients.push_back(other._clients[i]);
 			_name = other._name;
 			_topic = other._topic;
 			_keycode = other._keycode;
