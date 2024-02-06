@@ -31,21 +31,21 @@
 //}
 //
 //void	Server::ping(C_STR_REF params, Client &client){
-//	if (params.size() == 1){
+//	if (params.empty()){
 //		return;
 //	}
-//	std::string msg = getMesg(params);
-//	if (msg.at(0) == '0' && msg.at(1) == '0') {
-//		params[1] = params[1].substr(2, params[1].length());
-//		Utils::instaWrite(client.getFd(), RPL_PING(client.getUserByHexChat(), params[1], msg.substr(msg.find("PING")+5, msg.length()-1)));
+//    std::vector<std::string> split = Utils::ft_split(params, " ");
+//	if (params.at(0) == '0' && params.at(1) == '0') {
+//		split[0] = split[0].substr(2, params[0].length());
+//		Utils::instaWrite(client.getFd(), RPL_PING(client.getUserByHexChat(), split[0], msg.substr(msg.find("PING")+5, msg.length()-1)));
 //	} else if (msg.find(":PING") && params[1].size()) {
 //		Client target = getCli(this->clients, params[1]);
-//		Utils::instaWrite(client.getFd(), RPL_PING(client.getUserByHexChat(), params[1], msg.substr(msg.find("PING")+5, msg.length()-1)));
-//		std::string msg = "00" + client.getNick() + " :PING " + params[2];
+//		Utils::instaWrite(client.getFd(), RPL_PING(client.getUserByHexChat(), split[0], msg.substr(msg.find("PING")+5, msg.length()-1)));
+//		std::string msg = "00" + client.getNick() + " :PING " + split[2];
 //		VECT_STR newParams = Utils::ft_split(msg, " ");
 //		Server::ping(newParams, target);
 //	} else {
-//		Utils::instaWrite(clients[0].getFd(), RPL_PING(client.getUserByHexChat(), std::string("FT_IRC_SERVER"), params[1]));
+//		Utils::instaWrite(clients[0].getFd(), RPL_PING(client.getUserByHexChat(), std::string("FT_IRC_SERVER"), split[0]));
 //	}
 //}
 

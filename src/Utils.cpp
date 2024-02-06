@@ -131,3 +131,15 @@ VECT_STR	Utils::ft_firstWord(const std::string& str)
 	result.push_back(ft_trim(str.substr(end, str.size() - end), " "));
 	return (result);
 }
+
+std::string	Utils::ft_join(const std::vector<std::string> &vec, const std::string& delim, int start)
+{
+	std::string result;
+	for (size_t i = start; i < vec.size(); i++)
+	{
+		result += vec[i];
+		if (i + 1 < vec.size())
+			result += delim;
+	}
+	return result;
+}

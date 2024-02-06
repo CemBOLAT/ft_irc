@@ -10,37 +10,65 @@
 #include <vector>
 
 #define RPL_PRIVMSG(source, target, message)		":" + source + " PRIVMSG " + target + " :" + message + "\r\n"
+#define MSG_GROUP(nick,user, host, room, message) ":" + nick + "!" + user + "@" + host + " PRIVMSG " + room + " :" + message + "\r\n"
 
 void	Server::privmsg(C_STR_REF input, Client &client){
 	std::vector<std::string> params = Utils::ft_split(input, " ");
 
-	for (std::vector<Client>::iterator it = clients.begin(); it != clients.end(); ++it){
-		std::cout << "params[0] = " << params[0] << std::endl;
-		if (it->getFd() != client.getFd() && it->getNick() == params[0]){
-			if (!isClientInRoom(*it, params[0])){
+	if (params.size() < 2){
+		Utils::instaWrite(client.getFd(), "PRIVMSG :Not enough parameters\n\r");
+		return;
+	}
+	if (params[0][0] == '#'){
+		string chanelName = params[0].substr(1, params[0].size() - 1);
+		for (std::vector<Room>::iterator it = this->channels.begin(); it != this->channels.end(); it++){
+			if (chanelName == it->getName()){
+				if (it->isClientInChannel(client.getFd())){
+					std::string message = Utils::ft_join(params, " ", 1);
+					if (message[0] == ':'){
+						message = message.substr(1, message.size() - 1);
+					}
+					std::cout << "chanelName:$" << chanelName << "#" << std::endl;
+					for (std::vector<Client>::iterator it2 = it->getClients().begin(); it2 != it->getClients().end(); it2++){
+						{
+							if (it2->getFd() != client.getFd())
+								Utils::instaWrite(it2->getFd(), MSG_GROUP(client.getNick(), client.getUserName(), client.getHostName(), "#" + chanelName, message));
+						}
+					}
+				}
+				else {
+					Utils::instaWrite(client.getFd(), "PRIVMSG :You are not in that channel\n\r");
+				}
+				return;
 			}
-			string	newParam1;
-			if (params[1][0] == ':')
-				newParam1 = params[1].substr(1, params[1].length());
-			else
-				newParam1 = params[1];
-			std::cout << RPL_PRIVMSG(client.getUserByHexChat(), params[0], newParam1) << std::endl;
-			(*it).getmesagesFromServer().push_back(RPL_PRIVMSG(client.getUserByHexChat(), params[0], newParam1));
-			FD_SET((*it).getFd(), &this->writefds);
 		}
-		else if (params[1] == (*it).getUserName() || params[1] == (*it).getNick()){
-			if (params[1].find("PING") != std::string::npos){
-				params[1] = params[0] + " " + client.getNick();
-				//Server::ping(params, client);
-				break;
+	}
+	else {
+		for (std::vector<Client>::iterator it = this->clients.begin(); it != this->clients.end(); it++){
+			if (params[0] == it->getNick()){
+				std::string message = Utils::ft_join(params, " ", 1);
+				if (message[0] == ':'){
+					message = message.substr(1, message.size() - 1);
+				}
+				Utils::instaWrite(it->getFd(), RPL_PRIVMSG(client.getUserByHexChat(), it->getNick(), message));
+				return;
 			}
-			string	newParam1;
-			if (params[1][0] == ':')
-				newParam1 += params[1].substr(1, params[1].length());
-			else
-				newParam1 += params[1];
-			(*it).getmesagesFromServer().push_back(RPL_PRIVMSG(client.getUserByHexChat(), params[0], newParam1));
-			FD_SET((*it).getFd(), &this->writefds);
+		}
+		string chanelName = params[0];
+		for (std::vector<Room>::iterator it = this->channels.begin(); it != this->channels.end(); it++){
+			if (chanelName == it->getName()){
+				if (it->isClientInChannel(client.getFd())){
+					std::string message = Utils::ft_join(params, " ", 1);
+					if (message[0] == ':'){
+						message = message.substr(1, message.size() - 1);
+					}
+					Utils::instaWrite(client.getFd(), RPL_PRIVMSG(client.getUserByHexChat(), "#" + chanelName, message));
+				}
+			}
+			else {
+				Utils::instaWrite(client.getFd(), "PRIVMSG :You are not in that channel\n\r");
+			}
+			return;
 		}
 	}
 }

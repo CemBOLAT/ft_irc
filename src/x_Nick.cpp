@@ -43,8 +43,8 @@ void Server::nick(C_STR_REF params, Client &client, fd_set &fd)
 		}
 		client.setNick(params); // set new nick if not exist
 	}
-	if (!client.getUserName().empty()){
-		client.setRegistered(true);
-		//client.getmesagesFromServer().push_back("Welcome to the Internet Relay Network " + client.getNick() + "!" + client.getUserName() + "@" + client.getRealName() + "\n\r");
-	}
+	//if (!client.getUserName().empty()){
+	//	client.setRegistered(true);
+	//	//client.getmesagesFromServer().push_back("Welcome to the Internet Relay Network " + client.getNick() + "!" + client.getUserName() + "@" + client.getRealName() + "\n\r");
+	//}
 }
