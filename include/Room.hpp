@@ -47,6 +47,17 @@ public:
 	void setKeycode(int keycode) { _keycode = keycode; }
 	void setKey(const string &key) { _key = key; }
 	void setChanelLimit(int limit) { _chanelLimit = limit; }
+	void removeClient(int fd)
+	{
+		for (size_t i = 0; i < _clients.size(); i++)
+		{
+			if (_clients[i].getFd() == fd)
+			{
+				_clients.erase(_clients.begin() + i);
+				break;
+			}
+		}
+	}
 
 	bool isClientInChannel(const string &nick) const
 	{

@@ -100,6 +100,11 @@ void Server::run()
 				bytesRead = read(a->getFd(), this->buffer, 1024);
 				if (bytesRead <= 0)
 				{
+					for (std::vector<Room>::iterator it = this->channels.begin(); it != this->channels.end(); it++){
+						if (it->isClientInChannel(a->getFd())){
+							it->removeClient(a->getFd());
+						}
+					}
 					FD_CLR(a->getFd(), &readfds);
 					FD_CLR(a->getFd(), &writefds);
 					close(a->getFd());
@@ -148,6 +153,11 @@ void Server::run()
 				}
 				if (bytesWritten == 0)
 				{
+					for (std::vector<Room>::iterator it = this->channels.begin(); it != this->channels.end(); it++){
+						if (it->isClientInChannel(a->getFd())){
+							it->removeClient(a->getFd());
+						}
+					}
 					FD_CLR(a->getFd(), &writefds);
 					FD_CLR(a->getFd(), &readfds);
 					close(a->getFd());
@@ -315,11 +325,6 @@ void Server::responseAllClientResponseToGui(Client &client, Room &room)  {
 	Room tmp = room;
 	if (tmp.getName().empty())
 		return;
-
-	//std::cout << "********" << std::endl;
-	//std::cout << room.getName() << std::endl;
-	//std::cout << room.getClients().size()	<< std::endl;
-	//std::cout << "********" << std::endl;
 	for (std::vector<Client>::iterator it = tmp.getClients().begin(); it != tmp.getClients().end(); it++){
 		if (it->getFd() == tmp.getOperator()->getFd())
 			message += "@";
