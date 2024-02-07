@@ -30,6 +30,7 @@ public:
 	void	who(const std::string &command, Client &client);
 	void 	topic(const std::string &command, Client &client);
 	void	ping(C_STR_REF params, Client &client);
+	void	quit(C_STR_REF params, Client &client);
 
 	Room &getRoom(const string &name){
 		vector<Room>::iterator it = this->channels.begin();
@@ -90,6 +91,18 @@ public:
 			}
 		}
 		return false;
+	}
+
+	void	removeClient(int fd){
+		vector<Client>::iterator it = this->clients.begin();
+		for (; it != this->clients.end(); ++it)
+		{
+			if (it->getFd() == fd)
+			{
+				this->clients.erase(it);
+				return ;
+			}
+		}
 	}
 
 private:

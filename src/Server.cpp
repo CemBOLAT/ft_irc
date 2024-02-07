@@ -300,6 +300,10 @@ void Server::runCommand(const std::string &command, Client &client)
 		{
 			this->topic(splitFirst[1], client);
 		}
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "quit"))
+		{
+			this->quit(splitFirst[1], client);
+		}
 		else
 		{
 			FD_SET(client.getFd(), &writefds);

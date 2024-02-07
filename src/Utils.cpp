@@ -7,6 +7,8 @@
 #include <iostream>
 #include <vector>
 #include <unistd.h>
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 #define VECT_STR std::vector<std::string>
@@ -78,18 +80,18 @@ bool	Utils::isEqualNonSensitive(const string& str1, const string& str2)
 	return true;
 }
 
-void	Utils::getTime()
+std::string Utils::getTime()
 {
 	time_t now = time(0);
-	tm *ltm = localtime(&now);
-	if (ltm->tm_hour < 10)
-		std::cout << "0" << ltm->tm_hour << ":" << ltm->tm_min << ":" << ltm->tm_sec << std::endl;
-	else if (ltm->tm_min < 10)
-		std::cout << ltm->tm_hour << ":" << "0" << ltm->tm_min << ":" << ltm->tm_sec << std::endl;
-	else if (ltm->tm_sec < 10)
-		std::cout <<  ltm->tm_hour << ":" << ltm->tm_min << ":" << "0" << ltm->tm_sec << std::endl;
-	else
-		std::cout << ltm->tm_hour << ":" << ltm->tm_min << ":" << ltm->tm_sec << std::endl;
+		tm *ltm = localtime(&now);
+		std::stringstream ss;
+		ss << std::setfill('0') << std::setw(4) << (1900 + ltm->tm_year) << '-'
+			<< std::setfill('0') << std::setw(2) << (1 + ltm->tm_mon) << '-'
+			<< std::setfill('0') << std::setw(2) << ltm->tm_mday << ' '
+			<< std::setfill('0') << std::setw(2) << ltm->tm_hour << ':'
+			<< std::setfill('0') << std::setw(2) << ltm->tm_min << ':'
+			<< std::setfill('0') << std::setw(2) << ltm->tm_sec;
+		return ss.str();
 }
 
 void	Utils::instaWrite(int fd, std::string message)

@@ -42,7 +42,7 @@ void Server::join(C_STR_REF params, Client &client)
 							if (it->getChanelLimit() <= (int) it->getClients().size()) {
 								Utils::instaWrite(client.getFd(), ERR_CHANNELISFULL(client.getNick(), roomName));
 							}
-							else if (it->getKey() != key) {
+							else if (!key.empty() && it->getKey() != key) {
 								Utils::instaWrite(client.getFd(), ERR_BADCHANNELKEY(client.getNick(), roomName));
 							}
 							else {
@@ -54,7 +54,7 @@ void Server::join(C_STR_REF params, Client &client)
 							}
 						}
 						else if ((it->getKeycode() & KEY_CODE)) {
-							if (it->getKey() != key) {
+							if (!key.empty() && it->getKey() != key) {
 								Utils::instaWrite(client.getFd(), ERR_BADCHANNELKEY(client.getNick(), roomName));
 							}
 							else {

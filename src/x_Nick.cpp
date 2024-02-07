@@ -37,14 +37,11 @@ void Server::nick(C_STR_REF params, Client &client, fd_set &fd)
 				if (client.getNick() == cit->getNick())
 				{
 					cit->setNick(params);
+					responseAllClientResponseToGui(*cit, *it); // response to all client in room
 					break;
 				}
 			}
 		}
 		client.setNick(params); // set new nick if not exist
 	}
-	//if (!client.getUserName().empty()){
-	//	client.setRegistered(true);
-	//	//client.getmesagesFromServer().push_back("Welcome to the Internet Relay Network " + client.getNick() + "!" + client.getUserName() + "@" + client.getRealName() + "\n\r");
-	//}
 }

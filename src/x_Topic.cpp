@@ -19,10 +19,7 @@ void Server::topic(const std::string &command, Client &client) {
 		Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "TOPIC"));
 		return;
 	}
-	if (params[0][0] == '#'){
-		params[0] = params[0].substr(1);
-	}
-	std::string channelName = params[0]; // Remove the '#' prefix from channel name
+	std::string channelName = params[0];
 	bool channelFound = false;
 
 	for (size_t i = 0; i < this->channels.size(); ++i) {
@@ -38,9 +35,17 @@ void Server::topic(const std::string &command, Client &client) {
 					Utils::instaWrite(client.getFd(), RPL_NOTOPIC(client.getNick(), channel.getName()));
 				}
 			} else { // Set topic
+				if (params[1][0] == ':') {
+					params[1] = params[1].substr(1);
+				}
+				std::string oldTopic = channel.getTopic(); // Save the old topic
 				channel.setTopic(params[1]);
-				std::string response = RPL_TOPICSET(client.getNick(), channel.getName(), params[1], "0");
-				Utils::instaWrite(client.getFd(), response);
+				std::string response = RPL_TOPICSET(client.getNick(), channel.getName(), params[1], Utils::getTime());
+				Utils::instaWriteAll(channel.getClients(), response);
+				if (oldTopic != params[1]) {
+					std::string topicChangeNotification = RPL_TOPIC(client.getNick(), channel.getName(), params[1]);
+					Utils::instaWriteAll(channel.getClients(), topicChangeNotification);
+				}
 			}
 			break;
 		}
