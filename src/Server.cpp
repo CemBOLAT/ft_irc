@@ -71,7 +71,7 @@ void Server::run()
 			*/
 			// nullptr is a C++11 feature
 			// select: bir thread içerisinde birden fazla soketin okuma ve yazma işlemlerini takip etmek için kullanılır
-			// volatile kullanmak bazen sorunlara sebep oluyor bu sebepten dolayı fdleri kopyalayıp \
+			// volatile kullanmak bazen sorunlara sebep oluyor bu sebepten dolayı fdleri kopyalayıp
 			// onlar üzerinden işlem yapmak daha mantıklı
 			if (select(clients.size() + 4, &readFdsCopy, &writeFdsCopy, NULL, 0) < 0)
 			{
