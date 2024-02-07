@@ -13,36 +13,48 @@
 #define ERR_NOSUCHCHANNEL(source, channel) "403 " + source + " " + channel + " :No such channel"
 #define ERR_NEEDMOREPARAMS(source, command) ": 461 " + source + " " + command + " :Not enough parameters" + "\r\n"
 
-void Server::topic(const std::string &command, Client &client) {
+void Server::topic(const std::string &command, Client &client)
+{
 	std::vector<std::string> params = Utils::ft_split(command, " ");
-	if (params.size() < 2) {
+	if (params.size() < 2)
+	{
 		Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "TOPIC"));
 		return;
 	}
 	std::string channelName = params[0];
 	bool channelFound = false;
 
-	for (size_t i = 0; i < this->channels.size(); ++i) {
+	for (size_t i = 0; i < this->channels.size(); ++i)
+	{
 		Room &channel = this->channels[i];
-		if (channelName == channel.getName()) {
+		if (channelName == channel.getName())
+		{
 			channelFound = true;
-			if (params.size() == 1) { // Retrieve topic
+			if (params.size() == 1)
+			{ // Retrieve topic
 				std::string topic = channel.getTopic();
-				if (!topic.empty()) {
+				if (!topic.empty())
+				{
 					std::string response = RPL_TOPIC(client.getNick(), channel.getName(), topic);
 					Utils::instaWrite(client.getFd(), response);
-				} else {
+				}
+				else
+				{
 					Utils::instaWrite(client.getFd(), RPL_NOTOPIC(client.getNick(), channel.getName()));
 				}
-			} else { // Set topic
-				if (params[1][0] == ':') {
+			}
+			else
+			{ // Set topic
+				if (params[1][0] == ':')
+				{
 					params[1] = params[1].substr(1);
 				}
 				std::string oldTopic = channel.getTopic(); // Save the old topic
 				channel.setTopic(params[1]);
-				std::string response = RPL_TOPICSET(client.getNick(), channel.getName(), params[1], Utils::getTime());
+				std::string response = RPL_TOPICSET(client.getNick(), channel.getName(), params[1], Utils::getTime()); // saati bastırıyor
 				Utils::instaWriteAll(channel.getClients(), response);
-				if (oldTopic != params[1]) {
+				if (oldTopic != params[1])
+				{ // bu kısım sayesinde anlık olarak konunun değişimini herkes görüyor.
 					std::string topicChangeNotification = RPL_TOPIC(client.getNick(), channel.getName(), params[1]);
 					Utils::instaWriteAll(channel.getClients(), topicChangeNotification);
 				}
@@ -51,7 +63,8 @@ void Server::topic(const std::string &command, Client &client) {
 		}
 	}
 
-	if (!channelFound) {
+	if (!channelFound)
+	{
 		Utils::instaWrite(client.getFd(), ERR_NOSUCHCHANNEL(client.getNick(), channelName));
 	}
 }

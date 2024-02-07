@@ -56,6 +56,7 @@ void Server::run()
 	FD_ZERO(&writeFdsCopy);
 
 	FD_SET(this->_socket, &readfds);  // Add socket to readfds set
+	// bu kısımda fd_set yok çünkü fd_set write açık olunca (sunucu asılı kalıyor) ve select fonksiyonu sürekli 0 dönüyor
 	//FD_SET(this->_socket, &writefds); // Add socket to writefds set
 	while (true)
 	{
@@ -69,35 +70,42 @@ void Server::run()
 				4 is for select function
 			*/
 			// nullptr is a C++11 feature
+			// select: bir thread içerisinde birden fazla soketin okuma ve yazma işlemlerini takip etmek için kullanılır
+			// volatile kullanmak bazen sorunlara sebep oluyor bu sebepten dolayı fdleri kopyalayıp \
+			// onlar üzerinden işlem yapmak daha mantıklı
 			if (select(clients.size() + 4, &readFdsCopy, &writeFdsCopy, NULL, 0) < 0)
 			{
 				throw Exception("Select failed");
 			}
-			isReadyToSelect = false;
+			isReadyToSelect = false; // ne zaman veri okumak veya yazmak için hazır olacağımızı belirler
 		}
 		if (FD_ISSET(this->_socket, &this->readFdsCopy))
 		{
-			int newSocket = accept(this->_socket, (sockaddr *)&clientAddress, &templen);
+			int newSocket = accept(this->_socket, (sockaddr *)&clientAddress, &templen); // Accept new connection (yeni kişinin fdsi)
 			if (newSocket < 0)
 			{
 				throw Exception("Accept failed");
 			}
-			int port = ntohs(clientAddress.sin_port);
-			Client newClient(newSocket, port);
+			int port = ntohs(clientAddress.sin_port); // big endian to little endian
+			Client newClient(newSocket, port); // Create new client
 			inet_ntop(AF_INET, &(clientAddress.sin_addr), newClient._ip, INET_ADDRSTRLEN); // Convert IP to string and save it to newClient
-			clients.push_back(newClient);
-			FD_SET(newSocket, &readfds);
+			clients.push_back(newClient); // Add new client to clients vector
+			FD_SET(newSocket, &readfds); // kullanıcın okuma ucu açılır
 
 			TextEngine::green("New connection from ", cout) << newClient._ip << ":" << newClient.getPort() << std::endl;
 			isReadyToSelect = true;
 			continue;
 		}
+
+		// okuma işlemi
 		for (VECT_ITER a = clients.begin(); a != clients.end() && !isReadyToSelect; a++)
 		{
 			if (FD_ISSET(a->getFd(), &this->readFdsCopy))
 			{
 				// Read from socket
 				bytesRead = read(a->getFd(), this->buffer, 1024);
+				// entera basınca \r \n hexchat bunu gönderiyor
+				// nc de ise sadece \n gönderiyor
 				if (bytesRead <= 0)
 				{
 					for (std::vector<Room>::iterator it = this->channels.begin(); it != this->channels.end(); it++){
@@ -114,14 +122,14 @@ void Server::run()
 				}
 				else
 				{
-					this->buffer[bytesRead] = '\0';
+					this->buffer[bytesRead] = '\0'; // her zaman sonuna \r \n ekliyor
 					string msg = this->buffer;
-					if (msg == "\n")
+					if (msg == "\n") // tek seferde çoklu komut yollanırsa
 					{
 						isReadyToSelect = true;
 						break; // Continue to next client if message is empty
 					}
-					if (msg[msg.length() - 1] != '\n')
+					if (msg[msg.length() - 1] != '\n') // tek seferde çoklu komut yollanırsa
 					{
 						a->setBuffer(a->getBuffer() + msg);
 						isReadyToSelect = true;
@@ -131,17 +139,18 @@ void Server::run()
 						komutu ele alacan
 					*/
 					runCommand(msg, *a);
-					// isReadyToSelect = true;
 				}
 				isReadyToSelect = true;
 				break;
 			}
 			// isReadyToSelect = true;
 		}
+		// yazma işlemi
 		for (VECT_ITER a = clients.begin(); a != clients.end() && !isReadyToSelect; ++a)
 		{
 			if (FD_ISSET(a->getFd(), &this->writeFdsCopy))
 			{
+				// bu komutun amacı mesajı gönderdikten sonra mesajı silmek ve diğer mesajı göndermek bunun yerine direkt olarak yollasak nasıl olur?
 				int bytesWritten = write(a->getFd(), a->getmesagesFromServer()[0].c_str(), a->getmesagesFromServer()[0].length());
 				a->getmesagesFromServer().erase(a->getmesagesFromServer().begin());
 				if (bytesWritten < 0)
@@ -149,18 +158,18 @@ void Server::run()
 					throw Exception("Write failed");
 				}
 				if (a->getmesagesFromServer().empty()){
-					FD_CLR(a->getFd(), &writefds);
+					FD_CLR(a->getFd(), &writefds); // askıya alınmış bir soketin yazma ucu kapatılır
 				}
 				if (bytesWritten == 0)
 				{
 					for (std::vector<Room>::iterator it = this->channels.begin(); it != this->channels.end(); it++){
 						if (it->isClientInChannel(a->getFd())){
-							it->removeClient(a->getFd());
+							it->removeClient(a->getFd()); // kullanıcıyı odadan silmek çünkü ikiside farklı objeler
 						}
 					}
-					FD_CLR(a->getFd(), &writefds);
-					FD_CLR(a->getFd(), &readfds);
-					close(a->getFd());
+					FD_CLR(a->getFd(), &writefds); // askıya alınmış bir soketin yazma ucu kapatılır
+					FD_CLR(a->getFd(), &readfds); // askıya alınmış bir soketin okuma ucu kapatılır
+					close(a->getFd()); // soket kapatılır
 					this->clients.erase(a);
 					TextEngine::blue("Client ", cout) << a->_ip << ":" << a->getPort() << " disconnected" << std::endl;
 				}
@@ -236,8 +245,15 @@ void Server::initSocket()
 
 void Server::runCommand(const std::string &command, Client &client)
 {
-	string trimmed = Utils::ft_trim(command, " \r");
+	string trimmed = Utils::ft_trim(command, " \r"); // bakacam buraya
 	cout << trimmed << "#" << std::endl;
+	/*
+		CAP LS 302
+		PASS 123
+		NICK asd
+		USER asd asd asd :asd
+		#
+	*/
 
 	VECT_STR softSplit = Utils::ft_split(trimmed, "\n");
 	// iki splitin amacı \n ile gelen mesajları parçalamak
@@ -245,15 +261,15 @@ void Server::runCommand(const std::string &command, Client &client)
 	{
 		string trimmedLine = Utils::ft_trim(softSplit[i], " \t\r");
 		if (trimmedLine.empty()) return;
-		VECT_STR splitFirst = Utils::ft_firstWord(trimmedLine);
+		VECT_STR splitFirst = Utils::ft_firstWord(trimmedLine); // kelimeyi ayırır komut ve parametreleri
 		if (splitFirst.size() <= 1) return;
 		if (Utils::isEqualNonSensitive(splitFirst[0], "pass"))
 		{
-			Executor::pass(splitFirst[1], client, this->password, writefds);
+			Executor::pass(splitFirst[1], client, this->password, writefds); // doğru
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "cap"))
 		{
-			Executor::cap(splitFirst[1], client);
+			Executor::cap(splitFirst[1], client); // doğru
 		}
 		else if (client.getIsPassworded() == false){
 			FD_SET(client.getFd(), &writefds);
@@ -261,11 +277,11 @@ void Server::runCommand(const std::string &command, Client &client)
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "user"))
 		{
-			Executor::user(splitFirst[1], client, writefds);
+			Executor::user(splitFirst[1], client, writefds); // doğru
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "nick"))
 		{
-			nick(splitFirst[1], client, writefds);
+			nick(splitFirst[1], client, writefds); // doğru
 		}
 		else if (client.getIsRegistered() == false){
 			FD_SET(client.getFd(), &writefds);
@@ -273,16 +289,17 @@ void Server::runCommand(const std::string &command, Client &client)
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "join"))
 		{
-			this->join(splitFirst[1], client);
+			this->join(splitFirst[1], client); // doğru
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "part"))
 		{
-			this->part(splitFirst[1], client);
+			this->part(splitFirst[1], client); // doğru
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "op"))
 		{
 			this->op(splitFirst[1], client);
-		} else if (Utils::isEqualNonSensitive(splitFirst[0], "mode")){
+		}
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "mode")){
 			this->mode(splitFirst[1], client);
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "ping")){
@@ -290,7 +307,7 @@ void Server::runCommand(const std::string &command, Client &client)
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "privmsg"))
 		{
-			this->privmsg(splitFirst[1], client);
+			this->privmsg(splitFirst[1], client); // doğru
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "who"))
 		{
@@ -298,11 +315,11 @@ void Server::runCommand(const std::string &command, Client &client)
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "topic"))
 		{
-			this->topic(splitFirst[1], client);
+			this->topic(splitFirst[1], client); // doğru
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "quit"))
 		{
-			this->quit(splitFirst[1], client);
+			this->quit(splitFirst[1], client); // bozuk
 		}
 		else
 		{
@@ -313,6 +330,8 @@ void Server::runCommand(const std::string &command, Client &client)
 	hexChatEntry(softSplit, client);
 }
 
+
+// çoklu komut geldiği için hexchatten giriş olunca buraya düşüyor
 void Server::hexChatEntry(VECT_STR &params, Client &client)
 {
 	if (params[0] != "CAP" && params.size() != 1)
@@ -332,6 +351,7 @@ void Server::hexChatEntry(VECT_STR &params, Client &client)
 #define RPL_NAMREPLY(nick, channel, users)			": 353 " + nick + " = " + channel + " :" + users + "\r\n"
 #define RPL_ENDOFNAMES(nick, channel)				": 366 " + nick + " " + channel + " :End of /NAMES list\r\n"
 
+// oda içinki kullanıcıları gösterir (ve değişim yapar hexchat için)
 void Server::responseAllClientResponseToGui(Client &client, Room &room)  {
 	string message;
 	Room tmp = room;

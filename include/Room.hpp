@@ -12,7 +12,7 @@ class Client;
 class Room
 {
 public:
-	Room() : _name(""), _topic(""), _keycode(0) {}
+	Room() : _clients(), _name(""), _topic(""), Operator(NULL), _keycode(0), _key(""), _chanelLimit(0){}
 	~Room() {}
 	Room(const Room &other){
 		*this = other;
@@ -98,7 +98,7 @@ public:
 	}
 
 private:
-	vector<Client> _clients;
+	vector<Client> _clients; // bunun için pointer veya referans kullanılmalı
 	string	_name;
 	string 	_topic;
 	Client	*Operator;

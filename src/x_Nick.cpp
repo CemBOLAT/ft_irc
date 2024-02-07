@@ -45,3 +45,9 @@ void Server::nick(C_STR_REF params, Client &client, fd_set &fd)
 		client.setNick(params); // set new nick if not exist
 	}
 }
+
+/*
+	oda1:											oda2:
+	cemal --> ali (4)								cemal (cemal aliyi bilmiyor) --> ali (4)
+	hüseyin (hüseyin cemali bilmiyor) (5)			ali --> cemal (6)
+*/

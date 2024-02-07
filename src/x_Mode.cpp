@@ -74,7 +74,7 @@ void	Server::mode(C_STR_REF input, Client &client){
 	}
 	if (params[1] == "+o"){
 		if (params.size() == 3){
-			op(input, client);
+			op(input, client); // call op function
 		}
 	}
 }
