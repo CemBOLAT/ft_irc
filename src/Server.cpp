@@ -321,6 +321,10 @@ void Server::runCommand(const std::string &command, Client &client)
 		{
 			this->quit(splitFirst[1], client); // bozuk
 		}
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "whois"))
+		{
+			this->whois(splitFirst[1], client); // doğru
+		}
 		else
 		{
 			FD_SET(client.getFd(), &writefds);
