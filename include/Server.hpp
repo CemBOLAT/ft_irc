@@ -34,6 +34,7 @@ public:
 	void	ping(C_STR_REF params, Client &client);
 	void	quit(C_STR_REF params, Client &client);
 	void	whois(std::string &s, Client &cli);
+	void	pong(const std::string& params, Client& client);
 	Room &getRoom(const string &name){
 		vector<Room>::iterator it = this->channels.begin();
 		for (; it != this->channels.end(); ++it)

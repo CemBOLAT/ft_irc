@@ -37,10 +37,17 @@ Server::Server(const std::string &port, const std::string &password)
 
 Server::~Server()
 {
+	for (vector<Client>::iterator it = clients.begin(); it != clients.end(); it++)
+	{
+		close(it->getFd());
+	}
 	if (this->_socket > 0)
 	{
 		close(this->_socket);
 	}
+	this->clients.clear();
+	this->channels.clear();
+	TextEngine::red("Server closed", std::cout) << std::endl;
 }
 
 void Server::run()
@@ -303,7 +310,7 @@ void Server::runCommand(const std::string &command, Client &client)
 			this->mode(splitFirst[1], client);
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "ping")){
-			this->ping(splitFirst[1], client);
+			this->ping(splitFirst[1], client); // doğru
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "privmsg"))
 		{
@@ -311,7 +318,7 @@ void Server::runCommand(const std::string &command, Client &client)
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "who"))
 		{
-			this->who(splitFirst[1], client);
+			this->who(splitFirst[1], client); // doğru (iyi test et)
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "topic"))
 		{
@@ -324,6 +331,10 @@ void Server::runCommand(const std::string &command, Client &client)
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "whois"))
 		{
 			this->whois(splitFirst[1], client); // doğru
+		}
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "pong"))
+		{
+			this->pong(splitFirst[1], client); // doğru
 		}
 		else
 		{

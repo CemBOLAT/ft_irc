@@ -18,8 +18,6 @@ void Server::who(const std::string &command, Client &client) {
 	}
 
 	std::string channelName = params[0];
-	//if (channelName[0] == '#')
-	//	channelName = channelName.substr(1);
 	bool channelFound = false;
 
 	for (size_t i = 0; i < this->channels.size(); ++i) {
