@@ -16,7 +16,9 @@ void Server::part(C_STR_REF params, Client &client)
 {
 	vector<Room>::iterator it = channels.begin();
 	vector<string> param = Utils::ft_split(params, " ");
-
+	if (param[0][0] != '#'){
+		param[0] = "#" + param[0];
+	}
 	for (; it != channels.end(); ++it)
 	{
 		if (it->getName() == param[0])

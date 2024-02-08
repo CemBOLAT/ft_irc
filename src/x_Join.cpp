@@ -26,8 +26,8 @@ void Server::join(C_STR_REF params, Client &client)
 		ss >> roomName;
 		ss >> key;
 		if (roomName.empty()){
-			FD_SET(client.getFd(), &writefds);
 			client.getmesagesFromServer().push_back("JOIN :Not enough parameters\n\r");
+			FD_SET(client.getFd(), &writefds);
 			return;
 		}
 		if (roomName[0] != '#'){
@@ -78,6 +78,7 @@ void Server::join(C_STR_REF params, Client &client)
 							}
 						}
 						else {
+							std::cout << "No key and no limit" << std::endl;
 							(*it).getClients().push_back(client);
 							Utils::instaWrite(client.getFd(), JOIN_RESPONSE(client.getNick(), client._ip , roomName));
 							if (!(*it).getTopic().empty()){
@@ -85,8 +86,8 @@ void Server::join(C_STR_REF params, Client &client)
 							}
 						}
 					} else {
-						FD_SET(client.getFd(), &writefds);
 						client.getmesagesFromServer().push_back("You already in the chanel\n\r");
+						FD_SET(client.getFd(), &writefds);
 					}
 					break;
 				}
@@ -102,7 +103,7 @@ void Server::join(C_STR_REF params, Client &client)
 		}
 		responseAllClientResponseToGui(client, getRoom(roomName));
 	} else {
-		FD_SET(client.getFd(), &writefds);
 		client.getmesagesFromServer().push_back("JOIN :Not enough parameters");
+		FD_SET(client.getFd(), &writefds);
 	}
 }

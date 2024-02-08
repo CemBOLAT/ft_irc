@@ -18,8 +18,7 @@
 void	Server::mode(C_STR_REF input, Client &client){
 	std::vector<std::string> params = Utils::ft_split(input, " ");
 	if (params.size() > 3){
-		FD_SET(client.getFd(), &writefds);
-		client.getmesagesFromServer().push_back(ERR_NEEDMOREPARAMS(client.getNick(), "MODE"));
+		Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "MODE"));
 		return;
 	}
 	if (params.size() == 1){
@@ -32,44 +31,38 @@ void	Server::mode(C_STR_REF input, Client &client){
 		}
 	}
 	if (it == this->channels.end()){
-		FD_SET(client.getFd(), &writefds);
-		client.getmesagesFromServer().push_back(ERR_NOSUCHCHANNEL(client.getNick(), params[0]));
+		Utils::instaWrite(client.getFd(), ERR_NOSUCHCHANNEL(client.getNick(), params[0]));
 		return;
 	}
 	if (it->getOperator()->getNick() != client.getNick()){
-		FD_SET(client.getFd(), &writefds);
-		client.getmesagesFromServer().push_back(ERR_CHANOPRIVSNEEDED(client.getNick(), params[0]));
+		Utils::instaWrite(client.getFd(), ERR_CHANOPRIVSNEEDED(client.getNick(), params[0]));
 		return;
 	}
 	if (params[1] == "+k"){
 		if (params.size() == 3){
-			FD_SET(client.getFd(), &writefds);
 			it->setKey(params[2]);
 			it->setKeycode(it->getKeycode() | KEY_CODE);
-			client.getmesagesFromServer().push_back(RPL_MODE(client.getNick(), it->getName(), "+k", params[2]));
+			Utils::instaWrite(client.getFd(), RPL_MODE(client.getNick(), it->getName(), "+k", params[2]));
 		}
 	}
 	if (params[1] == "-k"){
 		if (params.size() == 2){
-			FD_SET(client.getFd(), &writefds);
 			it->setKey("");
 			it->setKeycode(it->getKeycode() ^ KEY_CODE);
-			client.getmesagesFromServer().push_back(RPL_MODE(client.getNick(), it->getName(), "-k", ""));
+			Utils::instaWrite(client.getFd(), RPL_MODE(client.getNick(), it->getName(), "-k", ""));
 		}
 	}
 	if (params[1] == "+l"){
 		if (params.size() == 3){
-			FD_SET(client.getFd(), &writefds);
 			it->setChanelLimit(atoi(params[2].c_str()));
 			it->setKeycode(it->getKeycode() | LIMIT_CODE);
-			client.getmesagesFromServer().push_back(RPL_MODE(client.getNick(), it->getName(), "+l", params[2]));
+			Utils::instaWrite(client.getFd(), RPL_MODE(client.getNick(), it->getName(), "+l", params[2]));
 		}
 	}
 	if (params[1] == "-l"){
 		if (params.size() == 2){
-			FD_SET(client.getFd(), &writefds);
 			it->setKeycode(it->getKeycode() ^ LIMIT_CODE);
-			client.getmesagesFromServer().push_back(RPL_MODE(client.getNick(), it->getName(), "-l", ""));
+			Utils::instaWrite(client.getFd(), RPL_MODE(client.getNick(), it->getName(), "-l", ""));
 		}
 	}
 	if (params[1] == "+o"){

@@ -1,5 +1,6 @@
 #include "../include/Client.hpp"
 #include "../include/Executor.hpp"
+#include "../include/Utils.hpp"
 #include "../include/Exception.hpp"
 #include <iostream>
 #include <string>
@@ -8,17 +9,16 @@
 
 namespace Executor
 {
-	void	user(C_STR_REF params, Client &client, fd_set &fd)
+	void	user(C_STR_REF params, Client &client)
 	{
-		FD_SET(client.getFd(), &fd);
 		if (params.empty())
 		{
-			client.getmesagesFromServer().push_back("USER :Not enough parameters\n\r");
+			Utils::instaWrite(client.getFd(), ": 461 " + client.getUserByHexChat() + " USER :Not enough parameters\r\n");
 			return;
 		}
 		if (client.getIsRegistered())
 		{
-			client.getmesagesFromServer().push_back("Unauthorized command (already registered)\n\r");
+			Utils::instaWrite(client.getFd(), ": 462 " + client.getUserByHexChat() + " USER :You may not reregister\r\n");
 			return;
 		}
 		std::stringstream ss(params);
@@ -29,12 +29,12 @@ namespace Executor
 		ss >> realname;
 		if (username.empty() || hostname.empty() || servername.empty() || realname.empty())
 		{
-			client.getmesagesFromServer().push_back("USER :Not enough parameters\n\r");
+			Utils::instaWrite(client.getFd(), ": 461 " + client.getUserByHexChat() + " USER :Not enough parameters\r\n");
 			return;
 		}
 		if (username == hostname)
 		{
-			client.getmesagesFromServer().push_back("USER :Username and hostname cannot be the same\n\r");
+			Utils::instaWrite(client.getFd(), ": 462 " + client.getUserByHexChat() + " USER :Username and hostname cannot be the same\r\n");
 			return;
 		}
 		client.setUserName(username);
@@ -43,7 +43,7 @@ namespace Executor
 		client.setRealName(realname);
 		//if (!client.getNick().empty()){
 			client.setRegistered(true);
-			client.getmesagesFromServer().push_back("Welcome to the Internet Relay Network " + client.getNick() + "!" + client.getUserName() + "@" + client.getRealName() + "\n\r");
+			Utils::instaWrite(client.getFd(), ": 001 " + client.getNick() + " :Welcome to the Internet Relay Network " + client.getNick() + "!" + client.getUserName() + "@" + client.getRealName() + "\r\n");
 		//}
 	}
 }

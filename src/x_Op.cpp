@@ -54,7 +54,6 @@ void Server::op(C_STR_REF params, Client &client)
 	}
 	else
 	{
-		FD_SET(client.getFd(), &writefds);
-		client.getmesagesFromServer().push_back(ERR_CHANOPRIVSNEEDED(client.getUserByHexChat(), room.getName()));
+		Utils::instaWrite(client.getFd(), ERR_CHANOPRIVSNEEDED(client.getUserByHexChat(), room.getName()));
 	}
 }

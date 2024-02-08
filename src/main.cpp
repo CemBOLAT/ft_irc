@@ -6,6 +6,7 @@
 using namespace std;
 
 void	signalHandler(int signum){
+	std::cout << "Caught signal " << signum << std::endl;
 	if (signum == SIGINT)
 	{
 		exit(0);

@@ -29,9 +29,9 @@ void Server::nick(C_STR_REF params, Client &client, fd_set &fd)
 		Utils::instaWrite(client.getFd(), ERR_NICKNAMEINUSE(client.getUserByHexChat()));
 	}
 	else{
-		FD_SET(client.getFd(), &fd);
 		std::cout << RPL_NICK(client.getNick(), client.getUserName(), client._ip, params); // debug
 		client.getmesagesFromServer().push_back(RPL_NICK(client.getNick(), client.getUserName(), client._ip, params));
+		FD_SET(client.getFd(), &fd);
 		for (std::vector<Room>::iterator it = channels.begin(); it != channels.end(); ++it) {
 			for (std::vector<Client>::iterator cit = it->getClients().begin(); cit != it->getClients().end(); ++cit) {
 				if (client.getNick() == cit->getNick())

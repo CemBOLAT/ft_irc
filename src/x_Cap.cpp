@@ -1,6 +1,7 @@
 #include "Executor.hpp"
 #include "Define.hpp"
 #include "Client.hpp"
+#include "Utils.hpp"
 
 namespace Executor
 {
@@ -8,25 +9,25 @@ namespace Executor
 	{
 		if (params.empty())
 		{
-			client.getmesagesFromServer().push_back("Invalid number of parameters for CAP\n\r");
+			Utils::instaWrite(client.getFd(), "CAP LS\r\n");
 		}
 		else
 		{
-			if (params == "LS 302")
+			if (params == "LS")
 			{
 				client.setType(hexchat);
 			}
-			else if (params == "NC 302")
+			else if (params == "NC")
 			{
 				client.setType(nc);
 			}
-			else if (params == "BOT 302")
+			else if (params == "BOT")
 			{
 				client.setType(bot);
 			}
 			else
 			{
-				client.getmesagesFromServer().push_back("Invalid parameters for CAP\n\r");
+				Utils::instaWrite(client.getFd(), "Invalid parameters for CAP\n\r");
 			}
 		}
 	}

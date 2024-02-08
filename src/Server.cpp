@@ -131,21 +131,26 @@ void Server::run()
 				{
 					this->buffer[bytesRead] = '\0'; // her zaman sonuna \r \n ekliyor
 					string msg = this->buffer;
-					if (msg == "\n") // tek seferde çoklu komut yollanırsa
-					{
-						isReadyToSelect = true;
-						break; // Continue to next client if message is empty
-					}
-					if (msg[msg.length() - 1] != '\n') // tek seferde çoklu komut yollanırsa
+					if (msg == "\n")
 					{
 						a->setBuffer(a->getBuffer() + msg);
+						isReadyToSelect = true;
+					}
+					if (msg[msg.length() - 1] != '\n')
+					{
+						std::cout << "Buffer: " << a->getBuffer() << std::endl;
+						a->setBuffer(a->getBuffer() + msg);
+						std::cout << "Buffer: " << a->getBuffer() << std::endl;
 						isReadyToSelect = true;
 						break;
 					}
 					/*
 						komutu ele alacan
 					*/
-					runCommand(msg, *a);
+					std::cout << "Buffer:#" << a->getBuffer() << "$" <<std::endl;
+					runCommand(a->getBuffer() + msg, *a);
+					a->setBuffer("");
+					Utils::clearBuffer(this->buffer, 1024);
 				}
 				isReadyToSelect = true;
 				break;
@@ -252,8 +257,9 @@ void Server::initSocket()
 
 void Server::runCommand(const std::string &command, Client &client)
 {
+	std::cout << "comming as #" << command << "#" << std::endl;
 	string trimmed = Utils::ft_trim(command, " \r"); // bakacam buraya
-	cout << trimmed << "#" << std::endl;
+	//cout << trimmed << "#" << std::endl;
 	/*
 		CAP LS 302
 		PASS 123
@@ -263,36 +269,39 @@ void Server::runCommand(const std::string &command, Client &client)
 	*/
 
 	VECT_STR softSplit = Utils::ft_split(trimmed, "\n");
+	if (softSplit.size() == 0) return;
 	// iki splitin amacı \n ile gelen mesajları parçalamak
 	for (size_t i = 0; i < softSplit.size(); i++)
 	{
 		string trimmedLine = Utils::ft_trim(softSplit[i], " \t\r");
 		if (trimmedLine.empty()) return;
 		VECT_STR splitFirst = Utils::ft_firstWord(trimmedLine); // kelimeyi ayırır komut ve parametreleri
-		if (splitFirst.size() <= 1) return;
+		if (splitFirst.size() <= 1 && !Utils::isEqualNonSensitive(splitFirst[0], "list")) return;
 		if (Utils::isEqualNonSensitive(splitFirst[0], "pass"))
 		{
-			Executor::pass(splitFirst[1], client, this->password, writefds); // doğru
+			Executor::pass(splitFirst[1], client, this->password); // doğru
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "cap"))
 		{
 			Executor::cap(splitFirst[1], client); // doğru
 		}
 		else if (client.getIsPassworded() == false){
-			FD_SET(client.getFd(), &writefds);
-			client.getmesagesFromServer().push_back("First you need to pass the password\n\r");
+			Utils::instaWrite(client.getFd(), "First you need to pass the password\n\r");
+			//client.getmesagesFromServer().push_back("First you need to pass the password\n\r");
+			//FD_SET(client.getFd(), &writefds);
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "user"))
 		{
-			Executor::user(splitFirst[1], client, writefds); // doğru
+			Executor::user(splitFirst[1], client); // doğru
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "nick"))
 		{
 			nick(splitFirst[1], client, writefds); // doğru
 		}
 		else if (client.getIsRegistered() == false){
-			FD_SET(client.getFd(), &writefds);
-			client.getmesagesFromServer().push_back("First you need to register\n\r");
+			Utils::instaWrite(client.getFd(), "First you need to register\n\r");
+			//client.getmesagesFromServer().push_back("First you need to register\n\r");
+			//FD_SET(client.getFd(), &writefds);
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "join"))
 		{
@@ -336,10 +345,19 @@ void Server::runCommand(const std::string &command, Client &client)
 		{
 			this->pong(splitFirst[1], client); // doğru
 		}
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "list"))
+		{
+			this->list(client); // doğru değil
+		}
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "names"))
+		{
+			this->names(client, splitFirst[1]); // doğru
+		}
 		else
 		{
-			FD_SET(client.getFd(), &writefds);
-			client.getmesagesFromServer().push_back("Invalid command\n");
+			Utils::instaWrite(client.getFd(), "Invalid command\n\r");
+			//client.getmesagesFromServer().push_back("Invalid command\n");
+			//FD_SET(client.getFd(), &writefds);
 		}
 	}
 	hexChatEntry(softSplit, client);

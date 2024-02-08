@@ -4,25 +4,25 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Utils.hpp"
 
 namespace Executor
 {
-	void pass(C_STR_REF params, Client &client, C_STR_REF password, fd_set &fd){
-		FD_SET(client.getFd(), &fd);
+	void pass(C_STR_REF params, Client &client, C_STR_REF password){
 		if (params.empty())
 		{
-			client.getmesagesFromServer().push_back("Invalid Number of Arg\n\r");
+			Utils::instaWrite(client.getFd(), ": 461 " + client.getUserByHexChat() + " PASS :Not enough parameters\r\n");
 		}
 		else if (client.getIsPassworded())
 		{
-			client.getmesagesFromServer().push_back("Already passworded\n\r");
+			Utils::instaWrite(client.getFd(), ": 462 " + client.getUserByHexChat() + " PASS :You may not reregister\r\n");
 		}
 		else if (params != password)
 		{
-			client.getmesagesFromServer().push_back("Invalid password\n\r");
+			Utils::instaWrite(client.getFd(), ": 464 " + client.getUserByHexChat() + " PASS :Invalid password\r\n"); 
 		} else {
 			client.setPassworded(true);
-			client.getmesagesFromServer().push_back("Password accepted\n\r");
+			Utils::instaWrite(client.getFd(), ": 001 Password accepted\r\n");
 		}
 	}
 }

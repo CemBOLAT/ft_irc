@@ -35,6 +35,9 @@ public:
 	void	quit(C_STR_REF params, Client &client);
 	void	whois(std::string &s, Client &cli);
 	void	pong(const std::string& params, Client& client);
+	void    list(Client &fd);
+	void    names(Client &fd, const std::string &channel);
+	
 	Room &getRoom(const string &name){
 		vector<Room>::iterator it = this->channels.begin();
 		for (; it != this->channels.end(); ++it)
