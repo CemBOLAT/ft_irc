@@ -60,6 +60,17 @@
 		"utility": "cpp",
 		"vector": "cpp",
 		"complex": "cpp",
-		"sstream": "cpp"
-	}
+		"sstream": "cpp",
+		"*.tcc": "cpp",
+		"clocale": "cpp",
+		"condition_variable": "cpp",
+		"deque": "cpp",
+		"memory_resource": "cpp",
+		"numeric": "cpp",
+		"random": "cpp",
+		"fstream": "cpp",
+		"iomanip": "cpp",
+		"thread": "cpp"
+	},
+	"C_Cpp.errorSquiggles": "disabled"
 }

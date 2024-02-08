@@ -3,6 +3,7 @@
 #include "../include/Utils.hpp"
 #include "../include/Server.hpp"
 #include <signal.h>
+#include <stdlib.h>
 using namespace std;
 
 void	signalHandler(int signum){

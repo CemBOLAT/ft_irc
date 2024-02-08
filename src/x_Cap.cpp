@@ -13,7 +13,7 @@ namespace Executor
 		}
 		else
 		{
-			if (params == "LS")
+			if (params == "LS" || params == "LS 302")
 			{
 				client.setType(hexchat);
 			}

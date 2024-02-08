@@ -67,7 +67,9 @@ void	Server::mode(C_STR_REF input, Client &client){
 	}
 	if (params[1] == "+o"){
 		if (params.size() == 3){
-			op(input, client); // call op function
+			std::string joined = Utils::ft_join(params, " ", 2);
+			std::cout << "#" << joined << "#" << std::endl;
+			op(params[0] +  " " + joined, client); // call op function
 		}
 	}
 }

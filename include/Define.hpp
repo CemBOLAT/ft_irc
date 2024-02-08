@@ -4,6 +4,7 @@
 #include <string>
 
 #define USAGE "./ircserv [port] [password]"
+#define BOT_USAGE "./turco [port] [password]"
 #define VECT_STR std::vector<std::string>
 #define VECT_ITER std::vector<Client>::iterator
 #define VECT_ITER_CHA std::vector<Room>::iterator

@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <sys/select.h>
 #include "../include/Define.hpp"
-
+#include <fcntl.h>
 using std::cout;
 
 Server::Server(const std::string &port, const std::string &password)
@@ -222,7 +222,7 @@ void Server::initSocket()
 	{
 		TextEngine::green("Socket option set successfully", cout) << std::endl;
 	}
-
+	fcntl(this->_socket, F_SETFL, O_NONBLOCK); // Set socket to non-blocking
 	memset(&address, 0, sizeof(address)); // Zeroing address
 	address.sin_family = AF_INET;		  // IPv4
 	address.sin_addr.s_addr = INADDR_ANY; // TCP
@@ -352,6 +352,10 @@ void Server::runCommand(const std::string &command, Client &client)
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "names"))
 		{
 			this->names(client, splitFirst[1]); // doğru
+		}
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "notice"))
+		{
+			this->notice(splitFirst[1], client); // doğru
 		}
 		else
 		{

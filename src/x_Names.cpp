@@ -32,11 +32,4 @@ void    Server::names(Client &fd, const std::string &channel){
             return;
         }
     }
-    if (channel == "localhost"){
-        for (std::vector<Client>::iterator it = clients.begin(); it != clients.end(); it++){
-            message += (*it).getNick() + " ";
-        }
-        Utils::instaWrite(fd.getFd(), RPL_NAMES(fd.getNick(), channel, message));
-    }
-
 }

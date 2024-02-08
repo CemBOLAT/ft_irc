@@ -11,6 +11,7 @@
 
 #define ERR_NOTONCHANNEL(s, channel) ":442 " + s + " " + channel + " :You're not on that channel\r\n"
 #define RPL_PART(source, channel)					":" + source + " PART :" + channel + "\r\n"
+#define RPL_PART_REASON(source, channel, reason)	":" + source + " PART " + channel + " :" + reason + "\r\n"
 
 void Server::part(C_STR_REF params, Client &client)
 {
@@ -35,12 +36,16 @@ void Server::part(C_STR_REF params, Client &client)
 				{
 					it->removeClient(client.getFd());
 					it->setOperator((it->getClients().size() > 0) ? &it->getClients()[0] : NULL);
-					Utils::instaWrite(client.getFd(), RPL_PART(client.getUserByHexChat(), param[0]));
+					string reason = (param.size() > 1) ? Utils::ft_join(param, " ", 1) : "";
+					Utils::instaWrite(client.getFd(), RPL_PART(client.getUserByHexChat(), param[0])); 
+					Utils::instaWrite(client.getFd(), RPL_PART_REASON(client.getUserByHexChat(), param[0], reason));
 					responseAllClientResponseToGui(client, *it);
 				}
 				else {
 					it->removeClient(client.getFd());
+					string reason = (param.size() > 1) ? Utils::ft_join(param, " ", 1) : "";
 					Utils::instaWrite(client.getFd(), RPL_PART(client.getUserByHexChat(), param[0]));
+					Utils::instaWrite(client.getFd(), RPL_PART_REASON(client.getUserByHexChat(), param[0], reason));
 					responseAllClientResponseToGui(client, *it);
 				}
 				return ;

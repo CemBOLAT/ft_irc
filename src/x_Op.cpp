@@ -48,6 +48,8 @@ void Server::op(C_STR_REF params, Client &client)
 				it->getClients()[getClientPosInRoom(*it, oldOp)] = it->getClients()[getClientPosInRoom(*it, newOp)];
 				it->getClients()[getClientPosInRoom(*it, newOp)] = tmp;
 				it->setOperator(&(it->getClients()[getClientPosInRoom(*it, newOp)]));
+				Server::responseAllClientResponseToGui(newOp, room);
+				return;
 			}
 		}
 		Server::responseAllClientResponseToGui(client, room);

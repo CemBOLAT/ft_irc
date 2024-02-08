@@ -41,4 +41,3 @@ void Server::who(const std::string &command, Client &client) {
 		Utils::instaWrite(client.getFd(), ERR_NOSUCHCHANNEL(client.getNick(), channelName));
 	}
 }
-

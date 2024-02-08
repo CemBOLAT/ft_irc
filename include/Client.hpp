@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 #include <netinet/in.h>
-#include <mutex>
 
 using std::string;
 using std::vector;
@@ -38,7 +37,6 @@ public:
 	void setPassworded(bool val);
 	void setBuffer(const string &str);
 	void setType(int type);
-	//static std::lock_guard<std::mutex> &getLock() { return lock; }
 	void setUserName(const string &userName);
 	void setRealName(const string &realName);
 	string getUserByHexChat() const;
