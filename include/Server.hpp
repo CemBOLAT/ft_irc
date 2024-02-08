@@ -9,6 +9,8 @@
 #include "Define.hpp"
 #include "Room.hpp"
 
+#include <unistd.h>
+
 using std::string;
 using std::vector;
 
@@ -103,6 +105,10 @@ public:
 				return ;
 			}
 		}
+	}
+
+	int	getSocket() const{
+		return this->_socket;
 	}
 
 private:

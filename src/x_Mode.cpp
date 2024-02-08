@@ -37,6 +37,8 @@ void	Server::mode(C_STR_REF input, Client &client){
 		return;
 	}
 	if (it->getOperator()->getNick() != client.getNick()){
+		std::cout << "client.getNick() = " << client.getNick() << std::endl;
+		std::cout << "it->getOperator()->getNick() = " << it->getOperator()->getNick() << std::endl;
 		FD_SET(client.getFd(), &writefds);
 		client.getmesagesFromServer().push_back(ERR_CHANOPRIVSNEEDED(client.getNick(), params[0]));
 		return;

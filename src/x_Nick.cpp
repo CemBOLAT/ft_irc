@@ -12,9 +12,9 @@
 #define ERR_NICKNAMEINUSE(source)					": 433 " + source + " " + source  + " :Nickname is already in use" + "\r\n"
 
 
-int	isNickExist(const std::string &s, const std::vector<Client> &clients) {
+int	isNickExist(const std::string &s, const std::vector<Client> &clients, int fd) {
 	for (std::vector<Client>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
-		if (s == it->getNick())
+		if (s == it->getNick() && it->getFd() != fd)
 			return 1;
 	}
 	return 0;
@@ -25,7 +25,7 @@ void Server::nick(C_STR_REF params, Client &client, fd_set &fd)
 	if (params.empty()){
 		Utils::instaWrite(client.getFd(), ERR_NICKNAMEEMPTY(client.getUserByHexChat()));
 	}
-	else if (isNickExist(params, getClients())){
+	else if (isNickExist(params, getClients(), client.getFd())){
 		Utils::instaWrite(client.getFd(), ERR_NICKNAMEINUSE(client.getUserByHexChat()));
 	}
 	else{
