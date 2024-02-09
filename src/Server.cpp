@@ -206,7 +206,7 @@ void Server::initSocket()
 	}
 	else
 	{
-		TextEngine::green("Socket created successfully", cout) << std::endl;
+		TextEngine::printTime(cout) << TextEngine::green("Socket created successfully! ", cout) << std::endl;
 	}
 	int opt = 1;
 	// setsockopt: Sets socket options
@@ -220,9 +220,9 @@ void Server::initSocket()
 	}
 	else
 	{
-		TextEngine::green("Socket option set successfully", cout) << std::endl;
+		TextEngine::printTime(cout) << TextEngine::green("Socket option set successfully! ", cout) << std::endl;
 	}
-	fcntl(this->_socket, F_SETFL, O_NONBLOCK); // Set socket to non-blocking
+	fcntl(this->_socket, F_SETFL, O_NONBLOCK); // Set socket to non-blocking f
 	memset(&address, 0, sizeof(address)); // Zeroing address
 	address.sin_family = AF_INET;		  // IPv4
 	address.sin_addr.s_addr = INADDR_ANY; // TCP
@@ -239,7 +239,7 @@ void Server::initSocket()
 	}
 	else
 	{
-		TextEngine::green("Socket binded successfully", cout) << std::endl;
+		TextEngine::printTime(cout) << TextEngine::green("Socket binded successfully! ", cout) << std::endl;
 	}
 
 	/*
@@ -251,8 +251,8 @@ void Server::initSocket()
 	}
 	else
 	{
-		TextEngine::green("Socket listening successfully", cout) << std::endl;
-	}
+		TextEngine::printTime(cout) << TextEngine::green("Socket listening successfully! ", cout) << std::endl;
+	 }
 }
 
 void Server::runCommand(const std::string &command, Client &client)

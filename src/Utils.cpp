@@ -99,7 +99,6 @@ void Utils::instaWrite(int fd, std::string message) {
 
     if (write(fd, message.c_str(), message.length()) < 0) {
         std::cout << "MSG cannot send" << std::endl;
-        // No need to unlock the mutex manually, it will be automatically unlocked when 'lock' goes out of scope
         return;
     }
 }

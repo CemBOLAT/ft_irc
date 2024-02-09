@@ -32,7 +32,7 @@ public:
 	void			setKeycode(int keycode) { _keycode = keycode; }
 	void			setKey(const string &key) { _key = key; }
 	void			setChanelLimit(int limit) { _chanelLimit = limit; }
-	void			semoveClient(int fd);
+	void			removeClient(int fd);
 
 	bool			isClientInChannel(const string &nick) const;
 	bool			isClientInChannel(int fd) const;
