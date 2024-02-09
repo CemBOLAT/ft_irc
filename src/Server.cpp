@@ -47,7 +47,7 @@ Server::~Server()
 	}
 	this->clients.clear();
 	this->channels.clear();
-	TextEngine::red("Server closed", std::cout) << std::endl;
+	TextEngine::red("Server closed", TextEngine::printTime(cout)) << std::endl;
 }
 
 void Server::run()
@@ -98,8 +98,7 @@ void Server::run()
 			inet_ntop(AF_INET, &(clientAddress.sin_addr), newClient._ip, INET_ADDRSTRLEN); // Convert IP to string and save it to newClient
 			clients.push_back(newClient); // Add new client to clients vector
 			FD_SET(newSocket, &readfds); // kullanıcın okuma ucu açılır
-
-			TextEngine::green("New connection from ", cout) << newClient._ip << ":" << newClient.getPort() << std::endl;
+			TextEngine::green("New connection from ", TextEngine::printTime(cout)) << newClient._ip << ":" << newClient.getPort() << std::endl;
 			isReadyToSelect = true;
 			continue;
 		}
@@ -123,7 +122,7 @@ void Server::run()
 					FD_CLR(a->getFd(), &readfds);
 					FD_CLR(a->getFd(), &writefds);
 					close(a->getFd());
-					TextEngine::blue("Client ", cout) << a->_ip << ":" << a->getPort() << " disconnected" << std::endl;
+					TextEngine::blue("Client ", TextEngine::printTime(cout)) << a->_ip << ":" << a->getPort() << " disconnected" << std::endl;
 					clients.erase(a);
 					isReadyToSelect = true;
 				}
@@ -138,16 +137,13 @@ void Server::run()
 					}
 					if (msg[msg.length() - 1] != '\n')
 					{
-						std::cout << "Buffer: " << a->getBuffer() << std::endl;
 						a->setBuffer(a->getBuffer() + msg);
-						std::cout << "Buffer: " << a->getBuffer() << std::endl;
 						isReadyToSelect = true;
 						break;
 					}
 					/*
 						komutu ele alacan
 					*/
-					std::cout << "Buffer:#" << a->getBuffer() << "$" <<std::endl;
 					runCommand(a->getBuffer() + msg, *a);
 					a->setBuffer("");
 					Utils::clearBuffer(this->buffer, 1024);
@@ -183,7 +179,7 @@ void Server::run()
 					FD_CLR(a->getFd(), &readfds); // askıya alınmış bir soketin okuma ucu kapatılır
 					close(a->getFd()); // soket kapatılır
 					this->clients.erase(a);
-					TextEngine::blue("Client ", cout) << a->_ip << ":" << a->getPort() << " disconnected" << std::endl;
+					TextEngine::blue("Client ", TextEngine::printTime(cout)) << a->_ip << ":" << a->getPort() << " disconnected" << std::endl;
 				}
 				Utils::clearBuffer(this->buffer, 1024);
 				isReadyToSelect = true;
@@ -206,7 +202,7 @@ void Server::initSocket()
 	}
 	else
 	{
-		TextEngine::printTime(cout) << TextEngine::green("Socket created successfully! ", cout) << std::endl;
+		TextEngine::green("Socket created successfully! ", TextEngine::printTime(cout)) << std::endl;
 	}
 	int opt = 1;
 	// setsockopt: Sets socket options
@@ -220,7 +216,7 @@ void Server::initSocket()
 	}
 	else
 	{
-		TextEngine::printTime(cout) << TextEngine::green("Socket option set successfully! ", cout) << std::endl;
+		TextEngine::green("Socket option set successfully! ", TextEngine::printTime(cout)) << std::endl;
 	}
 	fcntl(this->_socket, F_SETFL, O_NONBLOCK); // Set socket to non-blocking f
 	memset(&address, 0, sizeof(address)); // Zeroing address
@@ -239,7 +235,7 @@ void Server::initSocket()
 	}
 	else
 	{
-		TextEngine::printTime(cout) << TextEngine::green("Socket binded successfully! ", cout) << std::endl;
+		TextEngine::green("Socket binded successfully! ", TextEngine::printTime(cout)) << std::endl;
 	}
 
 	/*
@@ -251,14 +247,16 @@ void Server::initSocket()
 	}
 	else
 	{
-		TextEngine::printTime(cout) << TextEngine::green("Socket listening successfully! ", cout) << std::endl;
+		TextEngine::green("Socket listening successfully! ", TextEngine::printTime(cout)) << 	std::endl;
 	 }
 }
 
 void Server::runCommand(const std::string &command, Client &client)
 {
-	std::cout << "comming as #" << command << "#" << std::endl;
 	string trimmed = Utils::ft_trim(command, " \r"); // bakacam buraya
+	TextEngine::underline("----------------\n", cout);
+	TextEngine::cyan("Input is : " + trimmed, cout);
+
 	//cout << trimmed << "#" << std::endl;
 	/*
 		CAP LS 302
