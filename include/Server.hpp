@@ -130,15 +130,15 @@ private:
 	Server();
 	Server(const Server &other);
 	Server &operator=(const Server &other);
-	void initSocket();
-	void runCommand(const string &command, Client &client);
-	void hexChatEntry(VECT_STR &, Client &);
+	void	initSocket();
+	void	runCommand(const string &command, Client &client);
+	void	hexChatEntry(VECT_STR &, Client &);
 
-	int port;
-	string password;
-	int _socket;
-	struct sockaddr_in address;
-	struct sockaddr_in clientAddress;
+	int					port;
+	string				password;
+	int					_socket;
+	struct sockaddr_in	address;
+	struct sockaddr_in	clientAddress;
 
 	fd_set readfds;
 	fd_set writefds;
@@ -151,11 +151,11 @@ private:
 		avoid blocking sockets we need to use select() function
 		and copy the original sets to supplementary sets
 	*/
-	fd_set writeFdsCopy;
-	fd_set readFdsCopy;
+	fd_set				writeFdsCopy;
+	fd_set				readFdsCopy;
 
-	vector<Client> clients;
-	vector<Room> channels;
+	vector<Client>		clients;
+	vector<Room>		channels;
 
-	char buffer[1024];
+	char				buffer[1024];
 };

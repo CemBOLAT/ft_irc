@@ -6,10 +6,16 @@
 #include <stdlib.h>
 using namespace std;
 
+Server	 *serverInstance = NULL;
+
 void	signalHandler(int signum){
-	std::cout << "Caught signal " << signum << std::endl;
+	std::cout << "\rCaught signal " << signum << std::endl;
 	if (signum == SIGINT)
 	{
+		if (serverInstance){
+			delete serverInstance;
+			serverInstance = NULL;
+		}
 		exit(0);
 	}
 }
@@ -21,10 +27,11 @@ int main(int argc, char** argv)
 		if (argc != 3){
 			throw Exception(USAGE);
 		}
-		Server	server(argv[1], argv[2]);
-		signal(SIGPIPE, SIG_IGN);
+		Server	*server = new Server(argv[1], argv[2]);
+		serverInstance = server;
+		signal(SIGPIPE, SIG_IGN); // signal makes : 
 		signal(SIGINT, signalHandler); // catch ctrl+c (macos and linux have different signals)
-		server.run();
+		server->run();
 	}
 	catch(const Exception& e)
 	{
