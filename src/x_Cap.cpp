@@ -17,10 +17,6 @@ namespace Executor
 			{
 				client.setType(hexchat);
 			}
-			else if (params == "NC")
-			{
-				client.setType(nc);
-			}
 			else if (params == "BOT")
 			{
 				client.setType(bot);

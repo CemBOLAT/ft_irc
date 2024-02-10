@@ -1,12 +1,12 @@
 #include "Room.hpp"
 
+Room::Room()
+	: _clients(), _name(""), _topic(""), Operator(NULL), _keycode(0),
+	  _key(""), _chanelLimit(0) {}
 
-Room::Room() 
-    : _clients(), _name(""), _topic(""), Operator(NULL), _keycode(0),
-    _key(""), _chanelLimit(0){}
-
-Room::~Room(){}
-Room::Room(const Room &other){
+Room::~Room() {}
+Room::Room(const Room &other)
+{
 	*this = other;
 }
 
@@ -28,14 +28,16 @@ Room &Room::operator=(const Room &other)
 	return *this;
 }
 
-void    Room::removeClient(int fd){
-    for (size_t i = 0; i < _clients.size(); i++){
-        if (_clients[i].getFd() == fd)
+void Room::removeClient(int fd)
+{
+	for (size_t i = 0; i < _clients.size(); i++)
+	{
+		if (_clients[i].getFd() == fd)
 		{
-		    _clients.erase(_clients.begin() + i);
+			_clients.erase(_clients.begin() + i);
 			break;
 		}
-    }
+	}
 }
 
 bool Room::isClientInChannel(const string &nick) const
@@ -64,11 +66,18 @@ Client &Room::getClient(const string &nick)
 		if (it->getNick() == nick)
 			break;
 	}
-		return *it;
-	}
-bool	Room::isOperator(const Client &client) const
+	return *it;
+}
+
+#include <iostream>
+
+bool Room::isOperator(const Client &client) const
 {
 	if (Operator)
+	{
+		std::cout << "Operator->getNick() : " << Operator->getNick() << std::endl;
+		std::cout << "client.getNick() : " << client.getNick() << std::endl;
 		return Operator->getNick() == client.getNick();
+	}
 	return false;
 }

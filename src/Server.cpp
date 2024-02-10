@@ -298,8 +298,6 @@ void Server::runCommand(const std::string &command, Client &client)
 		}
 		else if (client.getIsRegistered() == false){
 			Utils::instaWrite(client.getFd(), "First you need to register\n\r");
-			//client.getmesagesFromServer().push_back("First you need to register\n\r");
-			//FD_SET(client.getFd(), &writefds);
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "join"))
 		{
@@ -354,6 +352,10 @@ void Server::runCommand(const std::string &command, Client &client)
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "notice"))
 		{
 			this->notice(splitFirst[1], client); // doğru
+		}
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "kick"))
+		{
+			this->kick(splitFirst[1], client);
 		}
 		else
 		{

@@ -38,6 +38,7 @@ public:
 	void list(Client &fd);
 	void names(Client &fd, const std::string &channel);
 	void notice(std::string &input, Client &fd);
+	void kick(std::string &input, Client &fd);
 
 	Room &getRoom(const string &name)
 	{

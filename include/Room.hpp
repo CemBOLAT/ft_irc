@@ -28,7 +28,7 @@ public:
 	void			setOperator(Client *Operator) { this->Operator = Operator; }
 	void			setName(const string &name) { _name = name; }
 	void			setTopic(const string &topic) { _topic = topic; }
-	void			sddClient(Client client) { _clients.push_back(client); }
+	void			addClient(Client client) { _clients.push_back(client); }
 	void			setKeycode(int keycode) { _keycode = keycode; }
 	void			setKey(const string &key) { _key = key; }
 	void			setChanelLimit(int limit) { _chanelLimit = limit; }

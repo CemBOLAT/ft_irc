@@ -7,8 +7,10 @@
 using namespace std;
 
 Server	 *serverInstance = NULL;
+volatile sig_atomic_t sigint = 0; // volatile sig_atomic_t is a type that is guaranteed to be accessed atomically even in the presence of signals.
 
 void	signalHandler(int signum){
+	sigint = 1;
 	std::cout << "\rCaught signal " << signum << std::endl;
 	if (signum == SIGINT)
 	{
@@ -29,7 +31,7 @@ int main(int argc, char** argv)
 		}
 		Server	*server = new Server(argv[1], argv[2]);
 		serverInstance = server;
-		signal(SIGPIPE, SIG_IGN); // signal makes : 
+		signal(SIGPIPE, SIG_IGN); // signal makes :
 		signal(SIGINT, signalHandler); // catch ctrl+c (macos and linux have different signals)
 		server->run();
 	}

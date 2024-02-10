@@ -5,6 +5,7 @@
 #include "../include/Server.hpp"
 #include "../include/Room.hpp"
 #include "../include/Utils.hpp"
+#include "../include/TextEngine.hpp"
 
 #include <iostream>
 #include <string>
@@ -78,7 +79,6 @@ void Server::join(C_STR_REF params, Client &client)
 							}
 						}
 						else {
-							std::cout << "No key and no limit" << std::endl;
 							(*it).getClients().push_back(client);
 							Utils::instaWrite(client.getFd(), JOIN_RESPONSE(client.getNick(), client._ip , roomName));
 							if (!(*it).getTopic().empty()){
@@ -93,7 +93,7 @@ void Server::join(C_STR_REF params, Client &client)
 				}
 			}
 		} else {
-			std::cout << "Create new room" << std::endl;
+			TextEngine::cyan("Room " + roomName + " has been created by " + client.getNick(), TextEngine::printTime(std::cout)) << std::endl;
 			Room room;
 			room.setName(roomName);
 			room.setOperator(&client);

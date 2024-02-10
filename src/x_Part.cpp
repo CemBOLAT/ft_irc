@@ -5,6 +5,7 @@
 #include "../include/Server.hpp"
 #include "../include/Room.hpp"
 #include "../include/Utils.hpp"
+#include "../include/TextEngine.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -26,9 +27,10 @@ void Server::part(C_STR_REF params, Client &client)
 		{
 			if (it->isClientInChannel(client.getFd()))
 			{
-				std::cout << client.getNick() << std::endl;
+				//std::cout << client.getNick() << std::endl;
 				if (it->getClients().size() == 1) // delete room.
 				{
+					TextEngine::magenta("Room " + it->getName() + " has been deleted", TextEngine::printTime(std::cout)) << std::endl;
 					channels.erase(it);
 					Utils::instaWrite(client.getFd(), RPL_PART(client.getUserByHexChat(), param[0]));
 				}
@@ -37,7 +39,7 @@ void Server::part(C_STR_REF params, Client &client)
 					it->removeClient(client.getFd());
 					it->setOperator((it->getClients().size() > 0) ? &it->getClients()[0] : NULL);
 					string reason = (param.size() > 1) ? Utils::ft_join(param, " ", 1) : "";
-					Utils::instaWrite(client.getFd(), RPL_PART(client.getUserByHexChat(), param[0])); 
+					Utils::instaWrite(client.getFd(), RPL_PART(client.getUserByHexChat(), param[0]));
 					Utils::instaWrite(client.getFd(), RPL_PART_REASON(client.getUserByHexChat(), param[0], reason));
 					responseAllClientResponseToGui(client, *it);
 				}
