@@ -27,6 +27,10 @@ void Server::kick(std::string &input, Client &fd)
 	channel = splited[0];
 	nick = splited[1];
 	message = Utils::ft_join(splited, " ", 2);
+	if (message[0] == ':')
+	{
+		message = message.substr(1);
+	}
 	if (channel[0] != '#')
 	{
 		channel = "#" + channel;
@@ -36,7 +40,7 @@ void Server::kick(std::string &input, Client &fd)
 		Utils::instaWrite(fd.getFd(), ERR_NOSUCHCHANNEL(fd.getNick(), channel));
 		return;
 	}
-	Room room = getRoom(channel);
+	Room &room = getRoom(channel);
 	if (!room.isClientInChannel(fd.getFd()))
 	{
 		Utils::instaWrite(fd.getFd(), ERR_NOTONCHANNEL(fd.getNick(), channel));
@@ -57,16 +61,11 @@ void Server::kick(std::string &input, Client &fd)
 		Utils::instaWrite(fd.getFd(), ERR_OWNKICK(fd.getNick(), channel));
 		return;
 	}
-	for (VECT_ITER_CLI it = room.getClients().begin(); it != room.getClients().end(); it++)
-	{
-		if (it->getNick() == nick)
-		{
-			FD_SET(it->getFd(), &writefds);
-			it->getmesagesFromServer().push_back(KICK_RESPONSE(fd.getNick(), fd._ip, channel, message));
-			room.removeClient(it->getFd());
-			responseAllClientResponseToGui(fd, room);
-			TextEngine::red("KICKED: " + nick + " from " + channel, TextEngine::printTime(cout)) << endl;
-			break;
-		}
-	}
+	//return;
+	Client &kicked = getClientByNick(nick);
+	room.removeClient(kicked.getFd());
+	kicked.getmesagesFromServer().push_back(RPL_KICK(fd.getNick() ,channel, kicked.getNick(), message));
+	Utils::instaWrite(kicked.getFd(), RPL_KICK(fd.getNick(), channel, kicked.getNick(), message));
+	responseAllClientResponseToGui(fd, room);
+	TextEngine::red("Kicked " + nick + " from " + channel, TextEngine::printTime(std::cout)) << std::endl;
 }

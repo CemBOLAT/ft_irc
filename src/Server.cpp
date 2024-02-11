@@ -286,9 +286,7 @@ void Server::runCommand(C_STR_REF command, Client &client)
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "quit"))
 		{
-			if (splitFirst.size() == 1)
-				this->quit("", client);
-			this->quit(splitFirst[1], client); // bozuk
+			this->quit(client); // bozuk
 		}
 		else if (client.getIsPassworded() == false){
 			Utils::instaWrite(client.getFd(), "First you need to pass the password\n\r");

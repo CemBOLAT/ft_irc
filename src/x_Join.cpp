@@ -89,7 +89,7 @@ void Server::join(C_STR_REF params, Client &client)
 				}
 			}
 		} else {
-			TextEngine::cyan("Room " + roomName + " has been created by " + client.getNick(), TextEngine::printTime(std::cout)) << std::endl;
+			TextEngine::green("Room " + roomName + " has been created by " + client.getNick(), TextEngine::printTime(std::cout)) << std::endl;
 			Room room;
 			room.setName(roomName);
 			room.setOperator(&client);

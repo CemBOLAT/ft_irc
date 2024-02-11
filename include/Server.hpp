@@ -32,7 +32,7 @@ public:
 	void who(C_STR_REF command, Client &client);
 	void topic(C_STR_REF command, Client &client);
 	void ping(C_STR_REF params, Client &client);
-	void quit(C_STR_REF params, Client &client);
+	void quit(Client &client);
 	void whois(std::string &s, Client &cli);
 	void pong(C_STR_REF params, Client &client);
 	void list(Client &fd);
@@ -120,6 +120,17 @@ public:
 				return;
 			}
 		}
+	}
+
+	Client &getClientByNick(C_STR_REF nick)
+	{
+		VECT_ITER_CLI it = this->clients.begin();
+		for (; it != this->clients.end(); ++it)
+		{
+			if (it->getNick() == nick)
+				return *it;
+		}
+		return *it;
 	}
 
 	int getSocket() const
