@@ -1,17 +1,16 @@
-#include "../include/Client.hpp"
-#include "../include/Executor.hpp"
-#include "../include/Exception.hpp"
-#include "../include/Client.hpp"
-#include "../include/Server.hpp"
-#include "../include/Room.hpp"
-#include "../include/Utils.hpp"
+#include "Client.hpp"
+#include "Executor.hpp"
+#include "Exception.hpp"
+#include "Client.hpp"
+#include "Server.hpp"
+#include "Room.hpp"
+#include "Utils.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Define.hpp"
 
-#define RPL_PING(source, nick, second)				":" + source + " PONG " + nick + " :"+ second + "\r\n"
-
-void Server::ping(const std::string& params, Client& client) {
+void Server::ping(C_STR_REF params, Client& client) {
     if (params.empty()) {
         return;
     }

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include "Define.hpp"
 #include <netinet/in.h>
 
 using std::string;
@@ -30,15 +31,15 @@ public:
 	string		  	getHostName() const;
 	string		  	getServerName() const;
 
-	void			setHostName(const string &hostName);
-	void			setServerName(const string &serverName);
-	void			setNick(const string &nick);
+	void			setHostName(C_STR_REF hostName);
+	void			setServerName(C_STR_REF serverName);
+	void			setNick(C_STR_REF nick);
 	void			setRegistered(bool val);
 	void			setPassworded(bool val);
-	void			setBuffer(const string &str);
+	void			setBuffer(C_STR_REF str);
 	void			setType(int type);
-	void			setUserName(const string &userName);
-	void			setRealName(const string &realName);
+	void			setUserName(C_STR_REF userName);
+	void			setRealName(C_STR_REF realName);
 	string			getUserByHexChat() const;
 	virtual			~Client();
 	char			_ip[INET_ADDRSTRLEN]; // 123.123.123.123 + \0

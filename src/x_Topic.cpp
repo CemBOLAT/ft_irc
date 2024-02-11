@@ -1,19 +1,15 @@
-#include "../include/Client.hpp"
-#include "../include/Executor.hpp"
-#include "../include/Exception.hpp"
-#include "../include/Utils.hpp"
+#include "Client.hpp"
+#include "Executor.hpp"
+#include "Exception.hpp"
+#include "Utils.hpp"
+#include "Define.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
 #include <sstream>
+#include "Define.hpp"
 
-#define RPL_TOPIC(nick, channel, topic) ": 332 " + nick + " " + channel + " :" + topic + "\r\n"
-#define RPL_NOTOPIC(nick, channel) ": 331 " + nick + " " + channel + " :No topic is set\r\n"
-#define RPL_TOPICSET(nick, channel, topic, time) ": 333 " + nick + " " + channel + " " + time + "\r\n"
-#define ERR_NOSUCHCHANNEL(source, channel) "403 " + source + " " + channel + " :No such channel"
-#define ERR_NEEDMOREPARAMS(source, command) ": 461 " + source + " " + command + " :Not enough parameters" + "\r\n"
-
-void Server::topic(const std::string &command, Client &client)
+void Server::topic(C_STR_REF command, Client &client)
 {
 	std::vector<std::string> params = Utils::ft_split(command, " ");
 	if (params.size() < 2)

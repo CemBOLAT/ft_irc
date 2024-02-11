@@ -1,10 +1,11 @@
-#include "../include/Client.hpp"
-#include "../include/Executor.hpp"
-#include "../include/Exception.hpp"
-#include "../include/Client.hpp"
-#include "../include/Server.hpp"
-#include "../include/Room.hpp"
-#include "../include/Utils.hpp"
+#include "Client.hpp"
+#include "Executor.hpp"
+#include "Exception.hpp"
+#include "Client.hpp"
+#include "Server.hpp"
+#include "Room.hpp"
+#include "Utils.hpp"
+#include "Define.hpp"
 
 #include <iostream>
 #include <string>
@@ -26,7 +27,7 @@ namespace {
 void    Server::list(Client &fd){
     std::cout << "List" << std::endl;
     Utils::instaWrite(fd.getFd(), RPL_LISTSTART(fd.getNick(), intToString(channels.size())));
-    for (std::vector<Room>::iterator it = channels.begin(); it != channels.end(); it++){
+    for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); it++){
         if (it->getTopic().empty()){
             Utils::instaWrite(fd.getFd(), RPL_LIST(fd.getNick(), it->getName(), intToString(it->getClients().size()), " Empty"));
         }

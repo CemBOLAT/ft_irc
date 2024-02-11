@@ -1,7 +1,7 @@
-#include "../include/Exception.hpp"
-#include "../include/TextEngine.hpp"
-#include "../include/Utils.hpp"
-#include "../include/Server.hpp"
+#include "Exception.hpp"
+#include "TextEngine.hpp"
+#include "Utils.hpp"
+#include "Server.hpp"
 #include <signal.h>
 #include <stdlib.h>
 using namespace std;

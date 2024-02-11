@@ -1,10 +1,11 @@
-#include "../include/Client.hpp"
-#include "../include/Executor.hpp"
-#include "../include/Exception.hpp"
+#include "Client.hpp"
+#include "Executor.hpp"
+#include "Exception.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
 #include "Utils.hpp"
+#include "Define.hpp"
 
 namespace Executor
 {

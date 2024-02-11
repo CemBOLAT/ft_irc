@@ -4,23 +4,19 @@
 #include <vector>
 #include <unistd.h>
 #include <stdlib.h>
-#include "../include/Client.hpp"
-#include "../include/Executor.hpp"
-#include "../include/Exception.hpp"
-#include "../include/Client.hpp"
-#include "../include/Server.hpp"
-#include "../include/Room.hpp"
-#include "../include/Utils.hpp"
-
-#define RPL_QUIT(source, message)                   (std::string(":") + source + " QUIT :" + message + "\r\n")
-#define RPL_PART(source, channel)                   (std::string(":") + source + " PART :" + channel + "\r\n")
-
+#include "Client.hpp"
+#include "Executor.hpp"
+#include "Exception.hpp"
+#include "Client.hpp"
+#include "Server.hpp"
+#include "Room.hpp"
+#include "Utils.hpp"
+#include "Define.hpp"
 
 //quit is broken
-
-void Server::quit(const std::string& input, Client& client) {
+void Server::quit(C_STR_REF input, Client& client) {
     // Remove client from all channels
-    for (std::vector<Room>::iterator it = channels.begin(); it != channels.end(); ++it) {
+    for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); ++it) {
         if (it->isClientInChannel(client.getFd())) {
             if (it->getClients().size() == 1) {
                 Server::part(it->getName(), client);
@@ -32,8 +28,8 @@ void Server::quit(const std::string& input, Client& client) {
     }
 
     // Erase client from the clients vector
-    std::vector<Client>::iterator eraseBegin = clients.end();
-    for (std::vector<Client>::iterator it = clients.begin(); it != clients.end(); ++it) {
+    VECT_ITER_CLI eraseBegin = clients.end();
+    for (VECT_ITER_CLI it = clients.begin(); it != clients.end(); ++it) {
         if (it->getFd() == client.getFd()) {
             eraseBegin = it;
             break;

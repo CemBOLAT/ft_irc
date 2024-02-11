@@ -1,18 +1,15 @@
-#include "../include/Client.hpp"
-#include "../include/Executor.hpp"
-#include "../include/Server.hpp"
-#include "../include/TextEngine.hpp"
-#include "../include/Exception.hpp"
-#include "../include/Utils.hpp"
+#include "Client.hpp"
+#include "Executor.hpp"
+#include "Server.hpp"
+#include "TextEngine.hpp"
+#include "Exception.hpp"
+#include "Utils.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Define.hpp"
 
-#define RPL_NICK(nick, user, ip, newnick) ":" + nick + "!" + user + "@" + ip + " NICK :" + newnick + "\r\n"
-#define ERR_NICKNAMEEMPTY(source) ": 433 " + source + " " + source + " :Nickname cannot empty" + "\r\n"
-#define ERR_NICKNAMEINUSE(source) ": 433 " + source + " " + source + " :Nickname is already in use" + "\r\n"
-
-int isNickExist(const std::string &s, const std::vector<Client> &clients, int fd)
+int isNickExist(C_STR_REF s, const std::vector<Client> &clients, int fd)
 {
 	for (std::vector<Client>::const_iterator it = clients.begin(); it != clients.end(); ++it)
 	{
@@ -32,14 +29,17 @@ void Server::nick(C_STR_REF params, Client &client, fd_set &fd)
 	{
 		Utils::instaWrite(client.getFd(), ERR_NICKNAMEINUSE(client.getUserByHexChat()));
 	}
+	else if (params[0] == '#'){
+		Utils::instaWrite(client.getFd(), ERR_ERRONEUSNICKNAME(client.getUserByHexChat()));
+	}
 	else
 	{
 		// std::cout << RPL_NICK(client.getNick(), client.getUserName(), client._ip, params); // debug
 		client.getmesagesFromServer().push_back(RPL_NICK(client.getNick(), client.getUserName(), client._ip, params));
 		FD_SET(client.getFd(), &fd);
-		for (std::vector<Room>::iterator it = channels.begin(); it != channels.end(); ++it)
+		for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); ++it)
 		{
-			for (std::vector<Client>::iterator cit = it->getClients().begin(); cit != it->getClients().end(); ++cit)
+			for (VECT_ITER_CLI cit = it->getClients().begin(); cit != it->getClients().end(); ++cit)
 			{
 				if (client.getNick() == cit->getNick())
 				{

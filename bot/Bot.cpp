@@ -1,10 +1,10 @@
-#include "../include/Server.hpp"
-#include "../include/Exception.hpp"
-#include "../include/Utils.hpp"
-#include "../include/TextEngine.hpp"
-#include "../include/Client.hpp"
-#include "../include/Executor.hpp"
-#include "../include/Room.hpp"
+#include "Server.hpp"
+#include "Exception.hpp"
+#include "Utils.hpp"
+#include "TextEngine.hpp"
+#include "Client.hpp"
+#include "Executor.hpp"
+#include "Room.hpp"
 #include <string>
 #include <iostream>
 #include <sys/socket.h>
@@ -13,7 +13,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <sys/select.h>
-#include "../include/Define.hpp"
+#include "Define.hpp"
 #include <fcntl.h>
 #include "Bot.hpp"
 

@@ -1,19 +1,16 @@
-#include "../include/Client.hpp"
-#include "../include/Room.hpp"
-#include "../include/Executor.hpp"
-#include "../include/Exception.hpp"
-#include "../include/Utils.hpp"
+#include "Client.hpp"
+#include "Room.hpp"
+#include "Executor.hpp"
+#include "Exception.hpp"
+#include "Utils.hpp"
+#include "Define.hpp"
 
 #include "Define.hpp"
 #include <iostream>
 #include <string>
+
 #include <vector>
 #include <cstdlib>
-
-#define ERR_NEEDMOREPARAMS(source, command)			": 461 " + source + " " + command + " :Not enough parameters" + "\r\n"			  //MODE
-#define ERR_NOSUCHCHANNEL(source, channel)			": 403 " + source + " " + channel + " :No such channel" + "\r\n"					//MODE
-#define ERR_CHANOPRIVSNEEDED(source, channel)		": 482 " + source + " " + channel + " :You're not the channel operator" + "\r\n"	//MODE
-#define RPL_MODE(source, channel, modes, args)		":" + source + " MODE " + channel + " " + modes + " " + args + "\r\n"
 
 void	Server::mode(C_STR_REF input, Client &client){
 	std::vector<std::string> params = Utils::ft_split(input, " ");
@@ -38,7 +35,7 @@ void	Server::mode(C_STR_REF input, Client &client){
 		Utils::instaWrite(client.getFd(), ERR_CHANOPRIVSNEEDED(client.getNick(), params[0]));
 		return;
 	}
-	if (params[1] == "+k"){
+	if (params[1] == "+k"){ // sets a key to the channel (working not properly) 
 		if (params.size() == 3){
 			it->setKey(params[2]);
 			it->setKeycode(it->getKeycode() | KEY_CODE);
@@ -52,24 +49,28 @@ void	Server::mode(C_STR_REF input, Client &client){
 			Utils::instaWrite(client.getFd(), RPL_MODE(client.getNick(), it->getName(), "-k", ""));
 		}
 	}
-	if (params[1] == "+l"){
+	if (params[1] == "+l"){ // limits the number of clients in the channel (working properly)
 		if (params.size() == 3){
+			if (it->getClients().size() < static_cast<size_t>(atoi(params[2].c_str()))){
+				Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "MODE"));
+				return;
+			}
 			it->setChanelLimit(atoi(params[2].c_str()));
 			it->setKeycode(it->getKeycode() | LIMIT_CODE);
 			Utils::instaWrite(client.getFd(), RPL_MODE(client.getNick(), it->getName(), "+l", params[2]));
 		}
 	}
-	if (params[1] == "-l"){
+	if (params[1] == "-l"){ // removes the limit of clients in the channel (working properly)
 		if (params.size() == 2){
 			it->setKeycode(it->getKeycode() ^ LIMIT_CODE);
 			Utils::instaWrite(client.getFd(), RPL_MODE(client.getNick(), it->getName(), "-l", ""));
 		}
 	}
-	if (params[1] == "+o"){
+	if (params[1] == "+o"){ // gives operator status to a client (working properly)
 		if (params.size() == 3){
 			std::string joined = Utils::ft_join(params, " ", 2);
 			std::cout << "#" << joined << "#" << std::endl;
-			op(params[0] +  " " + joined, client); // call op function
+			op(params[0] +  " " + joined, client);
 		}
 	}
 }

@@ -1,10 +1,10 @@
-#include "../include/Server.hpp"
-#include "../include/Exception.hpp"
-#include "../include/Utils.hpp"
-#include "../include/TextEngine.hpp"
-#include "../include/Client.hpp"
-#include "../include/Executor.hpp"
-#include "../include/Room.hpp"
+#include "Server.hpp"
+#include "Exception.hpp"
+#include "Utils.hpp"
+#include "TextEngine.hpp"
+#include "Client.hpp"
+#include "Executor.hpp"
+#include "Room.hpp"
 #include <string>
 #include <iostream>
 #include <sys/socket.h>
@@ -13,11 +13,11 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <sys/select.h>
-#include "../include/Define.hpp"
+#include "Define.hpp"
 #include <fcntl.h>
 using std::cout;
 
-Server::Server(const std::string &port, const std::string &password)
+Server::Server(C_STR_REF port, C_STR_REF password)
 	: port(0), password(password)
 {
 	try
@@ -37,7 +37,7 @@ Server::Server(const std::string &port, const std::string &password)
 
 Server::~Server()
 {
-	for (vector<Client>::iterator it = clients.begin(); it != clients.end(); it++)
+	for (VECT_ITER_CLI it = clients.begin(); it != clients.end(); it++)
 	{
 		close(it->getFd());
 	}
@@ -104,7 +104,7 @@ void Server::run()
 		}
 
 		// okuma işlemi
-		for (VECT_ITER a = clients.begin(); a != clients.end() && !isReadyToSelect; a++)
+		for (VECT_ITER_CLI a = clients.begin(); a != clients.end() && !isReadyToSelect; a++)
 		{
 			if (FD_ISSET(a->getFd(), &this->readFdsCopy))
 			{
@@ -114,7 +114,7 @@ void Server::run()
 				// nc de ise sadece \n gönderiyor
 				if (bytesRead <= 0)
 				{
-					for (std::vector<Room>::iterator it = this->channels.begin(); it != this->channels.end(); it++){
+					for (VECT_ITER_CHA it = this->channels.begin(); it != this->channels.end(); it++){
 						if (it->isClientInChannel(a->getFd())){
 							it->removeClient(a->getFd());
 						}
@@ -154,7 +154,7 @@ void Server::run()
 			// isReadyToSelect = true;
 		}
 		// yazma işlemi
-		for (VECT_ITER a = clients.begin(); a != clients.end() && !isReadyToSelect; ++a)
+		for (VECT_ITER_CLI a = clients.begin(); a != clients.end() && !isReadyToSelect; ++a)
 		{
 			if (FD_ISSET(a->getFd(), &this->writeFdsCopy))
 			{
@@ -170,7 +170,7 @@ void Server::run()
 				}
 				if (bytesWritten == 0)
 				{
-					for (std::vector<Room>::iterator it = this->channels.begin(); it != this->channels.end(); it++){
+					for (VECT_ITER_CHA it = this->channels.begin(); it != this->channels.end(); it++){
 						if (it->isClientInChannel(a->getFd())){
 							it->removeClient(a->getFd()); // kullanıcıyı odadan silmek çünkü ikiside farklı objeler
 						}
@@ -251,7 +251,7 @@ void Server::initSocket()
 	 }
 }
 
-void Server::runCommand(const std::string &command, Client &client)
+void Server::runCommand(C_STR_REF command, Client &client)
 {
 	string trimmed = Utils::ft_trim(command, " \r"); // bakacam buraya
 	TextEngine::underline("----------------\n", cout);
@@ -394,7 +394,7 @@ void Server::responseAllClientResponseToGui(Client &client, Room &room)  {
 	Room tmp = room;
 	if (tmp.getName().empty())
 		return;
-	for (std::vector<Client>::iterator it = tmp.getClients().begin(); it != tmp.getClients().end(); it++){
+	for (VECT_ITER_CLI it = tmp.getClients().begin(); it != tmp.getClients().end(); it++){
 		if (it->getFd() == tmp.getOperator()->getFd())
 			message += "@";
 		message += (*it).getNick() + " ";

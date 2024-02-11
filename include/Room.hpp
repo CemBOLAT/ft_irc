@@ -26,17 +26,17 @@ public:
 	Client			*getOperator() { return Operator; }
 
 	void			setOperator(Client *Operator) { this->Operator = Operator; }
-	void			setName(const string &name) { _name = name; }
-	void			setTopic(const string &topic) { _topic = topic; }
+	void			setName(C_STR_REF name) { _name = name; }
+	void			setTopic(C_STR_REF topic) { _topic = topic; }
 	void			addClient(Client client) { _clients.push_back(client); }
 	void			setKeycode(int keycode) { _keycode = keycode; }
-	void			setKey(const string &key) { _key = key; }
+	void			setKey(C_STR_REF key) { _key = key; }
 	void			setChanelLimit(int limit) { _chanelLimit = limit; }
 	void			removeClient(int fd);
 
-	bool			isClientInChannel(const string &nick) const;
+	bool			isClientInChannel(C_STR_REF nick) const;
 	bool			isClientInChannel(int fd) const;
-	Client			&getClient(const string &nick);
+	Client			&getClient(C_STR_REF nick);
 	bool			isOperator(const Client &client) const;
 
 private:

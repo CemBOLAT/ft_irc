@@ -40,7 +40,7 @@ void Room::removeClient(int fd)
 	}
 }
 
-bool Room::isClientInChannel(const string &nick) const
+bool Room::isClientInChannel(C_STR_REF nick) const
 {
 	for (size_t i = 0; i < _clients.size(); i++)
 	{
@@ -58,9 +58,9 @@ bool Room::isClientInChannel(int fd) const
 	}
 	return false;
 }
-Client &Room::getClient(const string &nick)
+Client &Room::getClient(C_STR_REF nick)
 {
-	std::vector<Client>::iterator it = _clients.begin();
+	VECT_ITER_CLI it = _clients.begin();
 	for (; it != _clients.end(); ++it)
 	{
 		if (it->getNick() == nick)
@@ -75,8 +75,6 @@ bool Room::isOperator(const Client &client) const
 {
 	if (Operator)
 	{
-		std::cout << "Operator->getNick() : " << Operator->getNick() << std::endl;
-		std::cout << "client.getNick() : " << client.getNick() << std::endl;
 		return Operator->getNick() == client.getNick();
 	}
 	return false;

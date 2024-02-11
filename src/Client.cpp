@@ -1,4 +1,4 @@
-#include "../include/Client.hpp"
+#include "Client.hpp"
 #include <cstring>
 
 Client::Client(int fd, int port) :
@@ -76,7 +76,7 @@ vector<string> &Client::getmesagesFromServer() {
 	return _messagesFromServer;
 }
 
-void Client::setNick(const string &nick) {
+void Client::setNick(C_STR_REF nick) {
 	_nick = nick;
 }
 
@@ -88,7 +88,7 @@ void Client::setPassworded(bool val) {
 	isPassworded = val;
 }
 
-void Client::setBuffer(const string &str) {
+void Client::setBuffer(C_STR_REF str) {
 	buffer = str;
 }
 
@@ -96,19 +96,19 @@ void Client::setType(int type) {
 	_type = type;
 }
 
-void Client::setUserName(const string &userName) {
+void Client::setUserName(C_STR_REF userName) {
 	_userName = userName;
 }
 
-void Client::setRealName(const string &realName) {
+void Client::setRealName(C_STR_REF realName) {
 	_realName = realName;
 }
 
-void Client::setHostName(const string &hostName) {
+void Client::setHostName(C_STR_REF hostName) {
 	_hostName = hostName;
 }
 
-void Client::setServerName(const string &serverName) {
+void Client::setServerName(C_STR_REF serverName) {
 	_serverName = serverName;
 }
 

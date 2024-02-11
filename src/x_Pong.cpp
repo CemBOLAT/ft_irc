@@ -1,16 +1,17 @@
-#include "../include/Client.hpp"
-#include "../include/Executor.hpp"
-#include "../include/Exception.hpp"
-#include "../include/Client.hpp"
-#include "../include/Server.hpp"
-#include "../include/Room.hpp"
-#include "../include/Utils.hpp"
+#include "Client.hpp"
+#include "Executor.hpp"
+#include "Exception.hpp"
+#include "Client.hpp"
+#include "Server.hpp"
+#include "Room.hpp"
+#include "Utils.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
 
+#include "Define.hpp"
 
-void Server::pong(const std::string& params, Client& client) {
+void Server::pong(C_STR_REF params, Client& client) {
     if (params.empty()) {
         return;
     }

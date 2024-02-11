@@ -1,8 +1,8 @@
-#include "../include/Utils.hpp"
-#include "../include/Exception.hpp"
+#include "Utils.hpp"
+#include "Exception.hpp"
 #include "Client.hpp"
 #include "Room.hpp"
-
+#include "Define.hpp"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -14,7 +14,7 @@
 using namespace std;
 #define VECT_STR std::vector<std::string>
 
-int	Utils::ft_stoi(const std::string& str)
+int	Utils::ft_stoi(C_STR_REF str)
 {
 	int		result = 0;
 	int		sign = 1;
@@ -38,7 +38,7 @@ int	Utils::ft_stoi(const std::string& str)
 }
 
 
-string	Utils::ft_trim(const string& str, const string &delims){
+string	Utils::ft_trim(const string& str, C_STR_REF delims){
 	size_t first = str.find_first_not_of(delims);
 	size_t last = str.find_last_not_of(delims);
 	return str.substr(first, (last - first + 1));
@@ -52,7 +52,7 @@ void	Utils::clearBuffer(char *buffer, int size)
 	}
 }
 
-VECT_STR	Utils::ft_split(const string& str, const string &delims){
+VECT_STR	Utils::ft_split(const string& str, C_STR_REF delims){
 	VECT_STR	result;
 	size_t		start = 0;
 	size_t		end = 0;
@@ -113,13 +113,13 @@ void	Utils::instaSend(int fd, std::string message)
 
 void	Utils::instaWriteAll(std::vector<Client> clients, std::string message)
 {
-	for (std::vector<Client>::iterator it = clients.begin(); it != clients.end(); it++)
+	for (VECT_ITER_CLI it = clients.begin(); it != clients.end(); it++)
 	{
 		Utils::instaWrite((*it).getFd(), message);
 	}
 }
 
-VECT_STR	Utils::ft_firstWord(const std::string& str)
+VECT_STR	Utils::ft_firstWord(C_STR_REF str)
 {
 	VECT_STR	result;
 	size_t		start = 0;
@@ -143,7 +143,7 @@ VECT_STR	Utils::ft_firstWord(const std::string& str)
 	return (result);
 }
 
-std::string	Utils::ft_join(const std::vector<std::string> &vec, const std::string& delim, int start)
+std::string	Utils::ft_join(C_VECT_STR_R vec, C_STR_REF delim, int start)
 {
 	std::string result;
 	for (size_t i = start; i < vec.size(); i++)

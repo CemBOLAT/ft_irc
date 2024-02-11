@@ -1,12 +1,13 @@
-#include "../include/Client.hpp"
-#include "../include/Executor.hpp"
-#include "../include/Utils.hpp"
-#include "../include/Exception.hpp"
-#include "../include/TextEngine.hpp"
+#include "Client.hpp"
+#include "Executor.hpp"
+#include "Utils.hpp"
+#include "Exception.hpp"
+#include "TextEngine.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
 #include <sstream>
+#include "Define.hpp"
 
 namespace Executor
 {

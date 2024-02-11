@@ -20,7 +20,7 @@ class Room;
 class Server
 {
 public:
-	Server(const string &port, const string &password);
+	Server(C_STR_REF port, C_STR_REF password);
 	virtual ~Server();
 	void run();
 	void join(C_STR_REF params, Client &client);
@@ -29,20 +29,20 @@ public:
 	void op(C_STR_REF params, Client &client);
 	void mode(C_STR_REF params, Client &client);
 	void nick(C_STR_REF params, Client &client, fd_set &fd);
-	void who(const std::string &command, Client &client);
-	void topic(const std::string &command, Client &client);
+	void who(C_STR_REF command, Client &client);
+	void topic(C_STR_REF command, Client &client);
 	void ping(C_STR_REF params, Client &client);
 	void quit(C_STR_REF params, Client &client);
 	void whois(std::string &s, Client &cli);
-	void pong(const std::string &params, Client &client);
+	void pong(C_STR_REF params, Client &client);
 	void list(Client &fd);
-	void names(Client &fd, const std::string &channel);
+	void names(Client &fd, C_STR_REF channel);
 	void notice(std::string &input, Client &fd);
 	void kick(std::string &input, Client &fd);
 
-	Room &getRoom(const string &name)
+	Room &getRoom(C_STR_REF name)
 	{
-		vector<Room>::iterator it = this->channels.begin();
+		VECT_ITER_CHA it = this->channels.begin();
 		for (; it != this->channels.end(); ++it)
 		{
 			if (it->getName() == name)
@@ -56,9 +56,9 @@ public:
 		return this->channels;
 	}
 
-	bool isRoom(const string &name)
+	bool isRoom(C_STR_REF name)
 	{
-		vector<Room>::iterator it = this->channels.begin();
+		VECT_ITER_CHA it = this->channels.begin();
 		for (; it != this->channels.end(); ++it)
 		{
 			if (it->getName() == name)
@@ -83,7 +83,7 @@ public:
 	void responseAllClientResponseToGui(Client &client, Room &room);
 	bool isClientInRoom(Room &room, const Client &client)
 	{
-		vector<Client>::iterator it = room.getClients().begin();
+		VECT_ITER_CLI it = room.getClients().begin();
 		for (; it != room.getClients().end(); ++it)
 		{
 			if (it->getNick() == client.getNick())
@@ -93,12 +93,12 @@ public:
 	}
 	bool isClientInRoom(Client &client, string &room)
 	{
-		vector<Room>::iterator it = this->channels.begin();
+		VECT_ITER_CHA it = this->channels.begin();
 		for (; it != this->channels.end(); ++it)
 		{
 			if (it->getName() == room)
 			{
-				vector<Client>::iterator cit = it->getClients().begin();
+				VECT_ITER_CLI cit = it->getClients().begin();
 				for (; cit != it->getClients().end(); ++cit)
 				{
 					if (cit->getNick() == client.getNick())
@@ -111,7 +111,7 @@ public:
 
 	void removeClient(int fd)
 	{
-		vector<Client>::iterator it = this->clients.begin();
+		VECT_ITER_CLI it = this->clients.begin();
 		for (; it != this->clients.end(); ++it)
 		{
 			if (it->getFd() == fd)
@@ -132,7 +132,7 @@ private:
 	Server(const Server &other);
 	Server &operator=(const Server &other);
 	void	initSocket();
-	void	runCommand(const string &command, Client &client);
+	void	runCommand(C_STR_REF command, Client &client);
 	void	hexChatEntry(VECT_STR &, Client &);
 
 	int					port;

@@ -9,7 +9,7 @@ class Server;
 
 namespace Executor
 {
-	void pass(const std::string &param, Client &client, C_STR_REF password);
+	void pass(C_STR_REF param, Client &client, C_STR_REF password);
 	void cap(C_STR_REF params, Client &client);
 	void user(C_STR_REF params, Client &client);
 }

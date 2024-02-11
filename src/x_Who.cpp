@@ -1,43 +1,63 @@
-#include "../include/Client.hpp"
-#include "../include/Executor.hpp"
-#include "../include/Exception.hpp"
-#include "../include/Utils.hpp"
+#include "Client.hpp"
+#include "Executor.hpp"
+#include "Exception.hpp"
+#include "Utils.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
 #include <sstream>
+#include "Define.hpp"
 
-#define ERR_NEEDMOREPARAMS(source, command)			": 461 " + source + " " + command + " :Not enough parameters" + "\r\n"
-#define ERR_NOSUCHCHANNEL(source, channel)				"403 " + source + " " + channel + " :No such channel"
+#define RPL_WHOREPLY(nick, channel, user, host, server, nickName, hops, realName) (std::string(":") + "IRC" + " 352 " + nick + " " + channel + " " + user + " " + host + " " + server + " " + nickName + " " + hops + " " + realName + " H :0 " + realName + "\r\n")
 
-void Server::who(const std::string &command, Client &client) {
+void Server::who(C_STR_REF command, Client &client) {
 	std::vector<std::string> params = Utils::ft_split(command, " ");
 	if (params.empty()) {
 		Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "WHO"));
 		return;
 	}
-
-	std::string channelName = params[0];
 	bool channelFound = false;
-
-	for (size_t i = 0; i < this->channels.size(); ++i) {
-		Room &channel = this->channels[i];
-		if (channelName == channel.getName()) {
-			channelFound = true;
-			for (size_t j = 0; j < channel.getClients().size(); ++j) {
-				Client &user = channel.getClients()[j];
-				std::string channelOperator = channel.isOperator(user) ? "@" : "";
-				std::string hopcount = "0"; // Since this server doesn't forward WHO requests
-				std::string response = ":" + channel.getName() + " " +
-										user.getUserName() + " " + user.getHostName() + " " + user.getNick() + " " + channelOperator + " :" +
-										hopcount + " " + user.getRealName() + "\r\n";
-				Utils::instaWrite(client.getFd(), response);
+	for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); ++it) {
+		if (it->getName() == params[0]) {
+			for (VECT_ITER_CLI cit = it->getClients().begin(); cit != it->getClients().end(); ++cit) {
+				std::string operatorSymbol = it->isOperator(*cit) ? "@" : "";
+				Utils::instaWrite(client.getFd(), RPL_WHOREPLY(client.getNick(), it->getName(), cit->getUserName(), cit->getHostName(), cit->getServerName(), cit->getNick(), "0", cit->getRealName()));
+				channelFound = true;
 			}
-			break;
+			Utils::instaWrite(client.getFd(), ":IRC 315 " + client.getNick() + " " + it->getName() + " :End of /WHO list.\r\n");
+			return;
 		}
 	}
 
 	if (!channelFound) {
-		Utils::instaWrite(client.getFd(), ERR_NOSUCHCHANNEL(client.getNick(), channelName));
+		Utils::instaWrite(client.getFd(), ERR_NOSUCHCHANNEL(client.getNick(), params[0]));
 	}
 }
+/*
+void who(const std::string& channelName, int clientFd) {
+        bool channelFound = false;
+        
+        // Iterate through channels
+        for (const auto& channel : channels) {
+            if (channel.getName() == channelName) {
+                channelFound = true;
+                
+                // Iterate through users in the channel
+                for (const auto& user : channel.getUsers()) {
+                    std::string operatorSymbol = user.isOperator() ? "@" : "";
+                    std::string response = ":" + user.getUsername() + "!" + user.getHostname() + " " +
+                                           user.getServername() + " " + user.getUsername() + " " +
+                                           operatorSymbol + " " + user.getRealname() + "\r\n";
+                    sendResponse(clientFd, response);
+                }
+                break;
+            }
+        }
+        
+        // If channel not found, send error response
+        if (!channelFound) {
+            std::string response = ":SERVER 403 " + channelName + " :No such channel\r\n";
+            sendResponse(clientFd, response);
+        }
+
+*/

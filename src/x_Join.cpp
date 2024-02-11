@@ -1,11 +1,12 @@
-#include "../include/Client.hpp"
-#include "../include/Executor.hpp"
-#include "../include/Exception.hpp"
-#include "../include/Client.hpp"
-#include "../include/Server.hpp"
-#include "../include/Room.hpp"
-#include "../include/Utils.hpp"
-#include "../include/TextEngine.hpp"
+#include "Client.hpp"
+#include "Executor.hpp"
+#include "Exception.hpp"
+#include "Client.hpp"
+#include "Server.hpp"
+#include "Room.hpp"
+#include "Utils.hpp"
+#include "TextEngine.hpp"
+#include "Define.hpp"
 
 #include <iostream>
 #include <string>
@@ -13,11 +14,6 @@
 #include <vector>
 
 using namespace std;
-
-#define JOIN_RESPONSE(nick, ip, channel) ":" + nick + "!" + nick + "@" + ip + " JOIN " + channel + "\r\n"
-#define RPL_TOPIC(nick, ip, channel, topic) ":" + nick + "!" + nick + "@" + ip + " TOPIC " + channel + " :" + topic + "\r\n"
-#define ERR_CHANNELISFULL(source, channel)			": 471 " + source + " " + channel + " :Cannot join channel (+l)" + "\r\n"			//JOIN
-#define ERR_BADCHANNELKEY(source, channel)			": 475 " + source + " " + channel + " :Cannot join channel (+k)" + "\r\n"			//JOIN
 
 void Server::join(C_STR_REF params, Client &client)
 {
@@ -35,7 +31,7 @@ void Server::join(C_STR_REF params, Client &client)
 			roomName = "#" + roomName;
 		}
 		if (isRoom(roomName)){
-			for (vector<Room>::iterator it = channels.begin(); it != channels.end(); it++){
+			for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); it++){
 				if (roomName == (*it).getName()){
 					if (!it->isClientInChannel(client.getFd())){
 						if ((it->getKeycode() & KEY_CODE) && (it->getKeycode() & LIMIT_CODE))
@@ -43,26 +39,26 @@ void Server::join(C_STR_REF params, Client &client)
 							if (it->getChanelLimit() <= (int) it->getClients().size()) {
 								Utils::instaWrite(client.getFd(), ERR_CHANNELISFULL(client.getNick(), roomName));
 							}
-							else if (!key.empty() && it->getKey() != key) {
+							else if (key == "" && it->getKey() != key) {
 								Utils::instaWrite(client.getFd(), ERR_BADCHANNELKEY(client.getNick(), roomName));
 							}
 							else {
 								(*it).getClients().push_back(client);
 								Utils::instaWrite(client.getFd(), JOIN_RESPONSE(client.getNick(), client._ip , roomName));
 								if (!(*it).getTopic().empty()){
-									Utils::instaWrite(client.getFd(), RPL_TOPIC(client.getNick(), client._ip , roomName, (*it).getTopic()));
+									Utils::instaWrite(client.getFd(), RPL_TOPIC_JOIN(client.getNick(), client._ip , roomName, (*it).getTopic()));
 								}
 							}
 						}
 						else if ((it->getKeycode() & KEY_CODE)) {
-							if (!key.empty() && it->getKey() != key) {
+							if (key == "" && it->getKey() != key) {
 								Utils::instaWrite(client.getFd(), ERR_BADCHANNELKEY(client.getNick(), roomName));
 							}
 							else {
 								(*it).getClients().push_back(client);
 								Utils::instaWrite(client.getFd(), JOIN_RESPONSE(client.getNick(), client._ip , roomName));
 								if (!(*it).getTopic().empty()){
-									Utils::instaWrite(client.getFd(), RPL_TOPIC(client.getNick(), client._ip , roomName, (*it).getTopic()));
+									Utils::instaWrite(client.getFd(), RPL_TOPIC_JOIN(client.getNick(), client._ip , roomName, (*it).getTopic()));
 								}
 							}
 						}
@@ -74,7 +70,7 @@ void Server::join(C_STR_REF params, Client &client)
 								(*it).getClients().push_back(client);
 								Utils::instaWrite(client.getFd(), JOIN_RESPONSE(client.getNick(), client._ip , roomName));
 								if (!(*it).getTopic().empty()){
-									Utils::instaWrite(client.getFd(), RPL_TOPIC(client.getNick(), client._ip , roomName, (*it).getTopic()));
+									Utils::instaWrite(client.getFd(), RPL_TOPIC_JOIN(client.getNick(), client._ip , roomName, (*it).getTopic()));
 								}
 							}
 						}
@@ -82,7 +78,7 @@ void Server::join(C_STR_REF params, Client &client)
 							(*it).getClients().push_back(client);
 							Utils::instaWrite(client.getFd(), JOIN_RESPONSE(client.getNick(), client._ip , roomName));
 							if (!(*it).getTopic().empty()){
-								Utils::instaWrite(client.getFd(), RPL_TOPIC(client.getNick(), client._ip , roomName, (*it).getTopic()));
+								Utils::instaWrite(client.getFd(), RPL_TOPIC_JOIN(client.getNick(), client._ip , roomName, (*it).getTopic()));
 							}
 						}
 					} else {

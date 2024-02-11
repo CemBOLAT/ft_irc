@@ -1,22 +1,19 @@
-#include "../include/Client.hpp"
-#include "../include/Executor.hpp"
-#include "../include/Exception.hpp"
-#include "../include/Client.hpp"
-#include "../include/Server.hpp"
-#include "../include/Room.hpp"
-#include "../include/Utils.hpp"
-#include "../include/TextEngine.hpp"
+#include "Client.hpp"
+#include "Executor.hpp"
+#include "Exception.hpp"
+#include "Client.hpp"
+#include "Server.hpp"
+#include "Room.hpp"
+#include "Utils.hpp"
+#include "TextEngine.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
-
-#define ERR_NOTONCHANNEL(s, channel) ":442 " + s + " " + channel + " :You're not on that channel\r\n"
-#define RPL_PART(source, channel)					":" + source + " PART :" + channel + "\r\n"
-#define RPL_PART_REASON(source, channel, reason)	":" + source + " PART " + channel + " :" + reason + "\r\n"
+#include "Define.hpp"
 
 void Server::part(C_STR_REF params, Client &client)
 {
-	vector<Room>::iterator it = channels.begin();
+	VECT_ITER_CHA it = channels.begin();
 	vector<string> param = Utils::ft_split(params, " ");
 	if (param[0][0] != '#'){
 		param[0] = "#" + param[0];

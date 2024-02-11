@@ -1,14 +1,13 @@
-#include "../include/Client.hpp"
-#include "../include/Room.hpp"
-#include "../include/Executor.hpp"
-#include "../include/Exception.hpp"
+#include "Client.hpp"
+#include "Room.hpp"
+#include "Executor.hpp"
+#include "Exception.hpp"
 #include "Define.hpp"
 #include "Utils.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
-
-#define ERR_CHANOPRIVSNEEDED(source, channel) ": 482 " + source + " " + channel + " :You're not the channel operator" + "\r\n"
+#include "Define.hpp"
 
 namespace
 {
@@ -29,7 +28,7 @@ void Server::op(C_STR_REF params, Client &client)
 	Room room = getRoom(splitFirst[0]);
 	if (client.getNick() == room.getOperator()->getNick())
 	{
-		vector<Client>::iterator it = room.getClients().begin();
+		VECT_ITER_CLI it = room.getClients().begin();
 		for (; it != room.getClients().end(); ++it)
 		{
 			if ((*it).getNick() == splitFirst[1])
@@ -40,7 +39,7 @@ void Server::op(C_STR_REF params, Client &client)
 		Client newOp = room.getClient(splitFirst[1]);
 		Client oldOp = room.getClient(client.getNick());
 
-		for (vector<Room>::iterator it = channels.begin(); it != channels.end(); it++)
+		for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); it++)
 		{
 			if (splitFirst[0] == it->getName() && getClientPosInRoom(*it, oldOp) != -1 && getClientPosInRoom(*it, newOp) != -1)
 			{
