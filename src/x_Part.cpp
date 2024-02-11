@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include "Define.hpp"
+#include <stdlib.h>
 
 void Server::part(C_STR_REF params, Client &client)
 {

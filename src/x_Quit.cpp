@@ -12,21 +12,16 @@
 #include "Room.hpp"
 #include "Utils.hpp"
 #include "Define.hpp"
+#include "TextEngine.hpp"
 
-//quit is broken
 void Server::quit(C_STR_REF input, Client& client) {
-    // Remove client from all channels
+//quit is broken
+    //// Remove client from all channels
     for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); ++it) {
         if (it->isClientInChannel(client.getFd())) {
-            if (it->getClients().size() == 1) {
-                Server::part(it->getName(), client);
-            } else {
-                it->removeClient(client.getFd());
-                Utils::instaWrite(client.getFd(), RPL_PART(client.getUserByHexChat(), input));
-            }
+            Server::part(it->getName(), client);
         }
     }
-
     // Erase client from the clients vector
     VECT_ITER_CLI eraseBegin = clients.end();
     for (VECT_ITER_CLI it = clients.begin(); it != clients.end(); ++it) {
@@ -40,13 +35,6 @@ void Server::quit(C_STR_REF input, Client& client) {
         clients.erase(eraseBegin);
     }
 
-    // Send quit message to the client
-    std::string msg = input;
-    if (!msg.empty() && msg[0] == ':') {
-        msg = msg.substr(1);
-    }
-    Utils::instaWrite(client.getFd(), RPL_QUIT(client.getUserByHexChat(), msg.c_str()));
-
     // Clear file descriptors if necessary
     if (FD_ISSET(client.getFd(), &writefds)) {
         FD_CLR(client.getFd(), &writefds);
@@ -54,7 +42,8 @@ void Server::quit(C_STR_REF input, Client& client) {
     if (FD_ISSET(client.getFd(), &readfds)) {
         FD_CLR(client.getFd(), &readfds);
     }
-
-    // Close client socket
+    Utils::instaWrite(client.getFd(), RPL_QUIT(client.getUserByHexChat(), input.c_str()));
+    //// Close client socket
     close(client.getFd());
+    TextEngine::blue("Client ", TextEngine::printTime(cout)) << client._ip << ":" << client.getPort() << " disconnected" << std::endl;
 }

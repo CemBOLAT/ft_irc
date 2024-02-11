@@ -284,6 +284,12 @@ void Server::runCommand(C_STR_REF command, Client &client)
 		{
 			Executor::cap(splitFirst[1], client); // doğru
 		}
+		else if (Utils::isEqualNonSensitive(splitFirst[0], "quit"))
+		{
+			if (splitFirst.size() == 1)
+				this->quit("", client);
+			this->quit(splitFirst[1], client); // bozuk
+		}
 		else if (client.getIsPassworded() == false){
 			Utils::instaWrite(client.getFd(), "First you need to pass the password\n\r");
 			//client.getmesagesFromServer().push_back("First you need to pass the password\n\r");
@@ -329,10 +335,6 @@ void Server::runCommand(C_STR_REF command, Client &client)
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "topic"))
 		{
 			this->topic(splitFirst[1], client); // doğru
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "quit"))
-		{
-			this->quit(splitFirst[1], client); // bozuk
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "whois"))
 		{
@@ -393,7 +395,7 @@ void Server::responseAllClientResponseToGui(Client &client, Room &room)  {
 	if (tmp.getName().empty())
 		return;
 	for (VECT_ITER_CLI it = tmp.getClients().begin(); it != tmp.getClients().end(); it++){
-		if (it->getFd() == tmp.getOperator()->getFd())
+		if (tmp.isOperator(*it))
 			message += "@";
 		message += (*it).getNick() + " ";
 	}
