@@ -4,13 +4,11 @@ BOT_NAME := turco
 BOT_DIR := bot
 SRC_DIR := src
 
-
 BOTSRC := $(wildcard $(BOT_DIR)/*.cpp)
 SRC := $(wildcard $(SRC_DIR)/*.cpp)
 
 BOT_OBJ_DIR := bot_obj
 OBJ_DIR := obj
-
 
 BOT_OBJ := $(addprefix $(BOT_OBJ_DIR)/,$(notdir $(BOTSRC:.cpp=.o)))
 OBJ := $(addprefix $(OBJ_DIR)/,$(notdir $(SRC:.cpp=.o)))
@@ -26,10 +24,12 @@ all: $(NAME)
 bot: $(BOT_NAME)
 
 $(BOT_NAME): $(BOT_OBJ)
-	$(CC) $(CFLAGS) $(BOT_OBJ) -o $(BOT_NAME)
+	@mkdir -p $(BOT_OBJ_DIR)
+	$(CC) $(CFLAGS) $(INC) $(BOT_OBJ) -o $(BOT_NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(INC) $(OBJ) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(OBJ_DIR)
@@ -50,3 +50,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re $(NAME) $(BOT_NAME)
+
+.SUFFIXES: .cpp .o

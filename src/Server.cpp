@@ -15,6 +15,7 @@
 #include <sys/select.h>
 #include "Define.hpp"
 #include <fcntl.h>
+
 using std::cout;
 
 Server::Server(C_STR_REF port, C_STR_REF password)
@@ -384,9 +385,6 @@ void Server::hexChatEntry(VECT_STR &params, Client &client)
 		}
 	}
 }
-
-#define RPL_NAMREPLY(nick, channel, users)			": 353 " + nick + " = " + channel + " :" + users + "\r\n"
-#define RPL_ENDOFNAMES(nick, channel)				": 366 " + nick + " " + channel + " :End of /NAMES list\r\n"
 
 // oda içinki kullanıcıları gösterir (ve değişim yapar hexchat için)
 void Server::responseAllClientResponseToGui(Client &client, Room &room)  {

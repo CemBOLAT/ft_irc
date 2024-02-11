@@ -16,7 +16,7 @@
 #define INV_PARAM "Invalid parameters\n"
 
 #define hexchat 1
-#define bot 2
+#define bot_cap 2
 
 #define KEY_CODE 1
 #define LIMIT_CODE 2
@@ -58,3 +58,5 @@
 # define ERR_NICKNAMEEMPTY(source) ": 433 " + source + " " + source + " :Nickname cannot empty" + "\r\n"
 # define ERR_NICKNAMEINUSE(source) ": 433 " + source + " " + source + " :Nickname is already in use" + "\r\n"
 #define ERR_ERRONEUSNICKNAME(nick) ": 432 " + nick + " :Erroneus nickname\r\n"
+#define RPL_NAMREPLY(nick, channel, users)			": 353 " + nick + " = " + channel + " :" + users + "\r\n"
+#define RPL_ENDOFNAMES(nick, channel)				": 366 " + nick + " " + channel + " :End of /NAMES list\r\n"

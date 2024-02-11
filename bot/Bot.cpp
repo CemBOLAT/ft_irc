@@ -19,10 +19,22 @@
 
 #define RPL_ENTRY(password, nick, user) "CAP BOT\nPASS" + password + "\nNICK " + nick + "\nUSER " + user + " 0 * :turco\n"
 
-
-Bot::Bot(int port, std::string password) : _port(port), _password(password)
+Bot::Bot(C_STR_REF port, C_STR_REF password) : _port(0), _password(password)
 {
 	this->_name = "IRC_BOT";
+	try
+	{
+		this->_port = Utils::ft_stoi(port);
+		if (this->_port < 0 || this->_port > 65535)
+		{
+			throw Exception("Invalid port");
+		}
+		initSocket();
+	}
+	catch (const Exception &e)
+	{
+		throw e;
+	}
 	this->initSocket();
 }
 
@@ -56,17 +68,17 @@ void Bot::initSocket()
 		TextEngine::green("Socket option set successfully", cout) << std::endl;
 	}
 	fcntl(this->_socket, F_SETFL, O_NONBLOCK); // Set socket to non-blocking
-	memset(&address, 0, sizeof(address));	   // Zeroing address
-	address.sin_family = AF_INET;			   // IPv4
-	address.sin_addr.s_addr = INADDR_ANY;	   // TCP
-	address.sin_port = htons(this->port);	   // ENDIANNESS
+	memset(&_bot_addr, 0, sizeof(_bot_addr));	   // Zeroing address
+	_bot_addr.sin_family = AF_INET;			   // IPv4
+	_bot_addr.sin_addr.s_addr = INADDR_ANY;	   // TCP
+	_bot_addr.sin_port = htons(this->_port);	   // ENDIANNESS
 
 	// Big Endinian : 1 2 3 4 5
 	// Little Endian : 5 4 3 2 1
 
 	// htons: Host to network short
 	// bind socket to port
-	if (connect(this->_socket, (struct sockaddr *)&address, sizeof(address)) < 0)
+	if (connect(this->_socket, (struct sockaddr *)&_bot_addr, sizeof(_bot_addr)) < 0)
 	{
 		throw Exception("Connection failed");
 	}
@@ -79,7 +91,7 @@ void Bot::initSocket()
 #define MESSAGE "PRIVMSG #test :Hello world\n"
 #define BOT_WELCOME(nick, msg) "PRIVMSG " + nick + " :" + msg + "\n"
 
-void	Server::run(){
+void	Bot::run(){
 	int	forOnce = 1;
 	while (true){
 		fd_set	readfds;
@@ -98,7 +110,7 @@ void	Server::run(){
 			continue;
 		}
 		else {
-			int bytesRead = read(this->_socket, this->_buffer, BUFFER_SIZE);
+			int bytesRead = read(this->_socket, this->_buffer, 1024);
 			if (bytesRead < 0){
 				throw Exception("Read failed");
 			}

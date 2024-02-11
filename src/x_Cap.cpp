@@ -19,7 +19,7 @@ namespace Executor
 			}
 			else if (params == "BOT")
 			{
-				client.setType(bot);
+				client.setType(bot_cap);
 			}
 			else
 			{

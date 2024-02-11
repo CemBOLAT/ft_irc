@@ -9,10 +9,11 @@
 #include <sstream>
 #include <string>
 
+#include "Utils.hpp"
 
 class Bot {
 	public:
-		Bot(int port, std::string password);
+		Bot(C_STR_REF port, C_STR_REF password);
 		~Bot() {
 			close(this->_socket);
 		}
