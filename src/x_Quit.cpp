@@ -24,14 +24,6 @@ void Server::quit(Client& client) {
 		}
 	}
 	//// Remove client from the server
-	std::vector<Client>::iterator it2 = this->clients.begin();
-	for (; it2 != this->clients.end(); ++it2) {
-		if (it2->getFd() == client.getFd()) {
-			Utils::instaWrite(it2->getFd(), RPL_QUIT(it2->getNick(), client.getNick()));
-			this->clients.erase(it2);
-			break;
-		}
-	}
 	if (FD_ISSET(client.getFd(), &writefds)) {
 		FD_CLR(client.getFd(), &writefds);
 	}
@@ -47,6 +39,14 @@ void Server::quit(Client& client) {
 			Utils::instaWrite(it3->getFd(), RPL_QUIT(it3->getNick(), client.getNick()));
 		}
 	}
+	std::vector<Client>::iterator it2 = this->clients.begin();
+	for (; it2 != this->clients.end(); ++it2) {
+		if (it2->getFd() == client.getFd()) {
+			Utils::instaWrite(it2->getFd(), RPL_QUIT(it2->getNick(), client.getNick()));
+			this->clients.erase(it2);
+			break;
+		}
+	}
 	// Print a message to the server
-	std::cout << "Client " << client.getNick() << " has quit" << std::endl;
+	TextEngine::blue("Client ", TextEngine::printTime(cout)) << client._ip << ":" << client.getPort() << " quited !" << std::endl;
 }
