@@ -73,7 +73,7 @@ Client &Room::getClient(C_STR_REF nick)
 
 bool Room::isOperator(const Client &client) const
 {
-	if (Operator)
+	if (Operator && !Operator->getNick().empty() && !client.getNick().empty())
 	{
 		return Operator->getNick() == client.getNick();
 	}

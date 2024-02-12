@@ -10,6 +10,7 @@
 #include <sstream>
 #include <iomanip>
 #include <unistd.h>
+#include <vector>
 
 using namespace std;
 #define VECT_STR std::vector<std::string>
@@ -153,4 +154,17 @@ std::string	Utils::ft_join(C_VECT_STR_R vec, C_STR_REF delim, int start)
 			result += delim;
 	}
 	return result;
+}
+
+int	Utils::getMaxFd(const vector<Client> &vec){
+	if (vec.size() == 0){
+		return (3); // maybe wrong
+	}
+	int		max = vec[0].getFd();
+	for (vector<Client>::const_iterator it = vec.begin(); it != vec.end(); ++it){
+		if (max < it->getFd()){
+			max = it->getFd();
+		}
+	}
+	return (max);
 }

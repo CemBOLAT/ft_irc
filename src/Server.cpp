@@ -81,7 +81,7 @@ void Server::run()
 			// select: bir thread içerisinde birden fazla soketin okuma ve yazma işlemlerini takip etmek için kullanılır
 			// volatile kullanmak bazen sorunlara sebep oluyor bu sebepten dolayı fdleri kopyalayıp
 			// onlar üzerinden işlem yapmak daha mantıklı
-			if (select(clients.size() + 4, &readFdsCopy, &writeFdsCopy, NULL, 0) < 0)
+			if (select(Utils::getMaxFd(clients) + 1, &readFdsCopy, &writeFdsCopy, NULL, 0) < 0)
 			{
 				throw Exception("Select failed");
 			}
@@ -254,9 +254,8 @@ void Server::initSocket()
 
 void Server::runCommand(C_STR_REF command, Client &client)
 {
-	string trimmed = Utils::ft_trim(command, " \r"); // bakacam buraya
 	TextEngine::underline("----------------\n", cout);
-	TextEngine::cyan("Input is : " + trimmed, cout);
+	TextEngine::cyan("Input is : " + command, cout);
 
 	//cout << trimmed << "#" << std::endl;
 	/*
@@ -267,7 +266,7 @@ void Server::runCommand(C_STR_REF command, Client &client)
 		#
 	*/
 
-	VECT_STR softSplit = Utils::ft_split(trimmed, "\n");
+	VECT_STR softSplit = Utils::ft_split(command, "\n");
 	if (softSplit.size() == 0) return;
 	// iki splitin amacı \n ile gelen mesajları parçalamak
 	for (size_t i = 0; i < softSplit.size(); i++)
@@ -386,18 +385,14 @@ void Server::hexChatEntry(VECT_STR &params, Client &client)
 	}
 }
 
-// oda içinki kullanıcıları gösterir (ve değişim yapar hexchat için)
 void Server::responseAllClientResponseToGui(Client &client, Room &room)  {
 	string message;
-	Room tmp = room;
-	if (tmp.getName().empty())
-		return;
-	for (VECT_ITER_CLI it = tmp.getClients().begin(); it != tmp.getClients().end(); it++){
-		if (tmp.isOperator(*it))
+	for (VECT_ITER_CLI it = room.getClients().begin(); it != room.getClients().end(); it++){
+		if (room.isOperator(*it))
 			message += "@";
 		message += (*it).getNick() + " ";
 	}
-	Utils::instaWriteAll(tmp.getClients(), RPL_NAMREPLY(client.getNick(), room.getName(), message));
-	Utils::instaWriteAll(tmp.getClients(), RPL_ENDOFNAMES(client.getNick(), room.getName()));
+	Utils::instaWriteAll(room.getClients(), RPL_NAMREPLY(client.getNick(), room.getName(), message));
+	Utils::instaWriteAll(room.getClients(), RPL_ENDOFNAMES(client.getNick(), room.getName()));
 }
 

@@ -16,48 +16,21 @@ void Server::who(C_STR_REF command, Client &client) {
 		Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "WHO"));
 		return;
 	}
-	bool channelFound = false;
-	for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); ++it) {
-		if (it->getName() == params[0]) {
-			for (VECT_ITER_CLI cit = it->getClients().begin(); cit != it->getClients().end(); ++cit) {
-				std::string operatorSymbol = it->isOperator(*cit) ? "@" : "";
-				Utils::instaWrite(client.getFd(), RPL_WHOREPLY(client.getNick(), it->getName(), cit->getUserName(), cit->getHostName(), cit->getServerName(), cit->getNick(), "0", cit->getRealName()));
-				channelFound = true;
-			}
-			Utils::instaWrite(client.getFd(), ":IRC 315 " + client.getNick() + " " + it->getName() + " :End of /WHO list.\r\n");
-			return;
-		}
-	}
-
-	if (!channelFound) {
-		Utils::instaWrite(client.getFd(), ERR_NOSUCHCHANNEL(client.getNick(), params[0]));
-	}
+	//bool channelFound = false;
+    //std::cout << "size :" << channels.size() << std::endl;
+	//for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); ++it) {
+	//	if (it->getName() == params[0]) {
+	//		for (VECT_ITER_CLI cit = it->getClients().begin(); cit != it->getClients().end(); ++cit) {
+	//			std::string operatorSymbol = it->isOperator(*cit) ? "@" : "";
+	//			Utils::instaWrite(client.getFd(), RPL_WHOREPLY(client.getNick(), it->getName(), cit->getUserName(), cit->getHostName(), cit->getServerName(), cit->getNick(), "0", cit->getRealName()));
+	//			channelFound = true;
+	//		}
+	//		Utils::instaWrite(client.getFd(), ":IRC 315 " + client.getNick() + " " + it->getName() + " :End of /WHO list.\r\n");
+	//		return;
+	//	}
+	//}
+//
+	//if (!channelFound) {
+	//	Utils::instaWrite(client.getFd(), ERR_NOSUCHCHANNEL(client.getNick(), params[0]));
+	//}
 }
-/*
-void who(const std::string& channelName, int clientFd) {
-        bool channelFound = false;
-        
-        // Iterate through channels
-        for (const auto& channel : channels) {
-            if (channel.getName() == channelName) {
-                channelFound = true;
-                
-                // Iterate through users in the channel
-                for (const auto& user : channel.getUsers()) {
-                    std::string operatorSymbol = user.isOperator() ? "@" : "";
-                    std::string response = ":" + user.getUsername() + "!" + user.getHostname() + " " +
-                                           user.getServername() + " " + user.getUsername() + " " +
-                                           operatorSymbol + " " + user.getRealname() + "\r\n";
-                    sendResponse(clientFd, response);
-                }
-                break;
-            }
-        }
-        
-        // If channel not found, send error response
-        if (!channelFound) {
-            std::string response = ":SERVER 403 " + channelName + " :No such channel\r\n";
-            sendResponse(clientFd, response);
-        }
-
-*/
