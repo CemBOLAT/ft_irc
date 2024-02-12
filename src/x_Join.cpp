@@ -94,7 +94,7 @@ void Server::join(C_STR_REF params, Client &client)
 			TextEngine::green("Room " + roomName + " has been created by " + client.getNick(), TextEngine::printTime(std::cout)) << std::endl;
 			Room room;
 			room.setName(roomName);
-			room.setOperator(&client);
+			room.setOperator(client);
 			room.addClient(client);
 			channels.push_back(room);
 			Utils::instaWrite(client.getFd(), JOIN_RESPONSE(client.getNick(), client._ip , roomName));

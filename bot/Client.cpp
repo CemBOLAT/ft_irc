@@ -1,6 +1,9 @@
 #include "Client.hpp"
 #include <cstring>
 
+Client::Client() :
+	_ip("\0"), _fd(-1), _port(-1), isRegistered(false), isPassworded(false) {}
+
 Client::Client(int fd, int port) :
 	_fd(fd), _port(port), isRegistered(false), isPassworded(false) {}
 

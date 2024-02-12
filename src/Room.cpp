@@ -1,13 +1,14 @@
 
 #include <iostream>
 #include "Room.hpp"
+#include "Client.hpp"
 
 Room::Room()
 	: _clients(), _name(""), _topic(""), _keycode(0),
 	  _key(""), _chanelLimit(0)
 {
-	Client	op(-1, -1);
-	this->Operator = &op;
+	_clients.reserve(256);
+	Operator = Client();
 }
 
 Room::~Room() {}
@@ -78,9 +79,8 @@ Client &Room::getClient(C_STR_REF nick)
 
 bool Room::isOperator(const Client &client) const
 {
-	if (Operator)
-	{
-		return *Operator == client;
-	}
-	return false;
+	
+	return Operator == client;
+	
+	//return false;
 }

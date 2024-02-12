@@ -35,7 +35,7 @@ void Server::part(C_STR_REF params, Client &client)
 				else if (it->isOperator(client)) // if client is operator
 				{
 					it->removeClient(client.getFd());
-					it->setOperator((it->getClients().size() > 0) ? &it->getClients()[0] : NULL);
+					it->setOperator((it->getClients()[0]));
 					string reason = (param.size() > 1) ? Utils::ft_join(param, " ", 1) : "";
 					Utils::instaWrite(client.getFd(), RPL_PART(client.getUserByHexChat(), param[0]));
 					Utils::instaWrite(client.getFd(), RPL_PART_REASON(client.getUserByHexChat(), param[0], reason));

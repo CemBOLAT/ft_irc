@@ -26,7 +26,7 @@ void Server::op(C_STR_REF params, Client &client)
 {
 	std::vector<std::string> splitFirst = Utils::ft_split(params, " ");
 	Room room = getRoom(splitFirst[0]);
-	if (client.getNick() == room.getOperator()->getNick())
+	if (client.getNick() == room.getOperator().getNick())
 	{
 		VECT_ITER_CLI it = room.getClients().begin();
 		for (; it != room.getClients().end(); ++it)
@@ -46,7 +46,7 @@ void Server::op(C_STR_REF params, Client &client)
 				Client tmp = it->getClients()[getClientPosInRoom(*it, oldOp)];
 				it->getClients()[getClientPosInRoom(*it, oldOp)] = it->getClients()[getClientPosInRoom(*it, newOp)];
 				it->getClients()[getClientPosInRoom(*it, newOp)] = tmp;
-				it->setOperator(&(it->getClients()[getClientPosInRoom(*it, newOp)]));
+				it->setOperator((it->getClients()[getClientPosInRoom(*it, newOp)]));
 				Server::responseAllClientResponseToGui(newOp, room);
 				return;
 			}

@@ -1,43 +1,41 @@
+# Değişkenler
 NAME := ircserv
 BOT_NAME := turco
-
-BOT_DIR := bot
 SRC_DIR := src
-
-BOTSRC := $(wildcard $(BOT_DIR)/*.cpp)
-SRC := $(wildcard $(SRC_DIR)/*.cpp)
-
-BOT_OBJ_DIR := bot_obj
+BOT_DIR := bot
 OBJ_DIR := obj
+BOT_OBJ_DIR := $(BOT_DIR)/obj
+INC_DIR := include
+SRC := $(wildcard $(SRC_DIR)/*.cpp)
+BOT_SRC := $(wildcard $(BOT_DIR)/*.cpp)
+OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+BOT_OBJ := $(BOT_SRC:$(BOT_DIR)/%.cpp=$(BOT_OBJ_DIR)/%.o)
+INC := -I$(INC_DIR)
 
-BOT_OBJ := $(addprefix $(BOT_OBJ_DIR)/,$(notdir $(BOTSRC:.cpp=.o)))
-OBJ := $(addprefix $(OBJ_DIR)/,$(notdir $(SRC:.cpp=.o)))
-
-INC := -I include
-
-CC := c++
-
+# Derleyici ve Derleme Seçenekleri
+CC := g++
 CFLAGS := -Wall -Wextra -Werror -std=c++98 -g
 
+# Hedefler
 all: $(NAME)
 
-bot: $(BOT_NAME)
-
 $(BOT_NAME): $(BOT_OBJ)
-	@mkdir -p $(BOT_OBJ_DIR)
-	$(CC) $(CFLAGS) $(INC) $(BOT_OBJ) -o $(BOT_NAME)
+	$(CC) $(CFLAGS) $(INC) $^ -o $@
 
 $(NAME): $(OBJ)
-	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(INC) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(INC) $^ -o $@
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
-$(BOT_OBJ_DIR)/%.o: $(BOT_DIR)/%.cpp
-	@mkdir -p $(BOT_OBJ_DIR)
+$(BOT_OBJ_DIR)/%.o: $(BOT_DIR)/%.cpp | $(BOT_OBJ_DIR)
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
+$(BOT_OBJ_DIR):
+	mkdir -p $(BOT_OBJ_DIR)
 
 clean:
 	rm -rf $(OBJ_DIR)
@@ -49,6 +47,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re $(NAME) $(BOT_NAME)
-
-.SUFFIXES: .cpp .o
+.PHONY: all clean fclean re

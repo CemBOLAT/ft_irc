@@ -31,7 +31,7 @@ void	Server::mode(C_STR_REF input, Client &client){
 		Utils::instaWrite(client.getFd(), ERR_NOSUCHCHANNEL(client.getNick(), params[0]));
 		return;
 	}
-	if (it->getOperator()->getNick() != client.getNick()){
+	if (it->getOperator().getNick() != client.getNick()){
 		Utils::instaWrite(client.getFd(), ERR_CHANOPRIVSNEEDED(client.getNick(), params[0]));
 		return;
 	}

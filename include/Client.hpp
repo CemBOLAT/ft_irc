@@ -13,6 +13,7 @@ using std::vector;
 class Client
 {
 public:
+	Client();
 	Client(int fd, int port);
 	Client(const Client &other);
 	Client			&operator=(const Client &other);
@@ -60,5 +61,4 @@ private:
 	string			_hostName;
 	string			_serverName;
 	string			_realName;
-	Client();
 };

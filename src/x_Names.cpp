@@ -17,7 +17,7 @@ void    Server::names(Client &fd, C_STR_REF channel){
     for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); it++){
         if (it->getName() == channel){
             for (VECT_ITER_CLI it2 = it->getClients().begin(); it2 != it->getClients().end(); it2++){
-                if (it2->getFd() == it->getOperator()->getFd())
+                if (it2->getFd() == it->getOperator().getFd())
                     message += "@";
                 message += (*it2).getNick() + " ";
             }
