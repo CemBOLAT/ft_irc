@@ -42,7 +42,6 @@ void Server::quit(Client& client) {
 	std::vector<Client>::iterator it2 = this->clients.begin();
 	for (; it2 != this->clients.end(); ++it2) {
 		if (it2->getFd() == client.getFd()) {
-			Utils::instaWrite(it2->getFd(), RPL_QUIT(it2->getNick(), client.getNick()));
 			this->clients.erase(it2);
 			break;
 		}

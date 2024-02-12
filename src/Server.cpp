@@ -28,7 +28,7 @@ Server::Server(C_STR_REF port, C_STR_REF password)
 		{
 			throw Exception("Invalid port");
 		}
-		initSocket();
+		initSocket(); // sunucu soketi açılcak hacım.
 	}
 	catch (const Exception &e)
 	{

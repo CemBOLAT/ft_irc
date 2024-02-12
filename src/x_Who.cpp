@@ -17,7 +17,6 @@ void Server::who(C_STR_REF command, Client &client) {
 		return;
 	}
 	bool channelFound = false;
-	std::cout << "size :" << channels.size() << std::endl;
 	for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); ++it) {
 		if (it->getName() == params[0]) {
 			for (VECT_ITER_CLI cit = it->getClients().begin(); cit != it->getClients().end(); ++cit) {
