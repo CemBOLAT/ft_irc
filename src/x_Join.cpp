@@ -22,6 +22,8 @@ void Server::join(C_STR_REF params, Client &client)
 	if (!params.empty()){
 		ss >> roomName;
 		ss >> key;
+		if (key.empty())
+			key = "";
 		if (roomName.empty()){
 			client.getmesagesFromServer().push_back("JOIN :Not enough parameters\n\r");
 			FD_SET(client.getFd(), &writefds);
@@ -97,6 +99,13 @@ void Server::join(C_STR_REF params, Client &client)
 			channels.push_back(room);
 			Utils::instaWrite(client.getFd(), JOIN_RESPONSE(client.getNick(), client._ip , roomName));
 		}
+		std::cout << "***************" << std::endl;
+		//Room &room2 = getRoom(roomName);
+		//Client *op = room2.getOperator();
+		//std::cout << "***************" << std::endl;
+		//std::cout << getRoom(roomName).getName() << std::endl;
+		//std::cout << client.getNick() << std::endl;
+		//std::cout << "***************" << std::endl;
 		responseAllClientResponseToGui(client, getRoom(roomName));
 	} else {
 		client.getmesagesFromServer().push_back("JOIN :Not enough parameters");

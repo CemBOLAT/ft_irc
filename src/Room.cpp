@@ -1,8 +1,14 @@
+
+#include <iostream>
 #include "Room.hpp"
 
 Room::Room()
-	: _clients(), _name(""), _topic(""), Operator(NULL), _keycode(0),
-	  _key(""), _chanelLimit(0) {}
+	: _clients(), _name(""), _topic(""), _keycode(0),
+	  _key(""), _chanelLimit(0)
+{
+	Client	op(-1, -1);
+	this->Operator = &op;
+}
 
 Room::~Room() {}
 Room::Room(const Room &other)
@@ -58,6 +64,7 @@ bool Room::isClientInChannel(int fd) const
 	}
 	return false;
 }
+
 Client &Room::getClient(C_STR_REF nick)
 {
 	VECT_ITER_CLI it = _clients.begin();
@@ -69,13 +76,11 @@ Client &Room::getClient(C_STR_REF nick)
 	return *it;
 }
 
-#include <iostream>
-
 bool Room::isOperator(const Client &client) const
 {
-	if (Operator && !Operator->getNick().empty() && !client.getNick().empty())
+	if (Operator)
 	{
-		return Operator->getNick() == client.getNick();
+		return *Operator == client;
 	}
 	return false;
 }

@@ -64,7 +64,7 @@ void Server::kick(std::string &input, Client &fd)
 	//return;
 	Client &kicked = getClientByNick(nick);
 	room.removeClient(kicked.getFd());
-	kicked.getmesagesFromServer().push_back(RPL_KICK(fd.getNick() ,channel, kicked.getNick(), message));
+	//kicked.getmesagesFromServer().push_back(RPL_KICK(fd.getNick() ,channel, kicked.getNick(), message));
 	Utils::instaWrite(kicked.getFd(), RPL_KICK(fd.getNick(), channel, kicked.getNick(), message));
 	responseAllClientResponseToGui(fd, room);
 	TextEngine::red("Kicked " + nick + " from " + channel, TextEngine::printTime(std::cout)) << std::endl;

@@ -43,6 +43,10 @@ public:
 	string			getUserByHexChat() const;
 	virtual			~Client();
 	char			_ip[INET_ADDRSTRLEN]; // 123.123.123.123 + \0
+
+	bool			operator==(const Client &rhs) const {
+		return (rhs.getFd() == this->getFd());
+	}
 private:
 	int				_type; // 1:hex 2:nc 3:bot
 	int				_fd;

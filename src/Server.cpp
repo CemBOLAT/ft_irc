@@ -386,7 +386,7 @@ void Server::hexChatEntry(VECT_STR &params, Client &client)
 }
 
 void Server::responseAllClientResponseToGui(Client &client, Room &room)  {
-	string message;
+	string message = "";
 	for (VECT_ITER_CLI it = room.getClients().begin(); it != room.getClients().end(); it++){
 		if (room.isOperator(*it))
 			message += "@";
