@@ -17,11 +17,11 @@
 #include <fcntl.h>
 #include "Bot.hpp"
 
-#define RPL_ENTRY(password, nick, user) "CAP BOT\nPASS" + password + "\nNICK " + nick + "\nUSER " + user + " 0 * :turco\n"
+#define RPL_ENTRY(password, nick, user) "CAP BOT\nPASS " + password + "\nNICK " + nick + "\nUSER " + user + " 0 * :turco\n"
 
 Bot::Bot(C_STR_REF port, C_STR_REF password) : _port(0), _password(password)
 {
-	this->_name = "IRC_BOT";
+	this->_name = "turco";
 	try
 	{
 		this->_port = Utils::ft_stoi(port);
@@ -35,7 +35,6 @@ Bot::Bot(C_STR_REF port, C_STR_REF password) : _port(0), _password(password)
 	{
 		throw e;
 	}
-	this->initSocket();
 }
 
 void Bot::initSocket()
@@ -67,7 +66,7 @@ void Bot::initSocket()
 	{
 		TextEngine::green("Socket option set successfully", cout) << std::endl;
 	}
-	fcntl(this->_socket, F_SETFL, O_NONBLOCK); // Set socket to non-blocking
+	//fcntl(this->_socket, F_SETFL, O_NONBLOCK); // Set socket to non-blocking
 	memset(&_bot_addr, 0, sizeof(_bot_addr));	   // Zeroing address
 	_bot_addr.sin_family = AF_INET;			   // IPv4
 	_bot_addr.sin_addr.s_addr = INADDR_ANY;	   // TCP
@@ -89,10 +88,25 @@ void Bot::initSocket()
 }
 
 #define MESSAGE "PRIVMSG #test :Hello world\n"
-#define BOT_WELCOME(nick, msg) "PRIVMSG " + nick + " :" + msg + "\n"
+#define BOT_WELCOME(nick, msg) "PRIVMSG " + nick + " :" + msg + "\r\n"
+
+
+namespace {
+	string	getAnthem(){
+		string	turkishAnthem = "Korkma, sönmez bu şafaklarda yüzen al sancak;\r\n";
+		turkishAnthem += "Sönmeden yurdumun üstünde tüten en son ocak.\r\n";
+		turkishAnthem += "O benim milletimin yıldızıdır, parlayacak;\r\n";
+		turkishAnthem += "O benimdir, o benim milletimindir ancak.\r\n";
+		turkishAnthem += "Çatma, kurban olayım, çehreni ey nazlı hilal!\r\n";
+		turkishAnthem += "Kahraman ırkıma bir gül! Ne bu şiddet, bu celal?\r\n";
+		turkishAnthem += "Sana olmaz dökülen kanlarımız sonra helal...\r\n";
+		turkishAnthem += "Hakkıdır, Hakk'a tapan, milletimin istiklal!\r\n";
+		return turkishAnthem;
+	}
+}
 
 void	Bot::run(){
-	int	forOnce = 1;
+	Utils::instaWrite(this->_socket, RPL_ENTRY(this->_password, this->_name, "user"));
 	while (true){
 		fd_set	readfds;
 		FD_ZERO(&readfds);
@@ -120,13 +134,10 @@ void	Bot::run(){
 			else {
 				_buffer[bytesRead] = '\0';
 				vector<string> messages = Utils::ft_split(_buffer, " ");
-				std::cout << _buffer << std::endl;
-				if (forOnce){
-					Utils::instaWrite(this->_socket, RPL_ENTRY(this->_password, this->_name, "user"));
-					forOnce = 0;
-				}
-				else if (messages[0] == "turco" && messages[0] == "turco"){
-					Utils::instaWrite(this->_socket, BOT_WELCOME(messages[1], "Welcome to the server"));
+				TextEngine::blue(_buffer, TextEngine::printTime(cout)) << std::endl;
+				// size control et
+				if (messages[1] == "PRIVMSG" || messages[1] == "PING"){
+					Utils::instaWrite(this->_socket, BOT_WELCOME(Utils::ft_getNick(messages[0]), getAnthem()));
 				}
 			}
 		}

@@ -168,3 +168,20 @@ int	Utils::getMaxFd(const vector<Client> &vec){
 	}
 	return (max);
 }
+
+
+std::string	Utils::ft_getNick(const std::string& str)
+{
+	size_t		start = 1;
+	size_t		end = 0;
+
+	for (size_t i = 1; i < str.size(); i++)
+	{
+		if (str[i] == '!')
+		{
+			end = i;
+			break ;
+		}
+	}
+	return (str.substr(start, end - start));
+}

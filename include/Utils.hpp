@@ -26,4 +26,5 @@ namespace Utils {
 	std::string			ft_join(C_VECT_STR_R vec, C_STR_REF delim, int start);
 	void				instaSend(int fd, std::string message);
 	int					getMaxFd(const vector<Client> &v);
+	std::string			ft_getNick(const std::string& str);
 }
