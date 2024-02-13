@@ -93,14 +93,7 @@ void Bot::initSocket()
 
 namespace {
 	string	getAnthem(){
-		string	turkishAnthem = "Korkma, sönmez bu şafaklarda yüzen al sancak;\r\n";
-		turkishAnthem += "Sönmeden yurdumun üstünde tüten en son ocak.\r\n";
-		turkishAnthem += "O benim milletimin yıldızıdır, parlayacak;\r\n";
-		turkishAnthem += "O benimdir, o benim milletimindir ancak.\r\n";
-		turkishAnthem += "Çatma, kurban olayım, çehreni ey nazlı hilal!\r\n";
-		turkishAnthem += "Kahraman ırkıma bir gül! Ne bu şiddet, bu celal?\r\n";
-		turkishAnthem += "Sana olmaz dökülen kanlarımız sonra helal...\r\n";
-		turkishAnthem += "Hakkıdır, Hakk'a tapan, milletimin istiklal!\r\n";
+		string	turkishAnthem = "Korkma, sönmez bu şafaklarda yüzen al sancak;";
 		return turkishAnthem;
 	}
 }
@@ -137,7 +130,13 @@ void	Bot::run(){
 				TextEngine::blue(_buffer, TextEngine::printTime(cout)) << std::endl;
 				// size control et
 				if (messages[1] == "PRIVMSG" || messages[1] == "PING"){
-					Utils::instaWrite(this->_socket, BOT_WELCOME(Utils::ft_getNick(messages[0]), getAnthem()));
+					string	nick = Utils::ft_trim(Utils::ft_getNick(messages[0]), "\r\n");
+					if (messages[1] == "PING"){
+						Utils::instaWrite(this->_socket, "PONG " + messages[2] + "\r\n");
+					}
+					else {
+						Utils::instaWrite(this->_socket, BOT_WELCOME(nick, getAnthem()));
+					}
 				}
 			}
 		}
