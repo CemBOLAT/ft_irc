@@ -1,6 +1,7 @@
 #include "Utils.hpp"
 #include "Exception.hpp"
 #include "Client.hpp"
+#include "TextEngine.hpp"
 #include "Room.hpp"
 #include "Define.hpp"
 #include <string>
@@ -99,7 +100,7 @@ std::string Utils::getTime()
 void Utils::instaWrite(int fd, std::string message) {
 
     if (write(fd, message.c_str(), message.length()) < 0) {
-        std::cout << "MSG cannot send" << std::endl;
+		TextEngine::red("Error: message send", TextEngine::printTime(std::cout));
         return;
     }
 }
@@ -108,7 +109,7 @@ void	Utils::instaSend(int fd, std::string message)
 {
 	if (send(fd, message.c_str(), message.length(), 0) < 0)
 	{
-		std::cout << "MSG cannot send" << std::endl;
+		TextEngine::red("Error: message send", TextEngine::printTime(std::cout));
 	}
 }
 
