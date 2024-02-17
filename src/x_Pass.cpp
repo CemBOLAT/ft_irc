@@ -21,7 +21,8 @@ namespace Executor
 		else if (params != password)
 		{
 			Utils::instaWrite(client.getFd(), ": 464 " + client.getUserByHexChat() + " PASS :Invalid password\r\n"); 
-		} else {
+		}
+		else {
 			client.setPassworded(true);
 			Utils::instaWrite(client.getFd(), ": 001 Password accepted\r\n");
 		}

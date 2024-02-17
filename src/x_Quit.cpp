@@ -19,8 +19,21 @@ void Server::quit(Client& client) {
 	std::vector<Room>::iterator it = this->channels.begin();
 	for (; it != this->channels.end(); ++it) {
 		if (it->isClientInChannel(client.getFd())) {
-			it->removeClient(client.getFd());
-			responseAllClientResponseToGui(client, *it);
+			if (it->getClients().size() == 1) // delete room.
+			{
+				TextEngine::magenta("Room " + it->getName() + " has been deleted", TextEngine::printTime(std::cout)) << std::endl;
+				channels.erase(it);
+				--it;
+			}
+			else if (client.getFd() == it->getOperator().getFd()){
+				it->removeClient(client.getFd());
+				it->setOperator(it->getClients()[0]);
+				responseAllClientResponseToGui(client, *it);
+			}
+			else {
+				it->removeClient(client.getFd());
+				responseAllClientResponseToGui(client, *it);
+			}
 		}
 	}
 	//// Remove client from the server
@@ -36,6 +49,7 @@ void Server::quit(Client& client) {
 	std::vector<Client>::iterator it3 = this->clients.begin();
 	for (; it3 != this->clients.end(); ++it3) {
 		if (it3->getFd() != client.getFd()) {
+			std::cout << it3->getNick() << std::endl; //
 			Utils::instaWrite(it3->getFd(), RPL_QUIT(it3->getNick(), client.getNick()));
 		}
 	}

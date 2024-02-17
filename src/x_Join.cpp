@@ -37,7 +37,7 @@ void Server::join(C_STR_REF params, Client &client)
 				if (roomName == (*it).getName()){
 					if (!it->isClientInChannel(client.getFd())){
 						if ((it->getKeycode() & KEY_CODE) && (it->getKeycode() & LIMIT_CODE))
-						{
+						{ // odamda hem limit var hem şifre var
 							if (it->getChanelLimit() <= (int) it->getClients().size()) {
 								Utils::instaWrite(client.getFd(), ERR_CHANNELISFULL(client.getNick(), roomName));
 							}
@@ -52,7 +52,7 @@ void Server::join(C_STR_REF params, Client &client)
 								}
 							}
 						}
-						else if ((it->getKeycode() & KEY_CODE)) {
+						else if ((it->getKeycode() & KEY_CODE)) { // şifre var
 							if (key == "" && it->getKey() != key) {
 								Utils::instaWrite(client.getFd(), ERR_BADCHANNELKEY(client.getNick(), roomName));
 							}
@@ -64,7 +64,7 @@ void Server::join(C_STR_REF params, Client &client)
 								}
 							}
 						}
-						else if ((it->getKeycode() & LIMIT_CODE)) {
+						else if ((it->getKeycode() & LIMIT_CODE)) { // limit var
 							if (it->getChanelLimit() <= (int) it->getClients().size()) {
 								Utils::instaWrite(client.getFd(), ERR_CHANNELISFULL(client.getNick(), roomName));
 							}
@@ -76,7 +76,7 @@ void Server::join(C_STR_REF params, Client &client)
 								}
 							}
 						}
-						else {
+						else { // ikiside yok 
 							(*it).getClients().push_back(client);
 							Utils::instaWrite(client.getFd(), JOIN_RESPONSE(client.getNick(), client._ip , roomName));
 							if (!(*it).getTopic().empty()){
@@ -99,13 +99,6 @@ void Server::join(C_STR_REF params, Client &client)
 			channels.push_back(room);
 			Utils::instaWrite(client.getFd(), JOIN_RESPONSE(client.getNick(), client._ip , roomName));
 		}
-		std::cout << "***************" << std::endl;
-		//Room &room2 = getRoom(roomName);
-		//Client *op = room2.getOperator();
-		//std::cout << "***************" << std::endl;
-		//std::cout << getRoom(roomName).getName() << std::endl;
-		//std::cout << client.getNick() << std::endl;
-		//std::cout << "***************" << std::endl;
 		responseAllClientResponseToGui(client, getRoom(roomName));
 	} else {
 		client.getmesagesFromServer().push_back("JOIN :Not enough parameters");

@@ -19,7 +19,7 @@ int isNickExist(C_STR_REF s, const std::vector<Client> &clients, int fd)
 	return 0;
 }
 
-void Server::nick(C_STR_REF params, Client &client, fd_set &fd)
+void Server::nick(C_STR_REF params, Client &client, fd_set &writefdd)
 {
 	if (params.empty())
 	{
@@ -35,12 +35,11 @@ void Server::nick(C_STR_REF params, Client &client, fd_set &fd)
 	else
 	{
 		string oldNick = client.getNick();
-		// std::cout << RPL_NICK(client.getNick(), client.getUserName(), client._ip, params); // debug
 		if (!client.getNick().empty())
 			TextEngine::magenta("User " + client.getNick() + " has been changed his nick to " + params , TextEngine::printTime(std::cout)) << std::endl;
 		client.setNick(params); // set new nick if not exist
 		client.getmesagesFromServer().push_back(RPL_NICK(oldNick, client.getUserName(), client._ip, params));
-		FD_SET(client.getFd(), &fd);
+		FD_SET(client.getFd(), &writefdd);
 		for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); ++it)
 		{
 			for (VECT_ITER_CLI cit = it->getClients().begin(); cit != it->getClients().end(); ++cit)

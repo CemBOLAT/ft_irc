@@ -36,7 +36,7 @@ int main(int argc, char** argv)
 	}
 	catch(const Exception& e)
 	{
-		TextEngine::red(e.what(), cout) << endl;
+		TextEngine::red(e.what(), TextEngine::printTime(cout)) << endl;
 	}
 	return 0;
 }

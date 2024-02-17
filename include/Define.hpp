@@ -22,7 +22,7 @@
 #define LIMIT_CODE 2
 
 
-// HEXCHAT COMMANDS
+// HEXCHAT COMMANDS (RFC 1459)
 # define RPL_MODE(source, channel, modes, args)		":" + source + " MODE " + channel + " " + modes + " " + args + "\r\n"
 # define JOIN_RESPONSE(nick, ip, channel) ":" + nick + "!" + nick + "@" + ip + " JOIN " + channel + "\r\n"
 # define RPL_TOPIC_JOIN(nick, ip, channel, topic) ":" + nick + "!" + nick + "@" + ip + " TOPIC " + channel + " :" + topic + "\r\n"

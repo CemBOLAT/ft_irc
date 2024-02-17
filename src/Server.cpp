@@ -81,7 +81,7 @@ void Server::run()
 			// select: bir thread içerisinde birden fazla soketin okuma ve yazma işlemlerini takip etmek için kullanılır
 			// volatile kullanmak bazen sorunlara sebep oluyor bu sebepten dolayı fdleri kopyalayıp
 			// onlar üzerinden işlem yapmak daha mantıklı
-			if (select(Utils::getMaxFd(clients) + 1, &readFdsCopy, &writeFdsCopy, NULL, 0) < 0)
+			if (select(Utils::getMaxFd(clients, this->_socket) + 1, &readFdsCopy, &writeFdsCopy, NULL, 0) < 0)
 			{
 				throw Exception("Select failed");
 			}
@@ -98,7 +98,8 @@ void Server::run()
 			Client newClient(newSocket, port); // Create new client
 			inet_ntop(AF_INET, &(clientAddress.sin_addr), newClient._ip, INET_ADDRSTRLEN); // Convert IP to string and save it to newClient
 			clients.push_back(newClient); // Add new client to clients vector
-			FD_SET(newSocket, &readfds); // kullanıcın okuma ucu açılır
+			FD_SET(newSocket, &readfds); // kullanıcın okuma ucu açılır (hem okuma hem yaz)
+			//FD_SET(newSocket, &writefds); // bOzduk
 			TextEngine::green("New connection from ", TextEngine::printTime(cout)) << newClient._ip << ":" << newClient.getPort() << std::endl;
 			isReadyToSelect = true;
 			continue;
@@ -131,16 +132,16 @@ void Server::run()
 				{
 					this->buffer[bytesRead] = '\0'; // her zaman sonuna \r \n ekliyor
 					string msg = this->buffer;
-					if (msg == "\n")
+					if (msg == "\n") // sadece enter basınca gelen
 					{
 						a->setBuffer(a->getBuffer() + msg);
 						isReadyToSelect = true;
 					}
-					if (msg[msg.length() - 1] != '\n')
+					if (msg[msg.length() - 1] != '\n') // control d
 					{
-						a->setBuffer(a->getBuffer() + msg);
+						a->setBuffer(a->getBuffer() + msg); // control d
 						isReadyToSelect = true;
-						break;
+						break; // enter basmadı kullanıcı demmekki devam edebilir komutu yazmaya
 					}
 					/*
 						komutu ele alacan
@@ -160,7 +161,9 @@ void Server::run()
 			if (FD_ISSET(a->getFd(), &this->writeFdsCopy))
 			{
 				// bu komutun amacı mesajı gönderdikten sonra mesajı silmek ve diğer mesajı göndermek bunun yerine direkt olarak yollasak nasıl olur?
+				// direkt yollasak kapalı fd suspendfdye yazmak ister (ctrl+z) ve seg fault yer
 				int bytesWritten = write(a->getFd(), a->getmesagesFromServer()[0].c_str(), a->getmesagesFromServer()[0].length());
+				//write(1, "cemal\0", 6);
 				a->getmesagesFromServer().erase(a->getmesagesFromServer().begin());
 				if (bytesWritten < 0)
 				{
@@ -192,7 +195,7 @@ void Server::run()
 
 void Server::initSocket()
 {
-	this->_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP); // Create socket 0 for macos
+	this->_socket = socket(AF_INET, SOCK_STREAM, 0); // Create socket 0 for macos and IPPROTO_IP for linux
 	// AF_INE IPV4
 	// SOCK_STREAM TCP //SOCK_DGRAM UDP
 	// TCP: Transmission Control Protocol : Veri paketlerinin karşı tarafa ulaşmasını garanti eder. Yavaştır.
@@ -205,13 +208,13 @@ void Server::initSocket()
 	{
 		TextEngine::green("Socket created successfully! ", TextEngine::printTime(cout)) << std::endl;
 	}
-	int opt = 1;
+	int dumb = 1;
 	// setsockopt: Sets socket options
 	// SOL_SOCKET: Socket level : Socket options apply to the socket layer
 	// SO_REUSEADDR: Reuse address : Allows other sockets to bind() to this port, unless there is an active listening socket bound to the port already
 	// &opt: Option value // NULL
 	// sizeof(int): Option length // NULL
-	if (setsockopt(this->_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(int)) < 0)
+	if (setsockopt(this->_socket, SOL_SOCKET, SO_REUSEADDR, &dumb, sizeof(int)) < 0)
 	{
 		throw Exception("Socket option failed");
 	}
@@ -225,7 +228,8 @@ void Server::initSocket()
 	address.sin_addr.s_addr = INADDR_ANY; // TCP
 	address.sin_port = htons(this->port); // ENDIANNESS
 
-	// Big Endinian : 1 2 3 4 5
+	// 10010 -- 2
+	// Big Endinian :  1 2 3 4 5
 	// Little Endian : 5 4 3 2 1
 
 	// htons: Host to network short
@@ -285,7 +289,7 @@ void Server::runCommand(C_STR_REF command, Client &client)
 		}
 		else if (Utils::isEqualNonSensitive(splitFirst[0], "quit"))
 		{
-			this->quit(client); // bozuk
+			this->quit(client);
 		}
 		else if (client.getIsPassworded() == false){
 			Utils::instaWrite(client.getFd(), "First you need to pass the password\n\r");
@@ -379,8 +383,14 @@ void Server::hexChatEntry(VECT_STR &params, Client &client)
 			FD_CLR(client.getFd(), &writefds);
 			std::cout << "Invalid password" << std::endl;
 			close(client.getFd());
-			std::cout << "Client " << client._ip << ":" << client.getPort() << " disconnected" << std::endl;
-			this->clients.erase(this->clients.begin() + client.getFd() - 4); // maybe wrong
+			TextEngine::red("Client ", TextEngine::printTime(cout)) << client._ip << ":" << client.getPort() << " disconnected" << std::endl;
+			//bu kısmı düzgün erase ile yap
+			for (vector<Client>::iterator it = clients.begin(); it != clients.end(); ++it){
+				if (it->getFd() == client.getFd()){
+					clients.erase(it);
+					break;
+				}
+			}
 		}
 	}
 }
@@ -396,3 +406,12 @@ void Server::responseAllClientResponseToGui(Client &client, Room &room)  {
 	Utils::instaWriteAll(room.getClients(), RPL_ENDOFNAMES(client.getNick(), room.getName()));
 }
 
+Client &Server::getClientByNick(C_STR_REF nick){
+	VECT_ITER_CLI it = this->clients.begin();
+	for (; it != this->clients.end(); ++it)
+	{
+		if (it->getNick() == nick)
+			return *it;
+	}
+	return *it;
+}

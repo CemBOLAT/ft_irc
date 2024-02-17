@@ -18,6 +18,7 @@
 #include "Bot.hpp"
 
 #define RPL_ENTRY(password, nick, user) "CAP BOT\nPASS " + password + "\nNICK " + nick + "\nUSER " + user + " 0 * :turco\n"
+#define BOT_WELCOME(nick, msg) "PRIVMSG " + nick + " :" + msg + "\r\n"
 
 Bot::Bot(C_STR_REF port, C_STR_REF password) : _port(0), _password(password)
 {
@@ -39,7 +40,7 @@ Bot::Bot(C_STR_REF port, C_STR_REF password) : _port(0), _password(password)
 
 void Bot::initSocket()
 {
-	this->_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP); // Create socket 0 for macos
+	this->_socket = socket(AF_INET, SOCK_STREAM, 0); // Create socket 0 for macos and IPPROTO_IP for linux
 	// AF_INE IPV4
 	// SOCK_STREAM TCP //SOCK_DGRAM UDP
 	// TCP: Transmission Control Protocol : Veri paketlerinin karşı tarafa ulaşmasını garanti eder. Yavaştır.
@@ -87,18 +88,24 @@ void Bot::initSocket()
 	}
 }
 
-#define MESSAGE "PRIVMSG #test :Hello world\n"
-#define BOT_WELCOME(nick, msg) "PRIVMSG " + nick + " :" + msg + "\r\n"
 
 
 namespace {
-	string	getAnthem(){
-		string	turkishAnthem = "Korkma, sönmez bu şafaklarda yüzen al sancak;";
-		return turkishAnthem;
-	}
+    std::vector<std::string> getAnthem() {
+        std::vector<std::string> anthem;
+        anthem.push_back("Korkma! Sönmez bu şafaklarda yüzen al sancak;");
+        anthem.push_back("Sönmeden yurdumun üstünde tüten en son ocak.");
+        anthem.push_back("O benim milletimin yıldızıdır, parlayacak;");
+        anthem.push_back("O benimdir, o benim milletimindir ancak!");
+        anthem.push_back("Çatma, kurban olayım çehreni ey nazlı hilâl;");
+        anthem.push_back("Kahraman ırkıma bir gül... ne bu şiddet bu celâl?...");
+
+        return anthem;
+    }
 }
 
 void	Bot::run(){
+	vector<string>	turkishAnthem = getAnthem();
 	Utils::instaWrite(this->_socket, RPL_ENTRY(this->_password, this->_name, "user"));
 	while (true){
 		fd_set	readfds;
@@ -135,7 +142,8 @@ void	Bot::run(){
 						Utils::instaWrite(this->_socket, "PONG " + messages[2] + "\r\n");
 					}
 					else {
-						Utils::instaWrite(this->_socket, BOT_WELCOME(nick, getAnthem()));
+						for (size_t i = 0; i < turkishAnthem.size(); i++)
+							Utils::instaWrite(this->_socket, BOT_WELCOME(nick, turkishAnthem[i]));
 					}
 				}
 			}

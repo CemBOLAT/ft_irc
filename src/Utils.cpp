@@ -97,7 +97,7 @@ std::string Utils::getTime()
 		return ss.str();
 }
 
-void Utils::instaWrite(int fd, std::string message) {
+void Utils:: instaWrite(int fd, std::string message) {
 
     if (write(fd, message.c_str(), message.length()) < 0) {
 		TextEngine::red("Error: message send", TextEngine::printTime(std::cout));
@@ -157,9 +157,9 @@ std::string	Utils::ft_join(C_VECT_STR_R vec, C_STR_REF delim, int start)
 	return result;
 }
 
-int	Utils::getMaxFd(const vector<Client> &vec){
+int	Utils::getMaxFd(const vector<Client> &vec,int server){
 	if (vec.size() == 0){
-		return (3); // maybe wrong
+		return (server); // maybe wrong
 	}
 	int		max = vec[0].getFd();
 	for (vector<Client>::const_iterator it = vec.begin(); it != vec.end(); ++it){

@@ -122,21 +122,9 @@ public:
 		}
 	}
 
-	Client &getClientByNick(C_STR_REF nick)
-	{
-		VECT_ITER_CLI it = this->clients.begin();
-		for (; it != this->clients.end(); ++it)
-		{
-			if (it->getNick() == nick)
-				return *it;
-		}
-		return *it;
-	}
+	Client &getClientByNick(C_STR_REF nick);
 
-	int getSocket() const
-	{
-		return this->_socket;
-	}
+	int getSocket() const { return this->_socket; }
 
 private:
 	Server();

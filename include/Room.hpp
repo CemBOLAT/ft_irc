@@ -23,7 +23,7 @@ public:
 	int				getKeycode() const { return _keycode; }
 	string			getKey() const { return _key ; }
 	int				getChanelLimit() const { return _chanelLimit; }
-	Client			getOperator() { return Operator; }
+	Client			&getOperator() { return Operator; }
 
 	void			setOperator(const Client &op) { this->Operator = op; }
 	void			setName(C_STR_REF name) { _name = name; }
@@ -44,7 +44,7 @@ private:
 	string			_name;
 	string 			_topic;
 	Client			Operator;
-	int				_keycode;
-	string			_key;
+	int				_keycode; //kanalın şifreli mi kullanıcı limiti var diye koyduğumuz flag
+	string			_key; 
 	int				_chanelLimit;
 };

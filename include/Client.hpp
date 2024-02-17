@@ -49,7 +49,7 @@ public:
 		return (rhs.getFd() == this->getFd());
 	}
 private:
-	int				_type; // 1:hex 2:nc 3:bot
+	int				_type; // 1:hex 3:bot
 	int				_fd;
 	int				_port;
 	string			buffer;

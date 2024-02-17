@@ -25,7 +25,7 @@ namespace
 void Server::op(C_STR_REF params, Client &client)
 {
 	std::vector<std::string> splitFirst = Utils::ft_split(params, " ");
-	Room room = getRoom(splitFirst[0]);
+	Room &room = getRoom(splitFirst[0]);
 	if (client.getNick() == room.getOperator().getNick())
 	{
 		VECT_ITER_CLI it = room.getClients().begin();
@@ -36,22 +36,19 @@ void Server::op(C_STR_REF params, Client &client)
 		}
 		if (it == room.getClients().end())
 			return;
-		Client newOp = room.getClient(splitFirst[1]);
-		Client oldOp = room.getClient(client.getNick());
+		Client &newOp = *it;
+		Client &oldOp = room.getOperator();
 
 		for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); it++)
 		{
 			if (splitFirst[0] == it->getName() && getClientPosInRoom(*it, oldOp) != -1 && getClientPosInRoom(*it, newOp) != -1)
 			{
-				Client tmp = it->getClients()[getClientPosInRoom(*it, oldOp)];
-				it->getClients()[getClientPosInRoom(*it, oldOp)] = it->getClients()[getClientPosInRoom(*it, newOp)];
-				it->getClients()[getClientPosInRoom(*it, newOp)] = tmp;
-				it->setOperator((it->getClients()[getClientPosInRoom(*it, newOp)]));
+				it->setOperator(newOp);
 				Server::responseAllClientResponseToGui(newOp, room);
 				return;
 			}
 		}
-		Server::responseAllClientResponseToGui(client, room);
+		Server::responseAllClientResponseToGui(newOp, room);
 	}
 	else
 	{
