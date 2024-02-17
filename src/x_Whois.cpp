@@ -2,14 +2,14 @@
 #include "Executor.hpp"
 #include "Exception.hpp"
 #include "Utils.hpp"
+#include "Define.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
 #include <sstream>
-#include "Define.hpp"
 
 void	Server::whois(std::string &s, Client &cli){
-	std::vector<std::string> cmd = Utils::ft_split(s, " ");
+	VECT_STR cmd = Utils::ft_split(s, " ");
 	std::string who = cmd[0];
 	for(VECT_ITER_CLI it = this->clients.begin(); it != this->clients.end(); ++it) {
 		if (who == (*it).getNick()){

@@ -74,7 +74,7 @@ string Client::getServerName() const {
 	return _serverName;
 }
 
-vector<string> &Client::getmesagesFromServer() {
+VECT_STR &Client::getmesagesFromServer() {
 	return _messagesFromServer;
 }
 

@@ -2,16 +2,16 @@
 #include "Executor.hpp"
 #include "Exception.hpp"
 #include "Utils.hpp"
+#include "Define.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
 #include <sstream>
-#include "Define.hpp"
 
 #define RPL_WHOREPLY(nick, channel, user, host, server, nickName, hops, realName) (std::string(":") + "IRC" + " 352 " + nick + " " + channel + " " + user + " " + host + " " + server + " " + nickName + " " + hops + " " + realName + " H :0 " + realName + "\r\n")
 
 void Server::who(C_STR_REF command, Client &client) {
-	std::vector<std::string> params = Utils::ft_split(command, " ");
+	VECT_STR params = Utils::ft_split(command, " ");
 	if (params.empty()) {
 		Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "WHO"));
 		return;
@@ -28,7 +28,6 @@ void Server::who(C_STR_REF command, Client &client) {
 			return;
 		}
 	}
-	//
 	if (!channelFound) {
 		Utils::instaWrite(client.getFd(), ERR_NOSUCHCHANNEL(client.getNick(), params[0]));
 	}

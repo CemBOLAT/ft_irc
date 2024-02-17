@@ -113,7 +113,7 @@ void	Utils::instaSend(int fd, std::string message)
 	}
 }
 
-void	Utils::instaWriteAll(std::vector<Client> clients, std::string message)
+void	Utils::instaWriteAll(VECT_CLI clients, std::string message)
 {
 	for (VECT_ITER_CLI it = clients.begin(); it != clients.end(); it++)
 	{
@@ -157,7 +157,7 @@ std::string	Utils::ft_join(C_VECT_STR_R vec, C_STR_REF delim, int start)
 	return result;
 }
 
-int	Utils::getMaxFd(const vector<Client> &vec,int server){
+int	Utils::getMaxFd(C_VECT_CLI_R vec,int server){
 	if (vec.size() == 0){
 		return (server); // maybe wrong
 	}

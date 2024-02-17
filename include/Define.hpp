@@ -7,7 +7,11 @@
 #define BOT_USAGE "./turco [port] [password]"
 #define VECT_STR std::vector<std::string>
 #define VECT_ITER_CLI std::vector<Client>::iterator
+#define VECT_ITER_CONST_CLI std::vector<Client>::const_iterator
+#define VECT_CLI std::vector<Client>
+#define C_VECT_CLI_R const std::vector<Client>&
 #define VECT_ITER_CHA std::vector<Room>::iterator
+
 #define C_VECT_STR const std::vector<std::string>
 #define C_VECT_STR_R C_VECT_STR&
 #define C_STR const std::string

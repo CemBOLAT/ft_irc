@@ -17,7 +17,7 @@ using namespace std;
 
 void Server::kick(std::string &input, Client &fd)
 {
-	vector<string> splited = Utils::ft_split(input, " ");
+	VECT_STR splited = Utils::ft_split(input, " ");
 	string nick, channel, message;
 	if (splited.size() < 3)
 	{

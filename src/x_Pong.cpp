@@ -16,7 +16,7 @@ void Server::pong(C_STR_REF params, Client& client) {
         return;
     }
     
-    std::vector<std::string> split = Utils::ft_split(params, " ");
+    VECT_STR split = Utils::ft_split(params, " ");
     
     if (split.size() < 2) {
         // Invalid pong request

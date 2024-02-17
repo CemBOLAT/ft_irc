@@ -24,7 +24,7 @@ namespace
 
 void Server::op(C_STR_REF params, Client &client)
 {
-	std::vector<std::string> splitFirst = Utils::ft_split(params, " ");
+	VECT_STR splitFirst = Utils::ft_split(params, " ");
 	Room &room = getRoom(splitFirst[0]);
 	if (client.getNick() == room.getOperator().getNick())
 	{

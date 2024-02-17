@@ -12,7 +12,7 @@
 // /notice #chan message
 // /notice user message
 void	Server::notice(std::string	&input, Client &fd){
-	std::vector<std::string> params = Utils::ft_split(input, " ");
+	VECT_STR params = Utils::ft_split(input, " ");
 	if (params.size() < 2){
 		Utils::instaWrite(fd.getFd(), ERR_NEEDMOREPARAMS(fd.getNick(), "NOTICE"));
 		return;

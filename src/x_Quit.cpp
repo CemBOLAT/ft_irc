@@ -16,7 +16,7 @@
 
 void Server::quit(Client& client) {
     //// Remove client from all channels
-	std::vector<Room>::iterator it = this->channels.begin();
+	VECT_ITER_CHA it = this->channels.begin();
 	for (; it != this->channels.end(); ++it) {
 		if (it->isClientInChannel(client.getFd())) {
 			if (it->getClients().size() == 1) // delete room.
@@ -46,14 +46,14 @@ void Server::quit(Client& client) {
 	//// Close the client's socket
 	close(client.getFd());
 	// Send a message to all clients
-	std::vector<Client>::iterator it3 = this->clients.begin();
+	VECT_ITER_CLI it3 = this->clients.begin();
 	for (; it3 != this->clients.end(); ++it3) {
 		if (it3->getFd() != client.getFd()) {
 			std::cout << it3->getNick() << std::endl; //
 			Utils::instaWrite(it3->getFd(), RPL_QUIT(it3->getNick(), client.getNick()));
 		}
 	}
-	std::vector<Client>::iterator it2 = this->clients.begin();
+	VECT_ITER_CLI it2 = this->clients.begin();
 	for (; it2 != this->clients.end(); ++it2) {
 		if (it2->getFd() == client.getFd()) {
 			this->clients.erase(it2);

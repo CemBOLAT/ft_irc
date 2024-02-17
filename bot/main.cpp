@@ -3,13 +3,15 @@
 #include "Utils.hpp"
 #include "TextEngine.hpp"
 #include "Define.hpp"
+#include <signal.h>
+#include <stdlib.h>
 
 Bot	*botInstance = NULL;
 volatile sig_atomic_t sigint = 0;
 void	signalHandler(int signum){
 	sigint = 1;
 	std::cout << "\rCaught signal " << signum << std::endl;
-	if (signum == SIGINT)
+	if (signum == SIGINT || signum == SIGTERM)
 	{
 		if (botInstance){
 			delete botInstance;
@@ -27,6 +29,7 @@ int main(int ac, char **av)
 		}
 		Bot	*bot = new Bot(av[1], av[2]);
 		botInstance = bot;
+		signal(SIGTERM, signalHandler);
 		signal(SIGINT, signalHandler);
 		bot->run();
 		//Bot	bot(av[1], av[2]);

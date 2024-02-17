@@ -7,8 +7,6 @@
 #include <vector>
 #include "Define.hpp"
 
-#define VECT_STR std::vector<std::string>
-
 using std::string;
 using std::vector;
 class Client;

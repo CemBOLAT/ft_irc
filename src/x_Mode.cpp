@@ -14,7 +14,7 @@
 
 // /mode #chanel (operator) (user)
 void	Server::mode(C_STR_REF input, Client &client){
-	std::vector<std::string> params = Utils::ft_split(input, " ");
+	VECT_STR params = Utils::ft_split(input, " ");
 	if (params.size() < 3){
 		Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "MODE"));
 		return;

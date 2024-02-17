@@ -32,6 +32,7 @@ int main(int argc, char** argv)
 		Server	*server = new Server(argv[1], argv[2]);
 		serverInstance = server;
 		signal(SIGINT, signalHandler); // catch ctrl+c (macos and linux have different signals)
+		signal(SIGTERM, signalHandler); // catch kill command
 		server->run();
 	}
 	catch(const Exception& e)

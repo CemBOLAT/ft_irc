@@ -15,7 +15,7 @@
 void Server::part(C_STR_REF params, Client &client)
 {
 	VECT_ITER_CHA it = channels.begin();
-	vector<string> param = Utils::ft_split(params, " ");
+	VECT_STR param = Utils::ft_split(params, " ");
 	if (param[0][0] != '#'){
 		param[0] = "#" + param[0];
 	}

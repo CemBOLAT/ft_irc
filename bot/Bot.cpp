@@ -5,6 +5,8 @@
 #include "Client.hpp"
 #include "Executor.hpp"
 #include "Room.hpp"
+#include "Define.hpp"
+#include "Bot.hpp"
 #include <string>
 #include <iostream>
 #include <sys/socket.h>
@@ -13,9 +15,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <sys/select.h>
-#include "Define.hpp"
 #include <fcntl.h>
-#include "Bot.hpp"
 
 #define RPL_ENTRY(password, nick, user) "CAP BOT\nPASS " + password + "\nNICK " + nick + "\nUSER " + user + " 0 * :turco\n"
 #define BOT_WELCOME(nick, msg) "PRIVMSG " + nick + " :" + msg + "\r\n"
@@ -91,8 +91,8 @@ void Bot::initSocket()
 
 
 namespace {
-    std::vector<std::string> getAnthem() {
-        std::vector<std::string> anthem;
+    VECT_STR getAnthem() {
+        VECT_STR anthem;
         anthem.push_back("Korkma! Sönmez bu şafaklarda yüzen al sancak;");
         anthem.push_back("Sönmeden yurdumun üstünde tüten en son ocak.");
         anthem.push_back("O benim milletimin yıldızıdır, parlayacak;");
@@ -105,7 +105,7 @@ namespace {
 }
 
 void	Bot::run(){
-	vector<string>	turkishAnthem = getAnthem();
+	VECT_STR	turkishAnthem = getAnthem();
 	Utils::instaWrite(this->_socket, RPL_ENTRY(this->_password, this->_name, "user"));
 	while (true){
 		fd_set	readfds;
@@ -133,7 +133,7 @@ void	Bot::run(){
 			}
 			else {
 				_buffer[bytesRead] = '\0';
-				vector<string> messages = Utils::ft_split(_buffer, " ");
+				VECT_STR messages = Utils::ft_split(_buffer, " ");
 				TextEngine::blue(_buffer, TextEngine::printTime(cout)) << std::endl;
 				// size control et
 				if (messages[1] == "PRIVMSG" || messages[1] == "PING"){

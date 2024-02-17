@@ -385,7 +385,7 @@ void Server::hexChatEntry(VECT_STR &params, Client &client)
 			close(client.getFd());
 			TextEngine::red("Client ", TextEngine::printTime(cout)) << client._ip << ":" << client.getPort() << " disconnected" << std::endl;
 			//bu kısmı düzgün erase ile yap
-			for (vector<Client>::iterator it = clients.begin(); it != clients.end(); ++it){
+			for (VECT_ITER_CLI it = clients.begin(); it != clients.end(); ++it){
 				if (it->getFd() == client.getFd()){
 					clients.erase(it);
 					break;

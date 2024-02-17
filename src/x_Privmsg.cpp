@@ -28,7 +28,7 @@ int isInRoom(Client &client, Server &server, std::string room) {
 
 
 void Server::privmsg(std::string &input, Client &client) {
-	std::vector<std::string> params = Utils::ft_split(input, " ");
+	VECT_STR params = Utils::ft_split(input, " ");
    if (params.size() < 2) {
 		Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "PRIVMSG"));
 		return;

@@ -11,7 +11,7 @@
 
 void Server::topic(C_STR_REF command, Client &client)
 {
-	std::vector<std::string> params = Utils::ft_split(command, " ");
+	VECT_STR params = Utils::ft_split(command, " ");
 	if (params.size() < 2)
 	{
 		Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "TOPIC"));

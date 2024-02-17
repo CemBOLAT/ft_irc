@@ -9,9 +9,9 @@
 #include <vector>
 #include "Define.hpp"
 
-int isNickExist(C_STR_REF s, const std::vector<Client> &clients, int fd)
+int isNickExist(C_STR_REF s, C_VECT_CLI_R clients, int fd)
 {
-	for (std::vector<Client>::const_iterator it = clients.begin(); it != clients.end(); ++it)
+	for (VECT_ITER_CONST_CLI it = clients.begin(); it != clients.end(); ++it)
 	{
 		if (s == it->getNick() && it->getFd() != fd)
 			return 1;
