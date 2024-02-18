@@ -64,7 +64,7 @@ void Bot::initSocket()
 
 	// htons: Host to network short
 	// bind socket to port
-	if (connect(this->_socket, (struct sockaddr *)&_bot_addr, sizeof(_bot_addr)) < 0)
+	if (connect(this->_socket, (struct sockaddr *)&_bot_addr, sizeof(_bot_addr)) < 0) //sockete baglanma
 	{
 		throw Exception("Connection failed");
 	}

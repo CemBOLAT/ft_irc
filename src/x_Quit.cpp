@@ -49,7 +49,6 @@ void Server::quit(Client& client) {
 	VECT_ITER_CLI it3 = this->clients.begin();
 	for (; it3 != this->clients.end(); ++it3) {
 		if (it3->getFd() != client.getFd()) {
-			std::cout << it3->getNick() << std::endl; //
 			Utils::instaWrite(it3->getFd(), RPL_QUIT(it3->getNick(), client.getNick()));
 		}
 	}
