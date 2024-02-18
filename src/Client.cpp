@@ -115,10 +115,7 @@ void Client::setServerName(C_STR_REF serverName) {
 	_serverName = serverName;
 }
 
-Client::~Client() {
-	if (_fd != -1)
-		close(_fd);
-}
+Client::~Client() { /* value sementics so no need to delete anything */ }
 
 string Client::getUserByHexChat() const {
 	std::string strIP = this->_ip;

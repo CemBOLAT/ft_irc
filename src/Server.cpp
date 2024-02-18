@@ -110,7 +110,7 @@ void Server::run()
 				throw Exception("Accept failed");
 			}
 			if (fcntl(newSocket, F_SETFL, O_NONBLOCK) < 0)
-				throw Exception("Fcntl failed on new socket");
+				throw Exception("Fcntl failed on Client");
 			int port = ntohs(clientAddress.sin_port);
 			Client newClient(newSocket, port);
 			char	*ip = inet_ntoa(clientAddress.sin_addr);
@@ -217,7 +217,6 @@ void Server::runCommand(C_STR_REF command, Client &client)
 		else
 		{
 			Utils::instaWrite(client.getFd(), ERR_UNKNOWNCOMMAND(splitFirst[0]));
-			hexChatEntry(splitFirst, client);
 		}
 	}
 	hexChatEntry(softSplit, client);
@@ -341,7 +340,9 @@ void	Server::removeClient(int fd){
 	}
 }
 
+
 void	Server::initFunctions() {
+	this->_commands["PASS"] = &Server::pass;
 	//this->functions["JOIN"] = &Server::join;
 	//this->functions["PART"] = &Server::part;
 	//this->functions["PRIVMSG"] = &Server::privmsg;

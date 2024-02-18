@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "Utils.hpp"
+#include "ErrorRPL.hpp"
 #include "Define.hpp"
 
 /*
@@ -32,20 +33,17 @@
 */
 
 void Server::pass(C_STR_REF params, Client &client){
-	if (params.empty())
-	{
-		Utils::instaWrite(client.getFd(), ": 461 " + client.getUserByHexChat() + " PASS :Not enough parameters\r\n");
+	if (params.empty()){
+		Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getUserByHexChat(), "PASS"));
 	}
-	else if (client.getIsPassworded())
-	{
-		Utils::instaWrite(client.getFd(), ": 462 " + client.getUserByHexChat() + " PASS :You may not reregister\r\n");
+	else if (client.getIsPassworded()){
+		Utils::instaWrite(client.getFd(), ERR_ALREADYREGISTRED(client.getUserByHexChat()));
 	}
-	else if (params != password)
-	{
-		Utils::instaWrite(client.getFd(), ": 464 " + client.getUserByHexChat() + " PASS :Invalid password\r\n"); 
+	else if (params != password){
+		Utils::instaWrite(client.getFd(), ERR_PASSWDMISMATCH(client.getUserByHexChat()));
 	}
-	else {
+	else{
 		client.setPassworded(true);
-		Utils::instaWrite(client.getFd(), ": 001 Password accepted\r\n");
+		Utils::instaWrite(client.getFd(), "PASS :Password accepted\r\n"); // 381
 	}
 }
