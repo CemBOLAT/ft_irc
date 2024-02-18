@@ -1,3 +1,80 @@
+#pragma once
+
+#define RPL_NONE ": 300 :None" + "\r\n"
+#define RPL_USERHOST(nick, host) ": 302 " + nick + " :*1" + host + "\r\n"
+#define RPL_ISON(nick) ": 303 " + nick + " :is on IRC" + "\r\n"
+#define RPL_AWAY(nick, message) ": 301 " + nick + " :is away: " + message + "\r\n"
+#define RPL_UNAWAY ": 305 :You are no longer marked as being away" + "\r\n"
+#define RPL_NOWAWAY ": 306 :You have been marked as being away" + "\r\n"
+#define RPL_WHOISUSER(nick, user, host, server, realname) ": 311 " + nick + " " + user + " " + host + " * : " + realname + "\r\n"
+#define RPL_WHOISSERVER(nick, server, serverinfo) ": 312 " + nick + " " + server + " : " + serverinfo + "\r\n"
+#define RPL_WHOISOPERATOR(nick) ": 313 " + nick + " :is an IRC operator" + "\r\n"
+#define RPL_WHOISIDLE(nick, seconds) ": 317 " + nick + " " + seconds + " :seconds idle" + "\r\n"
+#define RPL_ENDOFWHOIS(nick) ": 318 " + nick + " :End of WHOIS list" + "\r\n"
+#define RPL_WHOISCHANNELS(nick, channels) ": 319 " + nick + " : " + channels + "\r\n"
+#define RPL_WHOWASUSER(nick, user, host, server, realname) ": 314 " + nick + " " + user + " " + host + " * : " + realname + "\r\n"
+#define RPL_ENDOFWHOWAS(nick) ": 369 " + nick + " :End of WHOWAS" + "\r\n"
+#define RPL_LISTSTART(channel) ": 321 :Channel :Users Name" + "\r\n"
+#define RPL_LIST(channel, users, topic) ": 322 " + channel + " " + users + " : " + topic + "\r\n"
+#define RPL_LISTEND ": 323 :End of LIST" + "\r\n"
+#define RPL_CHANNELMODEIS(channel, mode) ": 324 " + channel + " " + mode + "\r\n"
+#define RPL_NOTOPIC(channel) ": 331 " + channel + " :No topic is set" + "\r\n"
+#define RPL_TOPIC(channel, topic) ": 332 " + channel + " : " + topic + "\r\n"
+#define RPL_INVITING(nick, channel) ": 341 " + nick + " " + channel + "\r\n"
+#define RPL_SUMMONING(user) ": 342 " + user + " :Summoning user to IRC" + "\r\n"
+#define RPL_VERSION(version, debuglevel, server, comments) ": 351 " + version + " " + debuglevel + " " + server + " : " + comments + "\r\n"
+#define RPL_WHOREPLY(channel, user, host, server, nick, flags, hopcount, realname) ": 352 " + channel + " " + user + " " + host + " " + server + " " + nick + " " + flags + " " + hopcount + " " + realname + "\r\n"
+#define RPL_ENDOFWHO(channel) ": 315 " + channel + " :End of WHO list" + "\r\n"
+#define RPL_NAMREPLY(channel, names) ": 353 " + channel + " : " + names + "\r\n"
+#define RPL_ENDOFNAMES(channel) ": 366 " + channel + " :End of NAMES list" + "\r\n"
+#define RPL_LINKS(mask, server, hopcount, serverinfo) ": 364 " + mask + " " + server + " " + hopcount + " " + serverinfo + "\r\n"
+#define RPL_ENDOFLINKS(mask) ": 365 " + mask + " :End of LINKS list" + "\r\n"
+#define RPL_BANLIST(channel, banmask) ": 367 " + channel + " " + banmask + "\r\n"
+#define RPL_ENDOFBANLIST(channel) ": 368 " + channel + " :End of BAN list" + "\r\n"
+#define RPL_INFO(info) ": 371 : " + info + "\r\n"
+#define RPL_ENDOFINFO ": 374 :End of INFO list" + "\r\n"
+#define RPL_MOTDSTART ": 375 :- " + "\r\n"
+#define RPL_MOTD(motd) ": 372 :- " + motd + "\r\n"
+#define RPL_ENDOFMOTD ": 376 :End of MOTD command" + "\r\n"
+#define RPL_YOUREOPER ": 381 :You are now an IRC operator" + "\r\n"
+#define RPL_REHASHING(configfile) ": 382 " + configfile + " :Rehashing" + "\r\n"
+#define RPL_TIME(server, time) ": 391 " + server + " " + time + "\r\n"
+#define RPL_USERSSTART ": 392 :UserID Terminal Host" + "\r\n"
+#define RPL_USERS(user, terminal, host, server) ": 393 " + user + " " + terminal + " " + host + " " + server + "\r\n"
+#define RPL_ENDOFUSERS ": 394 :End of users" + "\r\n"
+#define RPL_NOUSERS ": 395 :Nobody logged in" + "\r\n"
+#define RPL_TRACELINK(version, debuglevel, dest, nextserver) ": 200 " + version + " " + debuglevel + " " + dest + " " + nextserver + "\r\n"
+#define RPL_TRACECONNECTING(server) ": 201 " + server + " :Try. Class" + "\r\n"
+#define RPL_TRACEHANDSHAKE(server) ": 202 " + server + " :H.S. Class" + "\r\n"
+#define RPL_TRACEUNKNOWN(server) ": 203 " + server + " :Unknown Class" + "\r\n"
+#define RPL_TRACEOPERATOR(server) ": 204 " + server + " :Operator Class" + "\r\n"
+#define RPL_TRACEUSER(server) ": 205 " + server + " :User Class" + "\r\n"
+#define RPL_TRACESERVER(server, serverinfo) ": 206 " + server + " " + serverinfo + "\r\n"
+#define RPL_TRACENEWTYPE(newtype, client) ": 208 " + newtype + " " + client + " :New type" + "\r\n"
+#define RPL_TRACELOG(server, logfile, debuglevel) ": 261 " + server + " " + logfile + " " + debuglevel + "\r\n"
+#define RPL_STATSLINKINFO(server, sendq, sentmessages, sentkbytes, receivedmessages, receivedkbytes, timeopen) ": 211 " + server + " " + sendq + " " + sentmessages + " " + sentkbytes + " " + receivedmessages + " " + receivedkbytes + " " + timeopen + "\r\n"
+#define RPL_STATSCOMMANDS(command, count) ": 212 " + command + " " + count + "\r\n"
+#define RPL_STATSCLINE(host, servername, port, class) ": 213 " + host + " " + servername + " " + port + " " + class + "\r\n"
+#define RPL_STATSNLINE(host, servername, port, class) ": 214 " + host + " " + servername + " " + port + " " + class + "\r\n"
+#define RPL_STATSILINE(host, servername, port, class) ": 215 " + host + " " + servername + " " + port + " " + class + "\r\n"
+#define RPL_STATSKLINE(host, servername, port, class) ": 216 " + host + " " + servername + " " + port + " " + class + "\r\n"
+#define RPL_STATSYLINE(host, class, pingfreq, conntime) ": 218 " + host + " " + class + " " + pingfreq + " " + conntime + "\r\n"
+#define RPL_ENDOFSTATS(stats) ": 219 " + stats + " :End of STATS report" + "\r\n"
+#define RPL_STATSLLINE(hostmask, servername, maxdepth) ": 241 " + hostmask + " " + servername + " " + maxdepth + "\r\n"
+#define RPL_STATSUPTIME(uptime) ": 242 :Server Up " + uptime + "\r\n"
+#define RPL_STATSOLINE(hostmask, name) ": 243 " + hostmask + " " + name + "\r\n"
+#define RPL_STATSHLINE(hostmask, servername) ": 244 " + hostmask + " " + servername + "\r\n"
+#define RPL_UMODEIS(mode) ": 221 " + mode + "\r\n"
+#define RPL_LUSERCLIENT(integer) ": 251 :There are " + integer + " users and " + integer + " invisible on " + integer + " servers" + "\r\n"
+#define RPL_LUSEROP(integer) ": 252 " + integer + " :operator(s) online" + "\r\n"
+#define RPL_LUSERUNKNOWN(integer) ": 253 " + integer + " :unknown connection(s)" + "\r\n"
+#define RPL_LUSERCHANNELS(integer) ": 254 " + integer + " :channels formed" + "\r\n"
+#define RPL_LUSERME(integer, integer, integer) ": 255 :I have " + integer + " clients and " + integer + " servers" + "\r\n"
+#define RPL_ADMINME(server) ": 256 :Administrative info about " + server + "\r\n"
+#define RPL_ADMINLOC1(info) ": 257 : " + info + "\r\n"
+#define RPL_ADMINLOC2(info) ": 258 : " + info + "\r\n"
+#define RPL_ADMINEMAIL(info) ": 259 : " + info + "\r\n"
+
 /*
 6.2 Command responses.
 
@@ -26,13 +103,6 @@
 
         301     RPL_AWAY
                         "<nick> :<away message>"
-
-
-
-Oikarinen & Reed                                               [Page 48]
-
-RFC 1459              Internet Relay Chat Protocol              May 1993
-
 
         305     RPL_UNAWAY
                         ":You are no longer marked as being away"
@@ -82,14 +152,6 @@ RFC 1459              Internet Relay Chat Protocol              May 1993
                 - When replying to a WHOWAS message, a server must use
                   the replies RPL_WHOWASUSER, RPL_WHOISSERVER or
                   ERR_WASNOSUCHNICK for each nickname in the presented
-
-
-
-Oikarinen & Reed                                               [Page 49]
-
-RFC 1459              Internet Relay Chat Protocol              May 1993
-
-
                   list.  At the end of all reply batches, there must
                   be RPL_ENDOFWHOWAS (even if there was only one reply
                   and it was an error).
@@ -138,14 +200,6 @@ RFC 1459              Internet Relay Chat Protocol              May 1993
 
                 - Reply by the server showing its version details.
                   The <version> is the version of the software being
-
-
-
-Oikarinen & Reed                                               [Page 50]
-
-RFC 1459              Internet Relay Chat Protocol              May 1993
-
-
                   used (including any patchlevel revisions) and the
                   <debuglevel> is used to indicate if the server is
                   running in "debug mode".
@@ -194,13 +248,6 @@ RFC 1459              Internet Relay Chat Protocol              May 1993
         367     RPL_BANLIST
                         "<channel> <banid>"
         368     RPL_ENDOFBANLIST
-
-
-
-Oikarinen & Reed                                               [Page 51]
-
-RFC 1459              Internet Relay Chat Protocol              May 1993
-
 
                         "<channel> :End of channel ban list"
 
@@ -306,14 +353,6 @@ RFC 1459              Internet Relay Chat Protocol              May 1993
                 - The RPL_TRACE* are all returned by the server in
                   response to the TRACE message.  How many are
                   returned is dependent on the the TRACE message and
-
-
-
-Oikarinen & Reed                                               [Page 53]
-
-RFC 1459              Internet Relay Chat Protocol              May 1993
-
-
                   whether it was sent by an operator or not.  There
                   is no predefined order for which occurs first.
                   Replies RPL_TRACEUNKNOWN, RPL_TRACECONNECTING and
@@ -361,15 +400,6 @@ RFC 1459              Internet Relay Chat Protocol              May 1993
 
         221     RPL_UMODEIS
                         "<user mode string>"
-
-
-
-
-Oikarinen & Reed                                               [Page 54]
-
-RFC 1459              Internet Relay Chat Protocol              May 1993
-
-
                         - To answer a query about a client's own mode,
                           RPL_UMODEIS is sent back.
 
