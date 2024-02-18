@@ -26,6 +26,10 @@ void Server::topic(C_STR_REF command, Client &client)
 		if (channelName == channel.getName())
 		{
 			channelFound = true;
+			if (client.getFd() != channel.getOperator().getFd()) {
+				Utils::instaWrite(client.getFd(), ERR_CHANOPRIVSNEEDED(client.getNick(), channel.getName()));
+				return;
+			}
 			if (params.size() == 1)
 			{ // Retrieve topic
 				std::string topic = channel.getTopic();

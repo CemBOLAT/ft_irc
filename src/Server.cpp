@@ -87,6 +87,7 @@ void Server::run()
 			}
 			isReadyToSelect = false; // ne zaman veri okumak veya yazmak için hazır olacağımızı belirler
 		}
+		//kitlenir
 		if (FD_ISSET(this->_socket, &this->readFdsCopy))
 		{
 			int newSocket = accept(this->_socket, (sockaddr *)&clientAddress, &templen); // Accept new connection (yeni kişinin fdsi)
@@ -245,7 +246,7 @@ void Server::initSocket()
 
 	/*
 	 * Maximum queue length specifiable by listen.
-	 */
+	*/
 	if (listen(this->_socket, SOMAXCONN) < 0)
 	{
 		throw Exception("Socket listen failed");

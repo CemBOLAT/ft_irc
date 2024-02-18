@@ -12,7 +12,7 @@ volatile sig_atomic_t sigint = 0; // volatile sig_atomic_t is a type that is gua
 void	signalHandler(int signum){
 	sigint = 1;
 	std::cout << "\rCaught signal " << signum << std::endl;
-	if (signum == SIGINT) // gelen signal bölme mi?
+	if (signum == SIGINT || signum == SIGTERM) // gelen signal bölme mi?
 	{
 		if (serverInstance){
 			delete serverInstance;
