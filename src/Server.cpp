@@ -36,6 +36,31 @@ Server::Server(C_STR_REF port, C_STR_REF password)
 	}
 }
 
+Server::Server(const Server &other)
+	: port(other.port), password(other.password)
+{
+	*this = other;
+}
+
+Server &Server::operator=(const Server &other)
+{
+	if (this != &other)
+	{
+		this->port = other.port;
+		this->password = other.password;
+		this->_socket = other._socket;
+		this->clients = other.clients;
+		this->channels = other.channels;
+		this->clientAddress = other.clientAddress;
+		this->address = other.address;
+		this->readfds = other.readfds;
+		this->writefds = other.writefds;
+		this->readFdsCopy = other.readFdsCopy;
+		this->writeFdsCopy = other.writeFdsCopy;
+	}
+	return *this;
+}
+
 Server::~Server()
 {
 	for (VECT_ITER_CLI it = clients.begin(); it != clients.end(); it++)
@@ -53,7 +78,6 @@ Server::~Server()
 
 void Server::run()
 {
-	sockaddr_in clientAddress;
 	socklen_t templen = sizeof(sockaddr_in);
 	bool isReadyToSelect = true;
 	int bytesRead = 0;
@@ -100,7 +124,6 @@ void Server::run()
 			inet_ntop(AF_INET, &(clientAddress.sin_addr), newClient._ip, INET_ADDRSTRLEN); // Convert IP to string and save it to newClient
 			clients.push_back(newClient); // Add new client to clients vector
 			FD_SET(newSocket, &readfds); // kullanıcın okuma ucu açılır (hem okuma hem yaz)
-			//FD_SET(newSocket, &writefds); // bOzduk
 			TextEngine::green("New connection from ", TextEngine::printTime(cout)) << newClient._ip << ":" << newClient.getPort() << std::endl;
 			isReadyToSelect = true;
 			continue;
@@ -215,7 +238,7 @@ void Server::initSocket()
 	// SO_REUSEADDR: Reuse address : Allows other sockets to bind() to this port, unless there is an active listening socket bound to the port already
 	// &opt: Option value // NULL
 	// sizeof(int): Option length // NULL
-	if (setsockopt(this->_socket, SOL_SOCKET, SO_REUSEADDR, &dumb, sizeof(int)) < 0)
+	if (setsockopt(this->_socket, SOL_SOCKET, SO_REUSEADDR, &dumb, sizeof(int)) < 0) //hemen portu sal
 	{
 		throw Exception("Socket option failed");
 	}
@@ -223,7 +246,7 @@ void Server::initSocket()
 	{
 		TextEngine::green("Socket option set successfully! ", TextEngine::printTime(cout)) << std::endl;
 	}
-	fcntl(this->_socket, F_SETFL, O_NONBLOCK); // Set socket to non-blocking f
+	fcntl(this->_socket, F_SETFL, O_NONBLOCK); // Set socket to non-blocking f bekleme yapmadan devam et
 	memset(&address, 0, sizeof(address)); // Zeroing address
 	address.sin_family = AF_INET;		  // IPv4
 	address.sin_addr.s_addr = INADDR_ANY; // TCP
@@ -235,7 +258,7 @@ void Server::initSocket()
 
 	// htons: Host to network short
 	// bind socket to port
-	if (bind(this->_socket, (struct sockaddr *)&address, sizeof(address)) < 0)
+	if (::bind(this->_socket, (struct sockaddr *)&address, sizeof(address)) < 0) // soket port bağlama
 	{
 		throw Exception("Socket bind failed");
 	}
@@ -247,7 +270,7 @@ void Server::initSocket()
 	/*
 	 * Maximum queue length specifiable by listen.
 	*/
-	if (listen(this->_socket, SOMAXCONN) < 0)
+	if (listen(this->_socket, SOMAXCONN) < 0) // soket dinlemeye başlar
 	{
 		throw Exception("Socket listen failed");
 	}
@@ -416,3 +439,80 @@ Client &Server::getClientByNick(C_STR_REF nick){
 	}
 	return *it;
 }
+
+
+Room	&Server::getRoom(C_STR_REF roomName){
+	VECT_ITER_CHA it = this->channels.begin();
+	for (; it != this->channels.end(); ++it)
+	{
+		if (it->getName() == roomName)
+			return *it;
+	}
+	return *it;
+}
+
+vector<Room> &Server::getRooms(){
+	return this->channels;
+}
+
+bool	Server::isRoom(C_STR_REF roomName){
+	VECT_ITER_CHA it = this->channels.begin();
+	for (; it != this->channels.end(); ++it)
+	{
+		if (it->getName() == roomName)
+			return true;
+	}
+	return false;
+}
+
+void	Server::addRoom(const Room &room){
+	this->channels.push_back(room);
+}
+
+void	Server::addClient(const Client &client){
+	this->clients.push_back(client);
+}
+
+vector<Client> &Server::getClients(){
+	return this->clients;
+}
+
+bool	Server::isClientInRoom(Room &room, const Client &client){
+	VECT_ITER_CLI it = room.getClients().begin();
+	for (; it != room.getClients().end(); ++it)
+	{
+		if (it->getNick() == client.getNick())
+			return true;
+	}
+	return false;
+}
+
+bool	Server::isClientInRoom(Client &client, string &room){
+	VECT_ITER_CHA it = this->channels.begin();
+	for (; it != this->channels.end(); ++it)
+	{
+		if (it->getName() == room)
+		{
+			VECT_ITER_CLI cit = it->getClients().begin();
+			for (; cit != it->getClients().end(); ++cit)
+			{
+				if (cit->getNick() == client.getNick())
+					return true;
+			}
+		}
+	}
+	return false;
+}
+
+void	Server::removeClient(int fd){
+	VECT_ITER_CLI it = this->clients.begin();
+	for (; it != this->clients.end(); ++it)
+	{
+		if (it->getFd() == fd)
+		{
+			this->clients.erase(it);
+			return;
+		}
+	}
+}
+

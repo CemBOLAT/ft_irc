@@ -40,87 +40,21 @@ public:
 	void notice(std::string &input, Client &fd);
 	void kick(std::string &input, Client &fd);
 
-	Room &getRoom(C_STR_REF name)
-	{
-		VECT_ITER_CHA it = this->channels.begin();
-		for (; it != this->channels.end(); ++it)
-		{
-			if (it->getName() == name)
-				return *it;
-		}
-		return *it;
-	}
+	Room &getRoom(C_STR_REF name);
 
-	vector<Room> &getRooms()
-	{
-		return this->channels;
-	}
+	vector<Room> &getRooms();
 
-	bool isRoom(C_STR_REF name)
-	{
-		VECT_ITER_CHA it = this->channels.begin();
-		for (; it != this->channels.end(); ++it)
-		{
-			if (it->getName() == name)
-				return true;
-		}
-		return false;
-	}
-	void addRoom(const Room &room)
-	{
-		this->channels.push_back(room);
-	}
-	void addClient(const Client &client)
-	{
-		this->clients.push_back(client);
-	}
+	bool isRoom(C_STR_REF name);
 
-	vector<Client> &getClients()
-	{
-		return this->clients;
-	}
+	void addRoom(const Room &room);
+	void addClient(const Client &client);
+
+	vector<Client> &getClients();
 
 	void responseAllClientResponseToGui(Client &client, Room &room);
-	bool isClientInRoom(Room &room, const Client &client)
-	{
-		VECT_ITER_CLI it = room.getClients().begin();
-		for (; it != room.getClients().end(); ++it)
-		{
-			if (it->getNick() == client.getNick())
-				return true;
-		}
-		return false;
-	}
-	bool isClientInRoom(Client &client, string &room)
-	{
-		VECT_ITER_CHA it = this->channels.begin();
-		for (; it != this->channels.end(); ++it)
-		{
-			if (it->getName() == room)
-			{
-				VECT_ITER_CLI cit = it->getClients().begin();
-				for (; cit != it->getClients().end(); ++cit)
-				{
-					if (cit->getNick() == client.getNick())
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	void removeClient(int fd)
-	{
-		VECT_ITER_CLI it = this->clients.begin();
-		for (; it != this->clients.end(); ++it)
-		{
-			if (it->getFd() == fd)
-			{
-				this->clients.erase(it);
-				return;
-			}
-		}
-	}
+	bool isClientInRoom(Room &room, const Client &client);
+	bool isClientInRoom(Client &client, string &room);
+	void removeClient(int fd);
 
 	Client &getClientByNick(C_STR_REF nick);
 

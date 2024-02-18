@@ -7,7 +7,7 @@
 using namespace std;
 
 Server	 *serverInstance = NULL;
-volatile sig_atomic_t sigint = 0; // volatile sig_atomic_t is a type that is guaranteed to be accessed atomically even in the presence of signals.
+volatile sig_atomic_t sigint = 0; // volatile sig_atomic_t, sinyallerin varlığında bile atomik olarak erişilmesi garanti edilen bir türdür.
 // volatile : 
 void	signalHandler(int signum){
 	sigint = 1;

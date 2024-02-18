@@ -53,21 +53,7 @@ void Bot::initSocket()
 	{
 		TextEngine::green("Socket created successfully", cout) << std::endl;
 	}
-	int opt = 1;
-	// setsockopt: Sets socket options
-	// SOL_SOCKET: Socket level : Socket options apply to the socket layer
-	// SO_REUSEADDR: Reuse address : Allows other sockets to bind() to this port, unless there is an active listening socket bound to the port already
-	// &opt: Option value // NULL
-	// sizeof(int): Option length // NULL
-	if (setsockopt(this->_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(int)) < 0)
-	{
-		throw Exception("Socket option failed");
-	}
-	else
-	{
-		TextEngine::green("Socket option set successfully", cout) << std::endl;
-	}
-	//fcntl(this->_socket, F_SETFL, O_NONBLOCK); // Set socket to non-blocking
+
 	memset(&_bot_addr, 0, sizeof(_bot_addr));	   // Zeroing address
 	_bot_addr.sin_family = AF_INET;			   // IPv4
 	_bot_addr.sin_addr.s_addr = INADDR_ANY;	   // TCP
@@ -97,6 +83,7 @@ namespace {
         anthem.push_back("Sönmeden yurdumun üstünde tüten en son ocak.");
         anthem.push_back("O benim milletimin yıldızıdır, parlayacak;");
         anthem.push_back("O benimdir, o benim milletimindir ancak!");
+		
         anthem.push_back("Çatma, kurban olayım çehreni ey nazlı hilâl;");
         anthem.push_back("Kahraman ırkıma bir gül... ne bu şiddet bu celâl?...");
 
