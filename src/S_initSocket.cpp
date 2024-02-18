@@ -3,7 +3,7 @@
 #include "Utils.hpp"
 #include "TextEngine.hpp"
 #include "Client.hpp"
-#include "Executor.hpp"
+
 #include "Room.hpp"
 #include <string>
 #include <iostream>
@@ -28,7 +28,7 @@ void Server::initSocket()
 		TextEngine::green("Socket created successfully! ", TextEngine::printTime(cout)) << std::endl;
 	}
 	int dumb = 1;
-	if (setsockopt(this->_socket, SOL_SOCKET, SO_REUSEADDR, &dumb, sizeof(int)) < 0) //hemen portu sal
+	if (setsockopt(this->_socket, SOL_SOCKET, SO_REUSEADDR, &dumb, sizeof(int)) < 0)
 	{
 		throw Exception("Socket option failed");
 	}
@@ -36,7 +36,7 @@ void Server::initSocket()
 	{
 		TextEngine::green("Socket option set successfully! ", TextEngine::printTime(cout)) << std::endl;
 	}
-	if (fcntl(this->_socket, F_SETFL, O_NONBLOCK) < 0) // soketin bloklamasını kaldırır (non-blocking socket)
+	if (fcntl(this->_socket, F_SETFL, O_NONBLOCK) < 0)
 	{
 		throw Exception("Socket fcntl failed on Server");
 	}
@@ -50,7 +50,7 @@ void Server::initSocket()
 	address.sin_addr.s_addr = INADDR_ANY; 
 	address.sin_port = htons(this->port); 
 
-	if (::bind(this->_socket, (struct sockaddr *)&address, sizeof(address)) < 0) // soket port bağlama
+	if (::bind(this->_socket, (struct sockaddr *)&address, sizeof(address)) < 0)
 	{
 		throw Exception("Socket bind failed");
 	}
@@ -62,7 +62,7 @@ void Server::initSocket()
 	/*
 	 * Maximum queue length specifiable by listen.
 	*/
-	if (listen(this->_socket, SOMAXCONN) < 0) // soket dinlemeye başlar
+	if (listen(this->_socket, SOMAXCONN) < 0)
 	{
 		throw Exception("Socket listen failed");
 	}

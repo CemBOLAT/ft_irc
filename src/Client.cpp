@@ -1,5 +1,6 @@
 #include "Client.hpp"
 #include <cstring>
+#include <unistd.h>
 Client::Client() :
 	_ip("\0"), _fd(-1), _port(-1), isRegistered(false), isPassworded(false) {}
 
@@ -114,7 +115,10 @@ void Client::setServerName(C_STR_REF serverName) {
 	_serverName = serverName;
 }
 
-Client::~Client() {}
+Client::~Client() {
+	if (_fd != -1)
+		close(_fd);
+}
 
 string Client::getUserByHexChat() const {
 	std::string strIP = this->_ip;

@@ -10,6 +10,7 @@
 #include "Room.hpp"
 
 #include <unistd.h>
+#include <map>
 
 using std::string;
 using std::vector;
@@ -39,6 +40,9 @@ public:
 	void names(Client &fd, C_STR_REF channel);
 	void notice(std::string &input, Client &fd);
 	void kick(std::string &input, Client &fd);
+	void user(C_STR_REF params, Client &client);
+	void cap(C_STR_REF params, Client &client);
+	void pass(C_STR_REF param, Client &client);
 
 	Room &getRoom(C_STR_REF name);
 
@@ -65,6 +69,7 @@ private:
 	Server(const Server &other);
 	Server &operator=(const Server &other);
 	void	initSocket();
+	void	initFunctions();
 	void	runCommand(C_STR_REF command, Client &client);
 	void	hexChatEntry(VECT_STR &, Client &);
 
@@ -92,4 +97,5 @@ private:
 	vector<Room>		channels;
 
 	char				buffer[1024];
+	std::map<std::string, void (Server::*)(const std::string &, Client &)> _commands;
 };

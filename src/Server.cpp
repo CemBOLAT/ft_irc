@@ -3,7 +3,8 @@
 #include "Utils.hpp"
 #include "TextEngine.hpp"
 #include "Client.hpp"
-#include "Executor.hpp"
+#include "ErrorRPL.hpp"
+#include "CommandRPL.hpp"
 #include "Room.hpp"
 #include <string>
 #include <iostream>
@@ -29,6 +30,7 @@ Server::Server(C_STR_REF port, C_STR_REF password)
 			throw Exception("Invalid port");
 		}
 		initSocket();
+		initFunctions();
 	}
 	catch (const Exception &e)
 	{
@@ -107,6 +109,8 @@ void Server::run()
 			{
 				throw Exception("Accept failed");
 			}
+			if (fcntl(newSocket, F_SETFL, O_NONBLOCK) < 0)
+				throw Exception("Fcntl failed on new socket");
 			int port = ntohs(clientAddress.sin_port);
 			Client newClient(newSocket, port);
 			char	*ip = inet_ntoa(clientAddress.sin_addr);
@@ -176,7 +180,7 @@ void Server::run()
 				{
 					for (VECT_ITER_CHA it = this->channels.begin(); it != this->channels.end(); it++){
 						if (it->isClientInChannel(a->getFd())){
-							it->removeClient(a->getFd()); // kullanıcıyı odadan silmek çünkü ikiside farklı objeler
+							it->removeClient(a->getFd());
 						}
 					}
 					FD_CLR(a->getFd(), &writefds);
@@ -205,90 +209,15 @@ void Server::runCommand(C_STR_REF command, Client &client)
 		string trimmedLine = Utils::ft_trim(softSplit[i], " \t\r");
 		if (trimmedLine.empty()) return;
 		VECT_STR splitFirst = Utils::ft_firstWord(trimmedLine); // kelimeyi ayırır komut ve parametreleri
-		if (splitFirst.size() <= 1 && !Utils::isEqualNonSensitive(splitFirst[0], "list")) return;
-		if (Utils::isEqualNonSensitive(splitFirst[0], "pass"))
+		std::map<std::string, void (Server::*)(const string &, Client &)> ::iterator it = this->_commands.find(splitFirst[0]);
+		if (it != this->_commands.end())
 		{
-			Executor::pass(splitFirst[1], client, this->password); // doğru
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "cap"))
-		{
-			Executor::cap(splitFirst[1], client); // doğru
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "quit"))
-		{
-			this->quit(client);
-		}
-		else if (client.getIsPassworded() == false){
-			Utils::instaWrite(client.getFd(), "First you need to pass the password\n\r");
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "user"))
-		{
-			Executor::user(splitFirst[1], client); // doğru
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "nick"))
-		{
-			nick(splitFirst[1], client, writefds); // doğru
-		}
-		else if (client.getIsRegistered() == false){
-			Utils::instaWrite(client.getFd(), "First you need to register\n\r");
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "join"))
-		{
-			this->join(splitFirst[1], client); // doğru
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "part"))
-		{
-			this->part(splitFirst[1], client); // doğru
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "op"))
-		{
-			this->op(splitFirst[1], client);
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "mode")){
-			this->mode(splitFirst[1], client);
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "ping")){
-			this->ping(splitFirst[1], client); // doğru
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "privmsg"))
-		{
-			this->privmsg(splitFirst[1], client); // doğru
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "who"))
-		{
-			this->who(splitFirst[1], client); // doğru (iyi test et)
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "topic"))
-		{
-			this->topic(splitFirst[1], client); // doğru
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "whois"))
-		{
-			this->whois(splitFirst[1], client); // doğru
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "pong"))
-		{
-			this->pong(splitFirst[1], client); // doğru
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "list"))
-		{
-			this->list(client); // doğru değil
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "names"))
-		{
-			this->names(client, splitFirst[1]); // doğru
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "notice"))
-		{
-			this->notice(splitFirst[1], client); // doğru
-		}
-		else if (Utils::isEqualNonSensitive(splitFirst[0], "kick"))
-		{
-			this->kick(splitFirst[1], client);
+			(this->*_commands[splitFirst[0]])(splitFirst[1], client);
 		}
 		else
 		{
-			Utils::instaWrite(client.getFd(), "Invalid command\n\r");
+			Utils::instaWrite(client.getFd(), ERR_UNKNOWNCOMMAND(splitFirst[0]));
+			hexChatEntry(splitFirst, client);
 		}
 	}
 	hexChatEntry(softSplit, client);
@@ -322,8 +251,8 @@ void Server::responseAllClientResponseToGui(Client &client, Room &room)  {
 			message += "@";
 		message += (*it).getNick() + " ";
 	}
-	Utils::instaWriteAll(room.getClients(), RPL_NAMREPLY(client.getNick(), room.getName(), message));
-	Utils::instaWriteAll(room.getClients(), RPL_ENDOFNAMES(client.getNick(), room.getName()));
+	//Utils::instaWriteAll(room.getClients(), RPL_NAMREPLY(client.getNick(), room.getName(), message));
+	//Utils::instaWriteAll(room.getClients(), RPL_ENDOFNAMES(client.getNick(), room.getName()));
 }
 
 Client &Server::getClientByNick(C_STR_REF nick){
@@ -412,3 +341,24 @@ void	Server::removeClient(int fd){
 	}
 }
 
+void	Server::initFunctions() {
+	//this->functions["JOIN"] = &Server::join;
+	//this->functions["PART"] = &Server::part;
+	//this->functions["PRIVMSG"] = &Server::privmsg;
+	//this->functions["OP"] = &Server::op;
+	//this->functions["MODE"] = &Server::mode;
+	//this->functions["NICK"] = &Server::nick;
+	//this->functions["WHO"] = &Server::who;
+	//this->functions["TOPIC"] = &Server::topic;
+	//this->functions["PING"] = &Server::ping;
+	//this->functions["QUIT"] = &Server::quit;
+	//this->functions["WHOIS"] = &Server::whois;
+	//this->functions["PONG"] = &Server::pong;
+	//this->functions["LIST"] = &Server::list;
+	//this->functions["NAMES"] = &Server::names;
+	//this->functions["NOTICE"] = &Server::notice;
+	//this->functions["KICK"] = &Server::kick;
+	//this->functions["PASS"] = &Server::pass;
+	//this->functions["CAP"] = &Server::cap;
+	//this->functions["USER"] = &Server::user;
+}

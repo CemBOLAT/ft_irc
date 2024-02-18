@@ -39,28 +39,6 @@
 # define RPL_NOTICE(source, target, message) ":" + source + " NOTICE " + target + " :" + message + "\r\n"
 # define RPL_PRIVMSG(source, target, message)		":" + source + " PRIVMSG " + target + " :" + message + "\r\n"
 #define RPL_QUIT(source, message)                   (std::string(":") + source + " QUIT :" + message + "\r\n")
-#define RPL_TOPIC(nick, channel, topic) ": 332 " + nick + " " + channel + " :" + topic + "\r\n"
-#define RPL_NOTOPIC(nick, channel) ": 331 " + nick + " " + channel + " :No topic is set\r\n"
 #define RPL_TOPICSET(nick, channel, topic, time) ": 333 " + nick + " " + channel + " " + time + "\r\n"
 
-# define RPD_NAMESSTART(nick, channel)			    ": 353 " + nick + " = " + channel + " :"
-# define RPL_NAMES(nick, channel, names)             ": 353 " + nick + " = " + channel + " : " + names + "\r\n"
-# define RPL_NAMESEND(nick, channel)				    ": 366 " + nick + " " + channel + " :End of /NAMES list\r\n"
-
-#define RPL_WHOISUSER(nick, user, ip)				": 311 " + nick + " " + nick + " " + nick + " " + ip + " * :" + user + "\r\n"
-#define RPL_WHOISSERVER(source, server)				": 312 " + source + " * :" + server + "\r\n"
-#define RPL_ENDOFWHOIS(source, nick)				": 318 " + source + " " + nick + " :End of /WHOIS list" + "\r\n"
-
-# define ERR_NEEDMOREPARAMS(source, command)			": 461 " + source + " " + command + " :Not enough parameters" + "\r\n"			  
-# define ERR_CHANNELISFULL(source, channel)			": 471 " + source + " " + channel + " :Cannot join channel (+l)" + "\r\n"
-# define ERR_BADCHANNELKEY(source, channel)			": 475 " + source + " " + channel + " :Cannot join channel (+k)" + "\r\n"
-# define ERR_NOSUCHCHANNEL(source, channel)			": 403 " + source + " " + channel + " :No such channel" + "\r\n"				
-# define ERR_CHANOPRIVSNEEDED(source, channel)		": 482 " + source + " " + channel + " :You're not the channel operator" + "\r\n"
-# define ERR_NOSUCHNICK(source, nick) ": 401 " + source + " " + nick + " :No such nick/channel" + "\r\n"					
-# define ERR_NOTONCHANNEL(source, channel) ": 442 " + source + " " + channel + " :You're not on that channel" + "\r\n"	
 # define ERR_OWNKICK(source, channel) ": 443 " + source + " " + channel + " :You can't kick yourself" + "\r\n"			
-# define ERR_NICKNAMEEMPTY(source) ": 433 " + source + " " + source + " :Nickname cannot empty" + "\r\n"
-# define ERR_NICKNAMEINUSE(source) ": 433 " + source + " " + source + " :Nickname is already in use" + "\r\n"
-# define ERR_ERRONEUSNICKNAME(nick) ": 432 " + nick + " :Erroneus nickname\r\n"
-# define RPL_NAMREPLY(nick, channel, users)			": 353 " + nick + " = " + channel + " :" + users + "\r\n"
-# define RPL_ENDOFNAMES(nick, channel)				": 366 " + nick + " " + channel + " :End of /NAMES list\r\n"

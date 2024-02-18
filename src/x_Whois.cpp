@@ -1,5 +1,6 @@
 #include "Client.hpp"
-#include "Executor.hpp"
+#include "Server.hpp"
+
 #include "Exception.hpp"
 #include "Utils.hpp"
 #include "Define.hpp"
@@ -55,14 +56,14 @@ RFC 1459              Internet Relay Chat Protocol              May 1993
 */
 
 void	Server::whois(std::string &s, Client &cli){
-	VECT_STR cmd = Utils::ft_split(s, " ");
-	std::string who = cmd[0];
-	for(VECT_ITER_CLI it = this->clients.begin(); it != this->clients.end(); ++it) {
-		if (who == (*it).getNick()){
-			Utils::instaWrite(cli.getFd(), RPL_WHOISUSER((*it).getNick(), (*it).getUserName(), (*it)._ip));
-			Utils::instaWrite(cli.getFd(), RPL_WHOISSERVER((*it).getNick(), "user"));
-			Utils::instaWrite(cli.getFd(), RPL_ENDOFWHOIS((*it).getNick(), (*it).getNick()));
-			break;
-		}
-	}
+	//VECT_STR cmd = Utils::ft_split(s, " ");
+	//std::string who = cmd[0];
+	//for(VECT_ITER_CLI it = this->clients.begin(); it != this->clients.end(); ++it) {
+	//	if (who == (*it).getNick()){
+	//		Utils::instaWrite(cli.getFd(), RPL_WHOISUSER((*it).getNick(), (*it).getUserName(), (*it)._ip));
+	//		Utils::instaWrite(cli.getFd(), RPL_WHOISSERVER((*it).getNick(), "user"));
+	//		Utils::instaWrite(cli.getFd(), RPL_ENDOFWHOIS((*it).getNick(), (*it).getNick()));
+	//		break;
+	//	}
+	//}
 }

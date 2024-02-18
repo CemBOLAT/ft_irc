@@ -69,7 +69,7 @@
 #define RPL_LUSEROP(integer) ": 252 " + integer + " :operator(s) online" + "\r\n"
 #define RPL_LUSERUNKNOWN(integer) ": 253 " + integer + " :unknown connection(s)" + "\r\n"
 #define RPL_LUSERCHANNELS(integer) ": 254 " + integer + " :channels formed" + "\r\n"
-#define RPL_LUSERME(integer, integer, integer) ": 255 :I have " + integer + " clients and " + integer + " servers" + "\r\n"
+#define RPL_LUSERME(integer, integer1, integer2) ": 255 :I have " + integer1 + " clients and " + integer2 + " servers" + "\r\n"
 #define RPL_ADMINME(server) ": 256 :Administrative info about " + server + "\r\n"
 #define RPL_ADMINLOC1(info) ": 257 : " + info + "\r\n"
 #define RPL_ADMINLOC2(info) ": 258 : " + info + "\r\n"

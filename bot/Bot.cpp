@@ -3,7 +3,7 @@
 #include "Utils.hpp"
 #include "TextEngine.hpp"
 #include "Client.hpp"
-#include "Executor.hpp"
+
 #include "Room.hpp"
 #include "Define.hpp"
 #include "Bot.hpp"
