@@ -9,6 +9,14 @@
 #include <vector>
 #include "Define.hpp"
 
+/*
+   Parameters: <nickname> [ <hopcount> ]
+   1.  ERR_NONICKNAMEGIVEN	
+   2.  ERR_ERRONEUSNICKNAME
+   3.  ERR_NICKNAMEINUSE
+   4.  ERR_NICKCOLLISION
+*/
+
 int isNickExist(C_STR_REF s, C_VECT_CLI_R clients, int fd)
 {
 	for (VECT_ITER_CONST_CLI it = clients.begin(); it != clients.end(); ++it)
@@ -60,9 +68,3 @@ void Server::nick(C_STR_REF params, Client &client, fd_set &writefdd)
 		}
 	}
 }
-
-/*
-	oda1:											oda2:
-	cemal --> ali (4)								cemal (cemal aliyi bilmiyor) --> ali (4)
-	hüseyin (hüseyin cemali bilmiyor) (5)			ali --> cemal (6)
-*/

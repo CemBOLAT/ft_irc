@@ -7,12 +7,12 @@
 using namespace std;
 
 Server	 *serverInstance = NULL;
-volatile sig_atomic_t sigint = 0; // volatile sig_atomic_t, sinyallerin varlığında bile atomik olarak erişilmesi garanti edilen bir türdür.
-// volatile : 
+volatile sig_atomic_t sigint = 0;
+
 void	signalHandler(int signum){
 	sigint = 1;
 	std::cout << "\rCaught signal " << signum << std::endl;
-	if (signum == SIGINT || signum == SIGTERM) // gelen signal bölme mi?
+	if (signum == SIGINT || signum == SIGTERM)
 	{
 		if (serverInstance){
 			delete serverInstance;
@@ -31,8 +31,8 @@ int main(int argc, char** argv)
 		}
 		Server	*server = new Server(argv[1], argv[2]);
 		serverInstance = server;
-		signal(SIGINT, signalHandler); // catch ctrl+c (macos and linux have different signals)
-		signal(SIGTERM, signalHandler); // catch kill command
+		signal(SIGINT, signalHandler);
+		signal(SIGTERM, signalHandler);
 		server->run();
 	}
 	catch(const Exception& e)

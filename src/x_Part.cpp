@@ -12,6 +12,29 @@
 #include "Define.hpp"
 #include <stdlib.h>
 
+/*
+	4.2.2 Part message
+
+	Command: PART
+	Parameters: <channel>{,<channel>}
+
+	The PART message causes the client sending the message to be removed
+	from the list of active users for all given channels listed in the
+	parameter string.
+
+	Numeric Replies:
+
+	        ERR_NEEDMOREPARAMS              ERR_NOSUCHCHANNEL
+	        ERR_NOTONCHANNEL
+
+	Examples:
+
+	PART #twilight_zone             ; leave channel "#twilight_zone"
+
+	PART #oz-ops,&group5            ; leave both channels "&group5" and
+                                   "#oz-ops".
+*/
+
 void Server::part(C_STR_REF params, Client &client)
 {
 	VECT_ITER_CHA it = channels.begin();
