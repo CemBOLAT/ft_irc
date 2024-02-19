@@ -1,4 +1,5 @@
-make.exe --dry-run --keep-going --print-directory
-'make.exe' is not recognized as an internal or external command,
-operable program or batch file.
-
+make --dry-run --keep-going --print-directory
+make: Entering directory `/Users/cembolat/Desktop/FT_IRC-Internet_Relay_Chat'
+make: Nothing to be done for `all'.
+make: Leaving directory `/Users/cembolat/Desktop/FT_IRC-Internet_Relay_Chat'
+ 

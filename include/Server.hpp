@@ -26,10 +26,10 @@ public:
 	void run();
 	void join(C_STR_REF params, Client &client);
 	void part(C_STR_REF params, Client &client);
-	void privmsg(std::string &command, Client &client);
+	void privmsg(C_STR_REF command, Client &client);
 	void op(C_STR_REF params, Client &client);
 	void mode(C_STR_REF params, Client &client);
-	void nick(C_STR_REF params, Client &client, fd_set &fd);
+	void nick(C_STR_REF params, Client &client);
 	void who(C_STR_REF command, Client &client);
 	void topic(C_STR_REF command, Client &client);
 	void ping(C_STR_REF params, Client &client);

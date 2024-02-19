@@ -70,7 +70,13 @@
 		"random": "cpp",
 		"fstream": "cpp",
 		"iomanip": "cpp",
-		"thread": "cpp"
+		"thread": "cpp",
+		"__bits": "cpp",
+		"__tree": "cpp",
+		"compare": "cpp",
+		"concepts": "cpp",
+		"map": "cpp",
+		"variant": "cpp"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

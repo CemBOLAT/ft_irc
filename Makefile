@@ -13,7 +13,7 @@ BOT_OBJ := $(BOT_SRC:$(BOT_DIR)/%.cpp=$(BOT_OBJ_DIR)/%.o)
 INC := -I$(INC_DIR)
 
 # Derleyici ve Derleme Seçenekleri
-CC := g++
+CC := c++
 CFLAGS := -std=c++98 -g #-Wall -Wextra -Werror
 
 # Hedefler

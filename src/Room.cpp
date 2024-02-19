@@ -8,7 +8,7 @@ Room::Room()
 	  _key(""), _chanelLimit(0)
 {
 	_clients.reserve(256);
-	Operator = Client();
+	_operatorVector.reserve(256);
 }
 
 Room::~Room() {}
@@ -30,7 +30,7 @@ Room &Room::operator=(const Room &other)
 		_keycode = other._keycode;
 		_key = other._key;
 		_chanelLimit = other._chanelLimit;
-		Operator = other.Operator;
+		_operatorVector = other._operatorVector;
 	}
 	return *this;
 }
@@ -79,8 +79,10 @@ Client &Room::getClient(C_STR_REF nick)
 
 bool Room::isOperator(const Client &client) const
 {
-	
-	return Operator == client;
-	
-	//return false;
+	for (size_t i = 0; i < _operatorVector.size(); i++)
+	{
+		if (_operatorVector[i] == client)
+			return true;
+	}
+	return false;
 }

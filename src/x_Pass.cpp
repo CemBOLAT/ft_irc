@@ -32,6 +32,8 @@
 	    PASS secretpasswordhere
 */
 
+#define RPL_PASS(source) (string(":") + source + " 001 " + source + " :Password accepted\r\n")
+
 void Server::pass(C_STR_REF params, Client &client){
 	if (params.empty()){
 		Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getUserByHexChat(), "PASS"));
@@ -44,6 +46,6 @@ void Server::pass(C_STR_REF params, Client &client){
 	}
 	else{
 		client.setPassworded(true);
-		Utils::instaWrite(client.getFd(), "PASS :Password accepted\r\n"); // 381
+		Utils::instaWrite(client.getFd(), RPL_PASS(client.getUserByHexChat()));
 	}
 }
