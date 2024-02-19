@@ -38,6 +38,10 @@ namespace
 }
 void Server::nick(C_STR_REF params, Client &client)
 {
+	if (!client.getIsPassworded())
+	{
+		Utils::instaWrite(client.getFd(), ERR_NOTPASSWORDED(client.getUserByHexChat()));
+	}
 	string nicks, hopcount;
 	vector<string> tokens = Utils::ft_split(params, " ");
 	if (tokens.size() < 1)

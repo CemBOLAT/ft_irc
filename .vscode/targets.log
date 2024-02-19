@@ -8,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This program built for i386-apple-darwin11.3.0
  
 
-# Make data base, printed on Mon Feb 19 11:17:04 2024
+# Make data base, printed on Mon Feb 19 11:56:57 2024
 
 # Variables
 
@@ -141,8 +141,6 @@ XPC_SERVICE_NAME = application.com.microsoft.VSCode.20995168.20995174
 HOMEBREW_PREFIX = /opt/homebrew
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
-# environment
-VSCODE_L10N_BUNDLE_LOCATION = file:///Users/cembolat/.vscode/extensions/ms-ceintl.vscode-language-pack-tr-1.85.2024021409/translations/extensions/vscode.json-language-features.i18n.json
 # automatic
 +F = $(notdir $+)
 # environment
@@ -174,9 +172,9 @@ CLICOLOR = 1
 # environment
 LANG = C
 # environment
-VSCODE_PID = 89143
+VSCODE_PID = 94438
 # variable set hash-table stats:
-# Load=81/1024=8%, Rehash=0, Collisions=5/128=4%
+# Load=80/1024=8%, Rehash=0, Collisions=5/127=4%
 
 # Pattern-specific Variable Values
 
@@ -269,7 +267,6 @@ all: ircserv
 #  Phony target (prerequisite of .PHONY).
 #  Command-line target.
 #  Implicit rule search has not been done.
- 
 #  File does not exist.
 #  File has been updated.
 #  Successfully updated.
@@ -277,6 +274,7 @@ all: ircserv
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 obj/x_Nick.o: src/x_Nick.cpp | obj
+ 
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Nick'
 #  Last modified 2024-02-19 11:12:33
@@ -531,12 +529,12 @@ Makefile:
 
 ircserv: obj/Client.o obj/Room.o obj/S_initSocket.o obj/Server.o obj/TextEngine.o obj/Utils.o obj/main.o obj/x_Admin.o obj/x_Away.o obj/x_Cap.o obj/x_Connect.o obj/x_Error.o obj/x_Info.o obj/x_Invite.o obj/x_Ison.o obj/x_Join.o obj/x_Kick.o obj/x_Kill.o obj/x_List.o obj/x_Mode.o obj/x_Names.o obj/x_Nick.o obj/x_Notice.o obj/x_Op.o obj/x_Oper.o obj/x_Part.o obj/x_Pass.o obj/x_Ping.o obj/x_Pong.o obj/x_Privmsg.o obj/x_Quit.o obj/x_Rehash.o obj/x_Restart.o obj/x_SQuit.o obj/x_Stats.o obj/x_Summon.o obj/x_Topic.o obj/x_Trace.o obj/x_User.o obj/x_Userhost.o obj/x_Users.o obj/x_Version.o obj/x_Who.o obj/x_Whois.o obj/x_Whowas.o
 #  Implicit rule search has not been done.
- 
 #  Last modified 2024-02-19 11:12:34
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+ 
 #  commands to execute (from `Makefile', line 26):
 	$(CC) $(CFLAGS) $(INC) $^ -o $@
 	
@@ -586,7 +584,6 @@ obj/TextEngine.o: src/TextEngine.cpp | obj
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 	
 
- 
 # Not a target:
 src/x_SQuit.cpp:
 #  Implicit rule search has been done.
@@ -828,6 +825,7 @@ obj/x_Summon.o: src/x_Summon.cpp | obj
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 #  commands to execute (from `Makefile', line 29):
+ 
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 	
 
@@ -883,7 +881,6 @@ re: fclean all
 #  File has not been updated.
 
 obj/x_Info.o: src/x_Info.cpp | obj
- 
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Info'
 #  Last modified 2024-02-19 11:05:59
@@ -1116,6 +1113,7 @@ obj/x_Connect.o: src/x_Connect.cpp | obj
 	
 
 # Not a target:
+ 
 src/TextEngine.cpp:
 #  Implicit rule search has been done.
 #  Last modified 2024-02-19 10:35:27
@@ -1167,7 +1165,6 @@ obj/Client.o: src/Client.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `Client'
 #  Last modified 2024-02-19 11:05:56
- 
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1285,6 +1282,6 @@ obj/x_Admin.o: src/x_Admin.cpp | obj
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Mon Feb 19 11:17:04 2024
+# Finished Make data base on Mon Feb 19 11:56:57 2024
 
  

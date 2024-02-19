@@ -343,7 +343,11 @@ void	Server::removeClient(int fd){
 
 void	Server::initFunctions() {
 	this->_commands["PASS"] = &Server::pass;
+	this->_commands["pass"] = &Server::pass;
 	this->_commands["NICK"] = &Server::nick;
+	this->_commands["nick"] = &Server::nick;
+	this->_commands["USER"] = &Server::user;
+	this->_commands["user"] = &Server::user;
 	//this->_commands["JOIN"] = &Server::join;
 	//this->_commands["PART"] = &Server::part;
 	//this->_commands["PRIVMSG"] = &Server::privmsg;

@@ -1,5 +1,7 @@
 #pragma once
-
+// myrpls
+#define ERR_NOTPASSWORDED(source) ": 002 " + source + " :Your connection is not passworded"
+//
 #define ERR_NOSUCHNICK(source, nick) ": 401 " + source + " " + nick + " :No such nick/channel" + "\r\n"
 #define ERR_NOSUCHSERVER(source, server) ": 402 " + source + " " + server + " :No such server" + "\r\n"
 #define ERR_NOSUCHCHANNEL(source, channel) ": 403 " + source + " " + channel + " :No such channel" + "\r\n"
