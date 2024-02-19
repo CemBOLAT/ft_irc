@@ -41,6 +41,7 @@ void Server::nick(C_STR_REF params, Client &client)
 	if (!client.getIsPassworded())
 	{
 		Utils::instaWrite(client.getFd(), ERR_NOTPASSWORDED(client.getUserByHexChat()));
+		return;
 	}
 	string nicks, hopcount;
 	vector<string> tokens = Utils::ft_split(params, " ");
@@ -77,7 +78,7 @@ void Server::nick(C_STR_REF params, Client &client)
 			if (oldNick == cit->getNick())
 			{
 				cit->setNick(nicks);
-				responseAllClientResponseToGui(*cit, *it); // response to all client in room
+				responseAllClientResponseToGui(*cit, *it); // bu böyle mi olmalı hmm...
 				break;
 			}
 		}
@@ -85,7 +86,7 @@ void Server::nick(C_STR_REF params, Client &client)
 	if (client.getIsRegistered() == false && !client.getUserName().empty() && !client.getRealName().empty())
 	{
 		client.setRegistered(true);
-		Utils::instaWrite(client.getFd(), RPL_WELCOME(client.getNick(), client.getUserName(), client.getRealName()));
+		Utils::instaWrite(client.getFd(), RPL_WELCOME(client.getNick(), client.getUserByHexChat()));
 		TextEngine::magenta("User " + client.getNick() + " has been registered", TextEngine::printTime(std::cout)) << std::endl;
 	}
 }

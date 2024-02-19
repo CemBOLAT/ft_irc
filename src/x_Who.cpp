@@ -24,13 +24,6 @@
    common channel with the requesting client) are listed.  The same
    result can be achieved by using a <name> of "0" or any wildcard which
 
-
-
-Oikarinen & Reed                                               [Page 33]
-
-RFC 1459              Internet Relay Chat Protocol              May 1993
-
-
    will end up matching every entry possible.
 
    The <name> passed to WHO is matched against users' host, server, real

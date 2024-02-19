@@ -138,6 +138,7 @@ VECT_STR	Utils::ft_firstWord(C_STR_REF str)
 	if (end == 0)
 	{
 		result.push_back(ft_trim(str, " "));
+		result.push_back("");
 		return (result);
 	}
 	result.push_back(ft_trim(str.substr(start, end), " "));

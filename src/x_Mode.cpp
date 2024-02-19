@@ -14,9 +14,8 @@
 #include <cstdlib>
 
 /*
-
 	4.2.3 Mode message
-
+	
 	Command: MODE
 
 	The MODE command is a dual-purpose command in IRC.  It allows both
@@ -47,14 +46,6 @@
 	        n - no messages to channel from clients on the outside;
 	        m - moderated channel;
 	        l - set the user limit to channel;
-
-
-
-	arinen & Reed                                               [Page 21]
-
-	 1459              Internet Relay Chat Protocol              May 1993
-
-
 	        b - set a ban mask to keep users out;
 	        v - give/take the ability to speak on a moderated channel;
 	        k - set a channel key (password).

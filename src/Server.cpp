@@ -219,7 +219,7 @@ void Server::runCommand(C_STR_REF command, Client &client)
 			Utils::instaWrite(client.getFd(), ERR_UNKNOWNCOMMAND(splitFirst[0]));
 		}
 	}
-	hexChatEntry(softSplit, client);
+	//hexChatEntry(softSplit, client);
 }
 
 void Server::hexChatEntry(VECT_STR &params, Client &client)
@@ -348,6 +348,9 @@ void	Server::initFunctions() {
 	this->_commands["nick"] = &Server::nick;
 	this->_commands["USER"] = &Server::user;
 	this->_commands["user"] = &Server::user;
+	this->_commands["CAP"] = &Server::cap;
+	this->_commands["cap"] = &Server::cap;
+	this->_commands["QUIT"] = &Server::quit;
 	//this->_commands["JOIN"] = &Server::join;
 	//this->_commands["PART"] = &Server::part;
 	//this->_commands["PRIVMSG"] = &Server::privmsg;
@@ -356,7 +359,6 @@ void	Server::initFunctions() {
 	//this->_commands["WHO"] = &Server::who;
 	//this->_commands["TOPIC"] = &Server::topic;
 	//this->_commands["PING"] = &Server::ping;
-	//this->_commands["QUIT"] = &Server::quit;
 	//this->_commands["WHOIS"] = &Server::whois;
 	//this->_commands["PONG"] = &Server::pong;
 	//this->_commands["LIST"] = &Server::list;
@@ -364,6 +366,4 @@ void	Server::initFunctions() {
 	//this->_commands["NOTICE"] = &Server::notice;
 	//this->_commands["KICK"] = &Server::kick;
 	//this->_commands["PASS"] = &Server::pass;
-	//this->_commands["CAP"] = &Server::cap;
-	//this->_commands["USER"] = &Server::user;
 }

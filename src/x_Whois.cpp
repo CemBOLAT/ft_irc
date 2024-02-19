@@ -37,14 +37,6 @@
            RPL_AWAY                        RPL_WHOISOPERATOR
            RPL_WHOISIDLE                   ERR_NOSUCHNICK
            RPL_ENDOFWHOIS
-
-
-
-Oikarinen & Reed                                               [Page 34]
-
-RFC 1459              Internet Relay Chat Protocol              May 1993
-
-
    Examples:
 
    WHOIS wiz                       ; return available user information

@@ -1,6 +1,6 @@
 #pragma once
 
-#define RPL_WELCOME(nick, user, host) ": 001 " + nick + " :Welcome to the Internet Relay Network " + nick + "!" + user + "@" + host + "\r\n"
+#define RPL_WELCOME(nick, rfc1459) ": 001 " + nick + " :Welcome to the Internet Relay Network " + rfc1459 + "\r\n"
 #define RPL_NONE ": 300 :None" + "\r\n"
 #define RPL_USERHOST(nick, host) ": 302 " + nick + " :*1" + host + "\r\n"
 #define RPL_ISON(nick) ": 303 " + nick + " :is on IRC" + "\r\n"

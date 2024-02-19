@@ -53,7 +53,7 @@ void	Server::user(C_STR_REF params, Client &client)
 		return ;
 	if (!client.getIsRegistered()){
 		client.setRegistered(true);
-		Utils::instaWrite(client.getFd(), RPL_WELCOME(client.getNick(), client.getUserName(), client.getHostName()));
+		Utils::instaWrite(client.getFd(), RPL_WELCOME(client.getNick(), client.getUserByHexChat()));
 		TextEngine::magenta("User " + client.getNick() + " has been registered", TextEngine::printTime(std::cout)) << std::endl;
 	}
 }
