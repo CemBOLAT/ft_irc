@@ -8,6 +8,11 @@
 #include <vector>
 #include <sstream>
 #include "Define.hpp"
+#define FLAG_KEY 1
+#define FLAG_INV 2
+#define FLAG_TOPIC 4
+#define FLAG_NOOUTSIDE 8
+#define FLAG_LIMIT 16
 /*
 	4.2.4 Topic message
 
@@ -21,7 +26,7 @@
 
 	   Numeric Replies:
 
-	           ERR_NEEDMOREPARAMS              ERR_NOTONCHANNEL
+	           ERR_NEEDMOREPARAMS (done)       ERR_NOTONCHANNEL (done)
 	           RPL_NOTOPIC                     RPL_TOPIC
 	           ERR_CHANOPRIVSNEEDED
 
@@ -37,12 +42,52 @@
 
 void Server::topic(C_STR_REF command, Client &client)
 {
-	//VECT_STR params = Utils::ft_split(command, " ");
-	//if (params.size() < 2)
-	//{
-	//	Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "TOPIC"));
-	//	return;
-	//}
+	if (client.getIsRegistered() == false){
+		Utils::instaWrite(client.getFd(), ERR_NOTREGISTERED(client.getUserByHexChat()));
+	}
+	if (command.empty())
+	{
+		Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "TOPIC"));
+		return;
+	}
+	VECT_STR params = Utils::ft_split(command, " ");
+
+	if (isRoom(params[0])){
+		Room &room = getRoom(params[0]);
+		if (!room.isClientInChannel(client.getFd())){
+			Utils::instaWrite(client.getFd(), ERR_NOTONCHANNEL(client.getNick(), room.getName()));
+			return;
+		}
+		if (params.size() == 1){
+			if (room.getTopic().empty()){
+				Utils::instaWrite(client.getFd(), RPL_NOTOPIC(client.getUserByHexChat(), room.getName()));
+			}
+			else{
+				Utils::instaWrite(client.getFd(), RPL_TOPIC(client.getUserByHexChat(), room.getName(), room.getTopic()));
+			}
+			return;
+		}
+		if (room.getKeycode() & FLAG_TOPIC && !room.isOperator(client))
+		{
+			Utils::instaWrite(client.getFd(), ERR_CHANOPRIVSNEEDED(client.getUserByHexChat(), room.getName()));
+			return;
+		}
+		string newtopic = Utils::ft_join(params, " ", 1);
+		if (newtopic[0] == ':')
+			newtopic = newtopic.substr(1, newtopic.size() - 1); // remove the first colon (if exists
+		string oldtopic = room.getTopic();
+		room.setTopic(newtopic);
+		Utils::instaWriteAll(room.getClients(), RPL_TOPIC(client.getUserByHexChat(), room.getName(), newtopic));
+		if (oldtopic != newtopic)
+		{
+			Utils::instaWriteAll(room.getClients(), RPL_TOPICSET(client.getUserByHexChat(), room.getName(), newtopic, Utils::getTime()));
+		}
+		return;
+	}
+	else {
+		Utils::instaWrite(client.getFd(), ERR_NOSUCHCHANNEL(client.getNick(), params[0]));
+		return;
+	}
 	//std::string channelName = params[0];
 	//bool channelFound = false;
 //

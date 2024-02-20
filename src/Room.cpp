@@ -86,3 +86,13 @@ bool Room::isOperator(const Client &client) const
 	}
 	return false;
 }
+
+bool Room::isOperator(C_STR_REF nick) const
+{
+	for (size_t i = 0; i < _operatorVector.size(); i++)
+	{
+		if (_operatorVector[i].getNick() == nick)
+			return true;
+	}
+	return false;
+}

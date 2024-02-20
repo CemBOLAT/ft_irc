@@ -1,5 +1,9 @@
 #pragma once
 
+// my includes
+#define RPL_JOIN(source, channel) ":" + source + " JOIN " + channel + "\r\n"
+//
+
 #define RPL_WELCOME(nick, rfc1459) ": 001 " + nick + " :Welcome to the Internet Relay Network " + rfc1459 + "\r\n"
 #define RPL_NONE ": 300 :None" + "\r\n"
 #define RPL_USERHOST(nick, host) ": 302 " + nick + " :*1" + host + "\r\n"
@@ -18,16 +22,16 @@
 #define RPL_LISTSTART(channel) ": 321 :Channel :Users Name" + "\r\n"
 #define RPL_LIST(channel, users, topic) ": 322 " + channel + " " + users + " : " + topic + "\r\n"
 #define RPL_LISTEND ": 323 :End of LIST" + "\r\n"
-#define RPL_CHANNELMODEIS(channel, mode) ": 324 " + channel + " " + mode + "\r\n"
-#define RPL_NOTOPIC(channel) ": 331 " + channel + " :No topic is set" + "\r\n"
-#define RPL_TOPIC(channel, topic) ": 332 " + channel + " : " + topic + "\r\n"
+#define RPL_CHANNELMODEIS(source, channel, mode) ": 324 " + source + " " + channel + " " + mode + "\r\n"
+#define RPL_NOTOPIC(source, channel) ": 331 " + source + " " + channel + " :No topic is set" + "\r\n"
+#define RPL_TOPIC(source, channel, topic) ": 332 " + source + " " + channel + " :" + topic + "\r\n"
 #define RPL_INVITING(nick, channel) ": 341 " + nick + " " + channel + "\r\n"
 #define RPL_SUMMONING(user) ": 342 " + user + " :Summoning user to IRC" + "\r\n"
 #define RPL_VERSION(version, debuglevel, server, comments) ": 351 " + version + " " + debuglevel + " " + server + " : " + comments + "\r\n"
 #define RPL_WHOREPLY(channel, user, host, server, nick, flags, hopcount, realname) ": 352 " + channel + " " + user + " " + host + " " + server + " " + nick + " " + flags + " " + hopcount + " " + realname + "\r\n"
 #define RPL_ENDOFWHO(channel) ": 315 " + channel + " :End of WHO list" + "\r\n"
-#define RPL_NAMREPLY(channel, names) ": 353 " + channel + " : " + names + "\r\n"
-#define RPL_ENDOFNAMES(channel) ": 366 " + channel + " :End of NAMES list" + "\r\n"
+#define RPL_NAMREPLY(nick, channel, users)			": 353 " + nick + " = " + channel + " :" + users + "\r\n"
+#define RPL_ENDOFNAMES(nick, channel) ": 366 " + nick + " " + channel + " :End of NAMES list" + "\r\n"
 #define RPL_LINKS(mask, server, hopcount, serverinfo) ": 364 " + mask + " " + server + " " + hopcount + " " + serverinfo + "\r\n"
 #define RPL_ENDOFLINKS(mask) ": 365 " + mask + " :End of LINKS list" + "\r\n"
 #define RPL_BANLIST(channel, banmask) ": 367 " + channel + " " + banmask + "\r\n"

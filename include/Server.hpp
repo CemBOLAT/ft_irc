@@ -8,6 +8,8 @@
 
 #include "Define.hpp"
 #include "Room.hpp"
+#include "CommandRPL.hpp"
+#include "ErrorRPL.hpp"
 
 #include <unistd.h>
 #include <map>
@@ -55,14 +57,15 @@ public:
 
 	vector<Client> &getClients();
 
-	void responseAllClientResponseToGui(Client &client, Room &room);
-	bool isClientInRoom(Room &room, const Client &client);
-	bool isClientInRoom(Client &client, string &room);
-	void removeClient(int fd);
+	void	responseAllClientResponseToGui(Client &client, Room &room);
+	bool	isClientInRoom(Room &room, const Client &client);
+	bool	isClientInRoom(Client &client, string &room);
+	bool	isClientInRoom(Room &room, string &nick);
+	void	removeClient(int fd);
 
-	Client &getClientByNick(C_STR_REF nick);
+	Client	&getClientByNick(C_STR_REF nick);
 
-	int getSocket() const { return this->_socket; }
+	int		getSocket() const { return this->_socket; }
 
 private:
 	Server();
@@ -70,6 +73,8 @@ private:
 	Server &operator=(const Server &other);
 	void	initSocket();
 	void	initFunctions();
+	void	modeChannel(VECT_STR &params, Client &client);
+	//void	modeUser(VECT_STR &params, Client &client);
 	void	runCommand(C_STR_REF command, Client &client);
 	void	hexChatEntry(VECT_STR &, Client &);
 

@@ -24,6 +24,7 @@ public:
 	string			getKey() const { return _key ; }
 	int				getChanelLimit() const { return _chanelLimit; }
 	vector<Client>	&getOperatorVector() { return _operatorVector; }
+	bool 			isOperator(C_STR_REF nick) const;
 
 	void			addOperator(const Client &client) { _operatorVector.push_back(client); }
 	void			removeOperator(const Client &client) {

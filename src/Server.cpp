@@ -250,8 +250,8 @@ void Server::responseAllClientResponseToGui(Client &client, Room &room)  {
 			message += "@";
 		message += (*it).getNick() + " ";
 	}
-	//Utils::instaWriteAll(room.getClients(), RPL_NAMREPLY(client.getNick(), room.getName(), message));
-	//Utils::instaWriteAll(room.getClients(), RPL_ENDOFNAMES(client.getNick(), room.getName()));
+	Utils::instaWriteAll(room.getClients(), RPL_NAMREPLY(client.getNick(), room.getName(), message));
+	Utils::instaWriteAll(room.getClients(), RPL_ENDOFNAMES(client.getNick(), room.getName()));
 }
 
 Client &Server::getClientByNick(C_STR_REF nick){
@@ -328,6 +328,16 @@ bool	Server::isClientInRoom(Client &client, string &room){
 	return false;
 }
 
+bool	Server::isClientInRoom(Room &room, string &nick){
+	VECT_ITER_CLI it = room.getClients().begin();
+	for (; it != room.getClients().end(); ++it)
+	{
+		if (it->getNick() == nick)
+			return true;
+	}
+	return false;
+}
+
 void	Server::removeClient(int fd){
 	VECT_ITER_CLI it = this->clients.begin();
 	for (; it != this->clients.end(); ++it)
@@ -350,7 +360,13 @@ void	Server::initFunctions() {
 	this->_commands["user"] = &Server::user;
 	this->_commands["CAP"] = &Server::cap;
 	this->_commands["cap"] = &Server::cap;
-	this->_commands["QUIT"] = &Server::quit;
+	this->_commands["JOIN"] = &Server::join;
+	this->_commands["join"] = &Server::join;
+	this->_commands["TOPIC"] = &Server::topic;
+	this->_commands["topic"] = &Server::topic;
+	this->_commands["MODE"] = &Server::mode;
+	this->_commands["mode"] = &Server::mode;
+	//this->_commands["QUIT"] = &Server::quit;
 	//this->_commands["JOIN"] = &Server::join;
 	//this->_commands["PART"] = &Server::part;
 	//this->_commands["PRIVMSG"] = &Server::privmsg;

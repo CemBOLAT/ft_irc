@@ -51,10 +51,10 @@ using namespace std;
 
    Numeric Replies:
 
-           ERR_NEEDMOREPARAMS              ERR_BANNEDFROMCHAN
-           ERR_INVITEONLYCHAN              ERR_BADCHANNELKEY
-           ERR_CHANNELISFULL               ERR_BADCHANMASK
-           ERR_NOSUCHCHANNEL               ERR_TOOMANYCHANNELS
+           ERR_NEEDMOREPARAMS (done)              ERR_BANNEDFROMCHAN
+           ERR_INVITEONLYCHAN (done)             ERR_BADCHANNELKEY
+           ERR_CHANNELISFULL (done)              ERR_BADCHANMASK
+           ERR_NOSUCHCHANNEL (done)              ERR_TOOMANYCHANNELS
            RPL_TOPIC
 
    Examples:
@@ -74,8 +74,67 @@ using namespace std;
    :WiZ JOIN #Twilight_zone        ; JOIN message from WiZ
 */
 
+#define FLAG_KEY 1
+#define FLAG_INV 2
+#define FLAG_TOPIC 4
+#define FLAG_NOOUTSIDE 8
+#define FLAG_LIMIT 16
+
 void Server::join(C_STR_REF params, Client &client)
 {
+        if (client.getIsRegistered() == false){
+	        Utils::instaWrite(client.getFd(), ERR_NOTREGISTERED(client.getUserByHexChat()));
+	}
+        stringstream ss(params);
+        string roomName, key, message;
+        if (params.empty()){
+                Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getUserByHexChat(), "JOIN"));
+                return;
+        }
+        ss >> roomName;
+        ss >> key;
+        if (roomName[0] != '#')
+        {
+                roomName = "#" + roomName;
+        }
+        if (isRoom(roomName)){
+                if (getRoom(roomName).isClientInChannel(client.getFd())){
+                        Utils::instaWrite(client.getFd(), ERR_TOOMANYCHANNELS(client.getUserByHexChat(), roomName)); // my own implement
+                        return;
+                }
+                Room &room = getRoom(roomName);
+                if (room.getKeycode() & FLAG_INV){
+                        Utils::instaWrite(client.getFd(), ERR_INVITEONLYCHAN(client.getUserByHexChat(), roomName));
+                        return;
+                }
+                if (room.getKeycode() & FLAG_KEY){
+                        if (key.empty() || room.getKey() != key){
+                                Utils::instaWrite(client.getFd(), ERR_BADCHANNELKEY(client.getUserByHexChat(), roomName));
+                                return;
+                        }
+                }
+                if (room.getKeycode() & FLAG_LIMIT){
+                        if (room.getChanelLimit() <= (int) room.getClients().size()){
+                                Utils::instaWrite(client.getFd(), ERR_CHANNELISFULL(client.getUserByHexChat(), roomName));
+                                return;
+                        }
+                }
+                room.addClient(client);
+                Utils::instaWrite(client.getFd(), RPL_JOIN(client.getUserByHexChat(), roomName));
+                if (!room.getTopic().empty()){
+                        Utils::instaWrite(client.getFd(), RPL_TOPIC(client.getUserByHexChat(), roomName, room.getTopic()));
+                }
+        } else {
+                TextEngine::green("Room " + roomName + " has been created by " + client.getUserByHexChat(), TextEngine::printTime(std::cout)) << std::endl;
+                Room room;
+                room.setName(roomName);
+                room.addOperator(client);
+                room.addClient(client);
+                channels.push_back(room);
+                Utils::instaWrite(client.getFd(), RPL_JOIN(client.getUserByHexChat(), roomName));
+        }
+        responseAllClientResponseToGui(client, getRoom(roomName));
+}
 //stringstream ss(params);
 //string roomName, key, message;
 //if (!params.empty()){
@@ -163,4 +222,3 @@ void Server::join(C_STR_REF params, Client &client)
 //	client.getmesagesFromServer().push_back("JOIN :Not enough parameters");
 //	FD_SET(client.getFd(), &writefds);
 //}
-}

@@ -13,6 +13,12 @@
 #include <vector>
 #include <cstdlib>
 
+#define FLAG_KEY 1
+#define FLAG_INV 2
+#define FLAG_TOPIC 4
+#define FLAG_NOOUTSIDE 8
+#define FLAG_LIMIT 16
+
 /*
 	4.2.3 Mode message
 	
@@ -38,23 +44,23 @@
 
 	The various modes available for channels are as follows:
 
-	        o - give/take channel operator privileges;
+	        o - give/take channel operator privileges; (yapak)
+	        i - invite-only channel flag; (yapak)
+	        t - topic settable by channel operator only flag; (yapak)
+	        n - no messages to channel from clients on the outside; (yapak)
+	        l - set the user limit to channel; (yapak)
+	        k - set a channel key (password). (yapak)
 	        p - private channel flag;
 	        s - secret channel flag;
-	        i - invite-only channel flag;
-	        t - topic settable by channel operator only flag;
-	        n - no messages to channel from clients on the outside;
 	        m - moderated channel;
-	        l - set the user limit to channel;
 	        b - set a ban mask to keep users out;
 	        v - give/take the ability to speak on a moderated channel;
-	        k - set a channel key (password).
 
 	When using the 'o' and 'b' options, a restriction on a total of three
 	per mode command has been imposed.  That is, any combination of 'o'
 	and
 
-	.3.2 User modes
+	.3.2 User modes (only channel modes we want to do)
 
 	Parameters: <nickname> {[+|-]|i|w|s|o}
 
@@ -77,11 +83,11 @@
 	however, on anyone `deopping' themselves (using "-o").  Numeric
 	Replies:
 
-	        ERR_NEEDMOREPARAMS              RPL_CHANNELMODEIS
-	        ERR_CHANOPRIVSNEEDED            ERR_NOSUCHNICK
-	        ERR_NOTONCHANNEL                ERR_KEYSET
+	        ERR_NEEDMOREPARAMS (done)             RPL_CHANNELMODEIS
+	        ERR_CHANOPRIVSNEEDED (done)           ERR_NOSUCHNICK
+	        ERR_NOTONCHANNEL (done)               ERR_KEYSET
 	        RPL_BANLIST                     RPL_ENDOFBANLIST
-	        ERR_UNKNOWNMODE                 ERR_NOSUCHCHANNEL
+	        ERR_UNKNOWNMODE (done)                ERR_NOSUCHCHANNEL (done)
 
 	        ERR_USERSDONTMATCH              RPL_UMODEIS
 	        ERR_UMODEUNKNOWNFLAG
@@ -127,66 +133,201 @@
 
 */
 
+namespace {
+	string calcMode(const Room &room){
+		string mode = "+";
+		if (room.getKeycode() & FLAG_INV)
+			mode += "i";
+		if (room.getKeycode() & FLAG_TOPIC)
+			mode += "t";
+		if (room.getKeycode() & FLAG_NOOUTSIDE)
+			mode += "n";
+		if (room.getKeycode() & FLAG_LIMIT)
+			mode += "l";
+		if (room.getKeycode() & FLAG_KEY)
+			mode += "k";
+		return mode;
+	}
+}
+
+void Server::modeChannel(VECT_STR &params, Client &client)
+{
+	if (isRoom(params[0]) == false){
+		Utils::instaWrite(client.getFd(), ERR_NOSUCHCHANNEL(client.getUserByHexChat(), params[0]));
+		return;
+	}
+	Room &room = getRoom(params[0]);
+	if (params.size() == 1){
+		Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room)));
+		return;
+	}
+	if (isClientInRoom(room, client) == false){
+		Utils::instaWrite(client.getFd(), ERR_NOTONCHANNEL(client.getUserByHexChat(), params[0]));
+		return;
+	}
+	if (room.isOperator(client) == false){
+		Utils::instaWrite(client.getFd(), ERR_CHANOPRIVSNEEDED(client.getUserByHexChat(), params[0]));
+		return;
+	}
+	if (params.size() > 3)
+	{
+		Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), params[1]));
+		return;
+	
+	}
+	if (params[1][0] == '+'){
+		for (size_t i = 1; i < params[1].size(); i++)
+		{
+			if (params[1][i] == 'o')
+			{
+				if (params.size() == 2)
+				{
+					Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getUserByHexChat(), "MODE"));
+					return;
+				}
+				if (isClientInRoom(room, params[2]) == false)
+				{
+					Utils::instaWrite(client.getFd(), ERR_NOSUCHNICK(client.getUserByHexChat(), params[2]));
+					return;
+				}
+				if (room.isOperator(params[2]) == true)
+				{
+					Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), params[1]));
+					return;
+				}
+				Client &cli = getClientByNick(params[2]);
+				room.addOperator(cli);
+				Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room)));
+			}
+			else if (params[1][i] == 'i')
+			{
+				room.setKeycode(room.getKeycode() | FLAG_INV);
+				Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room)));
+			}
+			else if (params[1][i] == 't')
+			{
+				room.setKeycode(room.getKeycode() | FLAG_TOPIC);
+				Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room)));
+			}
+			else if (params[1][i] == 'n')
+			{
+				room.setKeycode(room.getKeycode() | FLAG_NOOUTSIDE);
+				Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room)));
+			}
+			else if (params[1][i] == 'l')
+			{
+				if (params.size() == 2)
+				{
+					Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getUserByHexChat(), "MODE"));
+					return;
+				}
+				else if (atoi(params[2].c_str()) < 0 && atoi(params[2].c_str()) < room.getClients().size())
+				{
+					Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), params[1]));
+					return;
+				}
+				room.setKeycode(room.getKeycode() | FLAG_LIMIT);
+				room.setChanelLimit(atoi(params[2].c_str()));
+				Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room)));
+			}
+			else if (params[1][i] == 'k')
+			{
+				if (params.size() == 2)
+				{
+					Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getUserByHexChat(), "MODE"));
+					return;
+				}
+				room.setKeycode(room.getKeycode() | FLAG_KEY);
+				room.setKey(params[2]);
+				Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room)));
+			}
+			else
+			{
+				Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), params[1]));
+				return;
+			}
+		}
+	}
+	else if (params[1][0] == '-')
+	{
+		for (size_t i = 1; i < params[1].size(); i++)
+		{
+			if (params[1][i] == 'o')
+			{
+				if (params.size() == 2)
+				{
+					Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getUserByHexChat(), "MODE"));
+					return;
+				}
+				if (isClientInRoom(room, params[2]) == false)
+				{
+					Utils::instaWrite(client.getFd(), ERR_NOSUCHNICK(client.getUserByHexChat(), params[2]));
+					return;
+				}
+				if (room.isOperator(params[2]) == false)
+				{
+					Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), params[1]));
+					return;
+				}
+				Client &cli = getClientByNick(params[2]);
+				if (cli.getNick() != client.getNick())
+				{
+					room.removeOperator(cli);
+				}
+				Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room)));
+			}
+			else if (params[1][i] == 'i')
+			{
+				room.setKeycode(room.getKeycode() ^ FLAG_INV);
+				Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room)));
+			}
+			else if (params[1][i] == 't')
+			{
+				room.setKeycode(room.getKeycode() ^ FLAG_TOPIC);
+				Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room)));
+			}
+			else if (params[1][i] == 'n')
+			{
+				room.setKeycode(room.getKeycode() ^ FLAG_NOOUTSIDE);
+				Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room)));
+			}
+			else if (params[1][i] == 'l')
+			{
+				room.setKeycode(room.getKeycode() ^ FLAG_LIMIT);
+				room.setChanelLimit(0);
+				Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room)));
+			}
+			else if (params[1][i] == 'k')
+			{
+				room.setKeycode(room.getKeycode() ^ FLAG_KEY);
+				room.setKey("");
+				Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room)));
+			}
+			else
+			{
+				Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), params[1]));
+				return;
+			}
+		}
+	}
+	else{
+		Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), params[1]));
+	}
+}
+
 void	Server::mode(C_STR_REF input, Client &client){
-	//VECT_STR params = Utils::ft_split(input, " ");
-	//if (params.size() < 3){
-	//	Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "MODE"));
-	//	return;
-	//}
-	//if (params.size() == 1){
-	//	return;
-	//}
-	//// odayı buluyom
-	//VECT_ITER_CHA it = this->channels.begin();
-	//for (; it != this->channels.end(); ++it){
-	//	if (it->getName() == params[0]){
-	//		break;
-	//	}
-	//}
-	//if (it == this->channels.end()){ // oda yoksa
-	//	Utils::instaWrite(client.getFd(), ERR_NOSUCHCHANNEL(client.getNick(), params[0]));
-	//	return;
-	//}
-	//// operatör mü
-	//if (it->getOperator().getNick() != client.getNick()){
-	//	Utils::instaWrite(client.getFd(), ERR_CHANOPRIVSNEEDED(client.getNick(), params[0]));
-	//	return;
-	//}
-	//if (params[1] == "+k"){ // sets a key to the channel
-	//	if (params.size() == 3){
-	//		it->setKey(params[2]);
-	//		it->setKeycode(it->getKeycode() | KEY_CODE); // yada (0 | 1) == 1
-	//		Utils::instaWrite(client.getFd(), RPL_MODE(client.getNick(), it->getName(), "+k", params[2]));
-	//	}
-	//}
-	//if (params[1] == "-k"){
-	//	if (params.size() == 2){
-	//		it->setKey("");
-	//		it->setKeycode(it->getKeycode() ^ KEY_CODE); // (1i 0 0ı 1 yapar)
-	//		Utils::instaWrite(client.getFd(), RPL_MODE(client.getNick(), it->getName(), "-k", ""));
-	//	}
-	//}
-	//if (params[1] == "+l"){ // limits the number of clients in the channel (working properly)
-	//	if (params.size() == 3){
-	//		if (it->getClients().size() < static_cast<size_t>(atoi(params[2].c_str()))){
-	//			Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "MODE"));
-	//			return;
-	//		}
-	//		it->setChanelLimit(atoi(params[2].c_str()));
-	//		it->setKeycode(it->getKeycode() | LIMIT_CODE); 
-	//		Utils::instaWrite(client.getFd(), RPL_MODE(client.getNick(), it->getName(), "+l", params[2]));
-	//	}
-	//}
-	//if (params[1] == "-l"){ // removes the limit of clients in the channel (working properly)
-	//	if (params.size() == 2){
-	//		it->setKeycode(it->getKeycode() ^ LIMIT_CODE);
-	//		Utils::instaWrite(client.getFd(), RPL_MODE(client.getNick(), it->getName(), "-l", ""));
-	//	}
-	//}
-	//if (params[1] == "+o"){ // gives operator status to a client (working properly)
-	//	if (params.size() == 3){
-	//		std::string joined = Utils::ft_join(params, " ", 2);
-	//		op(params[0] +  " " + joined, client);
-	//	}
-	//}
-}//
+	if (client.getIsRegistered() == false){
+		Utils::instaWrite(client.getFd(), ERR_NOTREGISTERED(client.getUserByHexChat()));
+	}
+	if (input.empty()){
+		Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getUserByHexChat(), "MODE"));
+		return;
+	}
+	VECT_STR		params = Utils::ft_split(input, " ");
+	if (params[0][0] == '#')
+		this->modeChannel(params, client);
+	else
+	{
+		Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), input));
+	}
+}
