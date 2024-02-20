@@ -38,8 +38,8 @@ public:
 	void quit(Client &client);
 	void whois(std::string &s, Client &cli);
 	void pong(C_STR_REF params, Client &client);
-	void list(Client &fd);
-	void names(Client &fd, C_STR_REF channel);
+	void list(C_STR_REF params, Client &client);
+	void names(C_STR_REF params, Client &fd);
 	void notice(std::string &input, Client &fd);
 	void kick(std::string &input, Client &fd);
 	void user(C_STR_REF params, Client &client);

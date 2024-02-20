@@ -41,18 +41,39 @@
     NAMES                           ; list all visible channels and users
 */
 
-void    Server::names(Client &fd, C_STR_REF channel){
-   //string message;
-   //for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); it++){
-   //    if (it->getName() == channel){
-   //        for (VECT_ITER_CLI it2 = it->getClients().begin(); it2 != it->getClients().end(); it2++){
-   //            if (it2->getFd() == it->getOperator().getFd())
-   //                message += "@";
-   //            message += (*it2).getNick() + " ";
-   //        }
-   //        Utils::instaWrite(fd.getFd(), RPL_NAMES(fd.getNick(), channel, message));
-   //        Utils::instaWrite(fd.getFd(), RPL_NAMESEND(fd.getNick(), channel));
-   //        return;
-   //    }
-   //}
+void    Server::names(C_STR_REF params, Client &fd){ // names otomatik aa yolluyor servera ? (saçma şekilde kendi sunucu adını yazıyor benim localhost yazdığım.)
+    if (params.empty()){
+        for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); it++){
+            string message;
+            for (VECT_ITER_CLI it2 = it->getClients().begin(); it2 != it->getClients().end(); it2++){
+                if (it->isOperator(*it2))
+                    message += "@";
+                message += (*it2).getNick() + " ";
+            }
+            Utils::instaWrite(fd.getFd(), RPL_NAMREPLY(fd.getNick(), params, message)); // bura bozuk gibimsi
+            Utils::instaWrite(fd.getFd(), RPL_ENDOFNAMES(fd.getNick(), params)); // bura bozuk gibimsi
+        }
+    }
+    else{
+        VECT_STR splitted = Utils::ft_split(params, ",");
+        for (vector<string>::iterator it = splitted.begin(); it != splitted.end(); it++){
+            bool found = false;
+            for (VECT_ITER_CHA it2 = channels.begin(); it2 != channels.end(); it2++){
+                if ((*it2).getName() == *it){
+                    string message;
+                    for (VECT_ITER_CLI it3 = it2->getClients().begin(); it3 != it2->getClients().end(); it3++){
+                        if (it2->isOperator(*it3))
+                            message += "@";
+                        message += (*it3).getNick() + " ";
+                    }
+                    Utils::instaWrite(fd.getFd(), RPL_NAMREPLY(fd.getNick(), *it, message));
+                    Utils::instaWrite(fd.getFd(), RPL_ENDOFNAMES(fd.getNick(), *it));
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+                Utils::instaWrite(fd.getFd(), ERR_NOSUCHCHANNEL(fd.getNick(), *it));
+        }
+    }
 }

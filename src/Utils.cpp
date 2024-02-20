@@ -88,9 +88,9 @@ std::string Utils::getTime()
 	time_t now = time(0);
 		tm *ltm = localtime(&now);
 		std::stringstream ss;
-		ss << std::setfill('0') << std::setw(4) << (1900 + ltm->tm_year) << '-'
+		ss 	<< std::setfill('0') << std::setw(2) << ltm->tm_mday << '-'
 			<< std::setfill('0') << std::setw(2) << (1 + ltm->tm_mon) << '-'
-			<< std::setfill('0') << std::setw(2) << ltm->tm_mday << ' '
+			<< std::setfill('0') << std::setw(4) << (1900 + ltm->tm_year) << ' '
 			<< std::setfill('0') << std::setw(2) << ltm->tm_hour << ':'
 			<< std::setfill('0') << std::setw(2) << ltm->tm_min << ':'
 			<< std::setfill('0') << std::setw(2) << ltm->tm_sec;
@@ -186,4 +186,13 @@ std::string	Utils::ft_getNick(const std::string& str)
 		}
 	}
 	return (str.substr(start, end - start));
+}
+
+std::string	Utils::itoa(int n)
+{
+	std::string result;
+	std::stringstream ss;
+	ss << n;
+	ss >> result;
+	return result;
 }

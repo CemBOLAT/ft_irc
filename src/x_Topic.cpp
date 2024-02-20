@@ -40,7 +40,7 @@
 	   TOPIC #test                     ; check the topic for #test.
 */
 
-void Server::topic(C_STR_REF command, Client &client)
+void Server::topic(C_STR_REF command, Client &client) // saçma 1970 tarihini düzelt
 {
 	if (client.getIsRegistered() == false){
 		Utils::instaWrite(client.getFd(), ERR_NOTREGISTERED(client.getUserByHexChat()));
@@ -73,14 +73,14 @@ void Server::topic(C_STR_REF command, Client &client)
 			return;
 		}
 		string newtopic = Utils::ft_join(params, " ", 1);
-		if (newtopic[0] == ':')
-			newtopic = newtopic.substr(1, newtopic.size() - 1); // remove the first colon (if exists
+		if (newtopic[0] != ':')
+			newtopic = ":" + newtopic;
 		string oldtopic = room.getTopic();
 		room.setTopic(newtopic);
 		Utils::instaWriteAll(room.getClients(), RPL_TOPIC(client.getUserByHexChat(), room.getName(), newtopic));
 		if (oldtopic != newtopic)
 		{
-			Utils::instaWriteAll(room.getClients(), RPL_TOPICSET(client.getUserByHexChat(), room.getName(), newtopic, Utils::getTime()));
+			Utils::instaWriteAll(room.getClients(), RPL_TOPICSET(client.getUserByHexChat(), room.getName(), newtopic, Utils::getTime(), room.getTopic()));
 		}
 		return;
 	}
