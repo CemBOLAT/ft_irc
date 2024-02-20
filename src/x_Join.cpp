@@ -120,18 +120,19 @@ void Server::join(C_STR_REF params, Client &client)
                         }
                 }
                 room.addClient(client);
-                Utils::instaWrite(client.getFd(), RPL_JOIN(client.getUserByHexChat(), roomName));
+                Utils::instaWriteAll(room.getClients(), RPL_JOIN(client.getUserByHexChat(), roomName));
                 if (!room.getTopic().empty()){
                         Utils::instaWrite(client.getFd(), RPL_TOPIC(client.getUserByHexChat(), roomName, room.getTopic()));
                 }
-        } else {
+        }
+        else {
                 TextEngine::green("Room " + roomName + " has been created by " + client.getUserByHexChat(), TextEngine::printTime(std::cout)) << std::endl;
                 Room room;
                 room.setName(roomName);
                 room.addOperator(client);
                 room.addClient(client);
                 channels.push_back(room);
-                Utils::instaWrite(client.getFd(), RPL_JOIN(client.getUserByHexChat(), roomName));
+                Utils::instaWriteAll(room.getClients(), RPL_JOIN(client.getUserByHexChat(), roomName));
         }
         responseAllClientResponseToGui(client, getRoom(roomName));
 }

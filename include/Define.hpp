@@ -27,13 +27,11 @@
 
 
 // HEXCHAT COMMANDS (RFC 1459)
-# define RPL_MODE(source, channel, modes, args)		":" + source + " MODE " + channel + " " + modes + " " + args + "\r\n"
 # define JOIN_RESPONSE(nick, ip, channel) ":" + nick + "!" + nick + "@" + ip + " JOIN " + channel + "\r\n"
 # define RPL_TOPIC_JOIN(nick, ip, channel, topic) ":" + nick + "!" + nick + "@" + ip + " TOPIC " + channel + " :" + topic + "\r\n"
 # define RPL_KICK(source, channel, target, reason)	":" + source + " KICK " + channel + " " + target + " :" + reason + "\r\n"
 # define RPL_NICK(nick, user, ip, newnick) ":" + nick + "!" + user + "@" + ip + " NICK :" + newnick + "\r\n"
-# define RPL_PART(source, channel)					":" + source + " PART :" + channel + "\r\n"
-# define RPL_PART_REASON(source, channel, reason)	":" + source + " PART " + channel + " :" + reason + "\r\n"
+# define RPL_PART(source, channel, reason)	":" + source + " PART " + channel + " :" + reason + "\r\n"
 # define RPL_PING(source, nick, second)				":" + source + " PONG " + nick + " :"+ second + "\r\n"
 # define MSG_GROUP(nick,user, host, room, message) ":" + nick + "!" + user + "@" + host + " PRIVMSG  " + room + " :" + message + "\r\n"
 # define RPL_NOTICE(source, target, message) ":" + source + " NOTICE " + target + " :" + message + "\r\n"

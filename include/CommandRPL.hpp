@@ -23,6 +23,7 @@
 #define RPL_LIST(channel, users, topic) ": 322 " + channel + " " + users + " : " + topic + "\r\n"
 #define RPL_LISTEND ": 323 :End of LIST" + "\r\n"
 #define RPL_CHANNELMODEIS(source, channel, mode) ": 324 " + source + " " + channel + " " + mode + "\r\n"
+#define RPL_MODE(source, channel, mode, modeparams) ":" + source + " MODE " + channel + " " + mode + " " + modeparams + "\r\n"
 #define RPL_NOTOPIC(source, channel) ": 331 " + source + " " + channel + " :No topic is set" + "\r\n"
 #define RPL_TOPIC(source, channel, topic) ": 332 " + source + " " + channel + " :" + topic + "\r\n"
 #define RPL_INVITING(nick, channel) ": 341 " + nick + " " + channel + "\r\n"

@@ -37,6 +37,56 @@
 
 void Server::part(C_STR_REF params, Client &client)
 {
+	if (client.getIsRegistered() == false){
+		Utils::instaWrite(client.getFd(), ERR_NOTREGISTERED(client.getUserByHexChat()));
+		return ;
+	}
+	if (params.empty())
+	{
+		Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "PART"));
+		return ;
+	}
+	VECT_STR param = Utils::ft_split(params, " ");
+	if (param[0][0] != '#'){
+		param[0] = "#" + param[0];
+	}
+	if (isRoom(param[0])){
+		Room &room = getRoom(param[0]);
+		vector<Room>::iterator it = channels.begin();
+		string reason = (param.size() > 1) ? Utils::ft_join(param, " ", 1) : "";
+		if (reason[0] == ':')
+			reason = reason.substr(1, reason.size() - 1);
+		for (; it != channels.end(); ++it)
+		{
+			if (it->getName() == param[0])
+				break;
+		}
+		if (!room.isClientInChannel(client.getFd())){
+			Utils::instaWrite(client.getFd(), ERR_NOTONCHANNEL(client.getNick(), room.getName()));
+			return ;
+		}
+		if (room.getClients().size() == 1) // delete room.
+		{
+			TextEngine::magenta("Room " + room.getName() + " has been deleted", TextEngine::printTime(std::cout)) << std::endl;
+			channels.erase(it);	
+			//Utils::instaWriteAll(*it, RPL_PART(client.getUserByHexChat(), param[0]);
+			Utils::instaWriteAll(room.getClients(), RPL_PART(client.getUserByHexChat(), param[0], reason));
+			return ;
+		}
+		else if (room.isOperator(client)) // if client is operator
+		{
+			room.removeOperator(client);
+		}
+		//Utils::instaWrite(client.getFd(), RPL_PART(client.getUserByHexChat(), param[0]));
+		Utils::instaWriteAll(room.getClients(), RPL_PART(client.getUserByHexChat(), param[0], reason));
+		room.removeClient(client.getFd());
+		responseAllClientResponseToGui(client, room);
+		//Utils::instaWrite(client.getFd(), RPL_PART_REASON(client.getUserByHexChat(), param[0], reason));
+	}
+	else
+	{
+		Utils::instaWrite(client.getFd(), ERR_NOSUCHCHANNEL(client.getNick(), param[0]));
+	}
 	//VECT_ITER_CHA it = channels.begin();
 	//VECT_STR param = Utils::ft_split(params, " ");
 	//if (param[0][0] != '#'){

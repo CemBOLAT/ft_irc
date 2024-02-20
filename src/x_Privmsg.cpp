@@ -55,13 +55,6 @@ PRIVMSG Angel :yes I'm receiving it !receiving it !'u>(768u+1n) .br ;
 PRIVMSG jto@tolsun.oulu.fi :Hello !
                                 ; Message to a client on server
 
-
-
-Oikarinen & Reed                                               [Page 32]
-
-RFC 1459              Internet Relay Chat Protocol              May 1993
-
-
                                 tolsun.oulu.fi with username of "jto".
 
 PRIVMSG $*.fi :Server tolsun.oulu.fi rebooting.

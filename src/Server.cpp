@@ -366,6 +366,8 @@ void	Server::initFunctions() {
 	this->_commands["topic"] = &Server::topic;
 	this->_commands["MODE"] = &Server::mode;
 	this->_commands["mode"] = &Server::mode;
+	this->_commands["part"] = &Server::part;
+	this->_commands["PART"] = &Server::part;
 	//this->_commands["QUIT"] = &Server::quit;
 	//this->_commands["JOIN"] = &Server::join;
 	//this->_commands["PART"] = &Server::part;

@@ -5,13 +5,6 @@
       Command: AWAY
    Parameters: [message]
 
-
-
-Oikarinen & Reed                                               [Page 38]
-
-RFC 1459              Internet Relay Chat Protocol              May 1993
-
-
    With the AWAY message, clients can set an automatic reply string for
    any PRIVMSG commands directed at them (not to a channel they are on).
    The automatic reply is sent by the server to client sending the
