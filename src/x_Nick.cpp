@@ -56,7 +56,7 @@ void Server::nick(C_STR_REF params, Client &client)
 		hopcount = tokens[1];
 	}
 	nicks = tokens[0];
-	if (nicks.size() > 9 || nicks[0] == '#')
+	if (nicks[0] == '#')
 	{
 		Utils::instaWrite(client.getFd(), ERR_ERRONEUSNICKNAME(client.getUserByHexChat(), nicks));
 		return;

@@ -84,6 +84,7 @@ void Server::join(C_STR_REF params, Client &client)
 {
         if (client.getIsRegistered() == false){
 	        Utils::instaWrite(client.getFd(), ERR_NOTREGISTERED(client.getUserByHexChat()));
+                return;
 	}
         stringstream ss(params);
         string roomName, key, message;
@@ -195,7 +196,7 @@ void Server::join(C_STR_REF params, Client &client)
 //							}
 //						}
 //					}
-//					else { // ikiside yok 
+//					else { // ikiside yok
 //						(*it).getClients().push_back(client);
 //						Utils::instaWrite(client.getFd(), JOIN_RESPONSE(client.getNick(), client._ip , roomName));
 //						if (!(*it).getTopic().empty()){

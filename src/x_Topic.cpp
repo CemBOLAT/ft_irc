@@ -44,6 +44,7 @@ void Server::topic(C_STR_REF command, Client &client) // sa√ßma 1970 tarihini d√
 {
 	if (client.getIsRegistered() == false){
 		Utils::instaWrite(client.getFd(), ERR_NOTREGISTERED(client.getUserByHexChat()));
+		return;
 	}
 	if (command.empty())
 	{

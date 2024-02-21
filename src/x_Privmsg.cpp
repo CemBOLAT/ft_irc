@@ -110,6 +110,8 @@ void Server::privmsg(C_STR_REF input, Client &client) {
         }
         string receiver = tokns[0];
         string message = Utils::ft_join(tokns, " ", 1);
+        if (message[0] == ':')
+                message = message.substr(1, message.size() - 1);
         if (receiver[0] == '#'){
                 if (isRoom(receiver))
                 {

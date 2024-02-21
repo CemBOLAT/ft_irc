@@ -372,6 +372,11 @@ void	Server::initFunctions() {
 	this->_commands["LIST"] = &Server::list;
 	this->_commands["NAMES"] = &Server::names;
 	this->_commands["names"] = &Server::names;
+	this->_commands["PRIVMSG"] = &Server::privmsg;
+	this->_commands["privmsg"] = &Server::privmsg;
+	this->_commands["join"] = &Server::join;
+	this->_commands["JOIN"] = &Server::join;
+
 	//this->_commands["QUIT"] = &Server::quit;
 	//this->_commands["JOIN"] = &Server::join;
 	//this->_commands["PART"] = &Server::part;
