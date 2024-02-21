@@ -31,6 +31,8 @@ public:
 	string		  	getRealName() const;
 	string		  	getHostName() const;
 	string		  	getServerName() const;
+	string		  	getAwayMSG() const { return awayMSG; }
+	bool		  	getIsAway() const { return isAway; }
 
 	void			setHostName(C_STR_REF hostName);
 	void			setServerName(C_STR_REF serverName);
@@ -39,6 +41,8 @@ public:
 	void			setPassworded(bool val);
 	void			setBuffer(C_STR_REF str);
 	void			setType(int type);
+	void			setIsAway(bool val) { isAway = val; }
+	void			setAwayMSG(C_STR_REF msg) { awayMSG = msg; }
 	void			setUserName(C_STR_REF userName);
 	void			setRealName(C_STR_REF realName);
 	string			getUserByHexChat() const;
@@ -61,4 +65,6 @@ private:
 	string			_hostName;
 	string			_serverName;
 	string			_realName;
+	string			awayMSG;
+	bool			isAway;
 };

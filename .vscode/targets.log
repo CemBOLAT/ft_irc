@@ -8,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This program built for i386-apple-darwin11.3.0
  
 
-# Make data base, printed on Mon Feb 19 11:56:57 2024
+# Make data base, printed on Wed Feb 21 10:36:39 2024
 
 # Variables
 
@@ -19,11 +19,11 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # makefile (from `Makefile', line 10)
 BOT_SRC := bot/Bot.cpp bot/Client.cpp bot/main.cpp
 # makefile (from `Makefile', line 11)
+ 
 OBJ := obj/Client.o obj/Room.o obj/S_initSocket.o obj/Server.o obj/TextEngine.o obj/Utils.o obj/main.o obj/x_Admin.o obj/x_Away.o obj/x_Cap.o obj/x_Connect.o obj/x_Error.o obj/x_Info.o obj/x_Invite.o obj/x_Ison.o obj/x_Join.o obj/x_Kick.o obj/x_Kill.o obj/x_List.o obj/x_Mode.o obj/x_Names.o obj/x_Nick.o obj/x_Notice.o obj/x_Op.o obj/x_Oper.o obj/x_Part.o obj/x_Pass.o obj/x_Ping.o obj/x_Pong.o obj/x_Privmsg.o obj/x_Quit.o obj/x_Rehash.o obj/x_Restart.o obj/x_SQuit.o obj/x_Stats.o obj/x_Summon.o obj/x_Topic.o obj/x_Trace.o obj/x_User.o obj/x_Userhost.o obj/x_Users.o obj/x_Version.o obj/x_Who.o obj/x_Whois.o obj/x_Whowas.o
 # environment
 VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
 # makefile (from `Makefile', line 9)
- 
 SRC := src/Client.cpp src/Room.cpp src/S_initSocket.cpp src/Server.cpp src/TextEngine.cpp src/Utils.cpp src/main.cpp src/x_Admin.cpp src/x_Away.cpp src/x_Cap.cpp src/x_Connect.cpp src/x_Error.cpp src/x_Info.cpp src/x_Invite.cpp src/x_Ison.cpp src/x_Join.cpp src/x_Kick.cpp src/x_Kill.cpp src/x_List.cpp src/x_Mode.cpp src/x_Names.cpp src/x_Nick.cpp src/x_Notice.cpp src/x_Op.cpp src/x_Oper.cpp src/x_Part.cpp src/x_Pass.cpp src/x_Ping.cpp src/x_Pong.cpp src/x_Privmsg.cpp src/x_Quit.cpp src/x_Rehash.cpp src/x_Restart.cpp src/x_SQuit.cpp src/x_Stats.cpp src/x_Summon.cpp src/x_Topic.cpp src/x_Trace.cpp src/x_User.cpp src/x_Userhost.cpp src/x_Users.cpp src/x_Version.cpp src/x_Who.cpp src/x_Whois.cpp src/x_Whowas.cpp
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
@@ -124,6 +124,7 @@ INC := -Iinclude
 # environment
 TMPDIR = /var/folders/fl/4cbxkn7160543t0kxp8dwt5r0000gn/T/
 # automatic
+ 
 *F = $(notdir $*)
 # environment
 VSCODE_IPC_HOOK = /Users/cembolat/Library/Application Support/Code/1.86-main.sock
@@ -172,7 +173,7 @@ CLICOLOR = 1
 # environment
 LANG = C
 # environment
-VSCODE_PID = 94438
+VSCODE_PID = 1259
 # variable set hash-table stats:
 # Load=80/1024=8%, Rehash=0, Collisions=5/127=4%
 
@@ -182,9 +183,9 @@ VSCODE_PID = 94438
 
 # Directories
 
-# . (device 16777231, inode 21184075): 13 files, no impossibilities.
-# bot (device 16777231, inode 21184160): 5 files, no impossibilities.
-# src (device 16777231, inode 21184225): 47 files, no impossibilities.
+# . (device 16777231, inode 21207373): 13 files, no impossibilities.
+# bot (device 16777231, inode 21207460): 5 files, no impossibilities.
+# src (device 16777231, inode 21207525): 47 files, no impossibilities.
 
 # 65 files, no impossibilities in 3 directories.
 
@@ -207,7 +208,7 @@ bot/obj/%.o: bot/%.cpp | bot/obj
 # Not a target:
 src/x_Names.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -216,7 +217,7 @@ src/x_Names.cpp:
 obj/x_Userhost.o: src/x_Userhost.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Userhost'
-#  Last modified 2024-02-19 11:08:08
+#  Last modified 2024-02-21 10:35:48
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -236,7 +237,7 @@ turco: bot/obj/Bot.o bot/obj/Client.o bot/obj/main.o
 # Not a target:
 src/x_Kick.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -245,7 +246,7 @@ src/x_Kick.cpp:
 # Not a target:
 src/x_Summon.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -254,7 +255,7 @@ src/x_Summon.cpp:
 obj/Server.o: src/Server.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `Server'
-#  Last modified 2024-02-19 11:05:57
+#  Last modified 2024-02-21 10:35:41
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -274,10 +275,9 @@ all: ircserv
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 obj/x_Nick.o: src/x_Nick.cpp | obj
- 
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Nick'
-#  Last modified 2024-02-19 11:12:33
+#  Last modified 2024-02-21 10:35:45
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -294,7 +294,7 @@ obj/x_Nick.o: src/x_Nick.cpp | obj
 obj/x_Ping.o: src/x_Ping.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Ping'
-#  Last modified 2024-02-19 11:07:22
+#  Last modified 2024-02-21 10:35:46
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -306,7 +306,7 @@ obj/x_Ping.o: src/x_Ping.cpp | obj
 # Not a target:
 src/x_Info.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -315,7 +315,7 @@ src/x_Info.cpp:
 obj/x_Quit.o: src/x_Quit.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Quit'
-#  Last modified 2024-02-19 11:08:07
+#  Last modified 2024-02-21 10:35:47
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -327,7 +327,7 @@ obj/x_Quit.o: src/x_Quit.cpp | obj
 obj/x_Mode.o: src/x_Mode.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Mode'
-#  Last modified 2024-02-19 11:06:00
+#  Last modified 2024-02-21 10:35:44
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -339,7 +339,7 @@ obj/x_Mode.o: src/x_Mode.cpp | obj
 # Not a target:
 src/x_Part.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -348,7 +348,7 @@ src/x_Part.cpp:
 # Not a target:
 src/x_Version.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -357,7 +357,8 @@ src/x_Version.cpp:
 # Not a target:
 src/Room.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:41:00
+ 
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -366,7 +367,7 @@ src/Room.cpp:
 obj/x_Trace.o: src/x_Trace.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Trace'
-#  Last modified 2024-02-19 11:08:08
+#  Last modified 2024-02-21 10:35:48
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -378,7 +379,7 @@ obj/x_Trace.o: src/x_Trace.cpp | obj
 obj/Utils.o: src/Utils.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `Utils'
-#  Last modified 2024-02-19 11:05:58
+#  Last modified 2024-02-21 10:35:42
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -390,7 +391,7 @@ obj/Utils.o: src/Utils.cpp | obj
 obj/x_Rehash.o: src/x_Rehash.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Rehash'
-#  Last modified 2024-02-19 11:08:07
+#  Last modified 2024-02-21 10:35:47
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -408,7 +409,7 @@ bot/obj/Bot.o:
 obj/x_Pass.o: src/x_Pass.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Pass'
-#  Last modified 2024-02-19 11:12:33
+#  Last modified 2024-02-21 10:35:46
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -420,7 +421,7 @@ obj/x_Pass.o: src/x_Pass.cpp | obj
 obj/x_Restart.o: src/x_Restart.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Restart'
-#  Last modified 2024-02-19 11:08:07
+#  Last modified 2024-02-21 10:35:47
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -432,7 +433,7 @@ obj/x_Restart.o: src/x_Restart.cpp | obj
 # Not a target:
 src/S_initSocket.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -441,7 +442,7 @@ src/S_initSocket.cpp:
 obj/x_Whois.o: src/x_Whois.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Whois'
-#  Last modified 2024-02-19 11:08:09
+#  Last modified 2024-02-21 10:35:49
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -453,7 +454,7 @@ obj/x_Whois.o: src/x_Whois.cpp | obj
 obj/main.o: src/main.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `main'
-#  Last modified 2024-02-19 11:05:58
+#  Last modified 2024-02-21 10:35:42
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -465,7 +466,7 @@ obj/main.o: src/main.cpp | obj
 obj/x_Cap.o: src/x_Cap.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Cap'
-#  Last modified 2024-02-19 11:05:59
+#  Last modified 2024-02-21 10:35:43
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -483,7 +484,7 @@ obj/x_Cap.o: src/x_Cap.cpp | obj
 obj/x_Oper.o: src/x_Oper.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Oper'
-#  Last modified 2024-02-19 11:07:21
+#  Last modified 2024-02-21 10:35:45
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -495,7 +496,7 @@ obj/x_Oper.o: src/x_Oper.cpp | obj
 # Not a target:
 src/x_Join.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -512,7 +513,7 @@ bot/obj:
 # Not a target:
 src/x_Users.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -521,7 +522,7 @@ src/x_Users.cpp:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 11:14:39
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -529,12 +530,11 @@ Makefile:
 
 ircserv: obj/Client.o obj/Room.o obj/S_initSocket.o obj/Server.o obj/TextEngine.o obj/Utils.o obj/main.o obj/x_Admin.o obj/x_Away.o obj/x_Cap.o obj/x_Connect.o obj/x_Error.o obj/x_Info.o obj/x_Invite.o obj/x_Ison.o obj/x_Join.o obj/x_Kick.o obj/x_Kill.o obj/x_List.o obj/x_Mode.o obj/x_Names.o obj/x_Nick.o obj/x_Notice.o obj/x_Op.o obj/x_Oper.o obj/x_Part.o obj/x_Pass.o obj/x_Ping.o obj/x_Pong.o obj/x_Privmsg.o obj/x_Quit.o obj/x_Rehash.o obj/x_Restart.o obj/x_SQuit.o obj/x_Stats.o obj/x_Summon.o obj/x_Topic.o obj/x_Trace.o obj/x_User.o obj/x_Userhost.o obj/x_Users.o obj/x_Version.o obj/x_Who.o obj/x_Whois.o obj/x_Whowas.o
 #  Implicit rule search has not been done.
-#  Last modified 2024-02-19 11:12:34
+#  Last modified 2024-02-21 10:35:49
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
- 
 #  commands to execute (from `Makefile', line 26):
 	$(CC) $(CFLAGS) $(INC) $^ -o $@
 	
@@ -542,7 +542,7 @@ ircserv: obj/Client.o obj/Room.o obj/S_initSocket.o obj/Server.o obj/TextEngine.
 # Not a target:
 src/x_List.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -551,11 +551,12 @@ src/x_List.cpp:
 obj/x_Pong.o: src/x_Pong.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Pong'
-#  Last modified 2024-02-19 11:07:22
+#  Last modified 2024-02-21 10:35:47
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+ 
 #  commands to execute (from `Makefile', line 29):
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 	
@@ -563,7 +564,7 @@ obj/x_Pong.o: src/x_Pong.cpp | obj
 obj/x_Away.o: src/x_Away.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Away'
-#  Last modified 2024-02-19 11:05:58
+#  Last modified 2024-02-21 10:35:42
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -575,7 +576,7 @@ obj/x_Away.o: src/x_Away.cpp | obj
 obj/TextEngine.o: src/TextEngine.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `TextEngine'
-#  Last modified 2024-02-19 11:05:58
+#  Last modified 2024-02-21 10:35:42
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -587,7 +588,7 @@ obj/TextEngine.o: src/TextEngine.cpp | obj
 # Not a target:
 src/x_SQuit.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -596,7 +597,7 @@ src/x_SQuit.cpp:
 obj/x_Ison.o: src/x_Ison.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Ison'
-#  Last modified 2024-02-19 11:05:59
+#  Last modified 2024-02-21 10:35:43
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -608,7 +609,7 @@ obj/x_Ison.o: src/x_Ison.cpp | obj
 obj/x_Op.o: src/x_Op.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Op'
-#  Last modified 2024-02-19 11:07:21
+#  Last modified 2024-02-21 10:35:45
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -620,7 +621,7 @@ obj/x_Op.o: src/x_Op.cpp | obj
 obj/x_List.o: src/x_List.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_List'
-#  Last modified 2024-02-19 11:06:00
+#  Last modified 2024-02-21 10:35:44
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -632,7 +633,7 @@ obj/x_List.o: src/x_List.cpp | obj
 # Not a target:
 src/Client.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -641,7 +642,7 @@ src/Client.cpp:
 # Not a target:
 src/x_User.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -650,7 +651,7 @@ src/x_User.cpp:
 # Not a target:
 src/x_Who.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -659,7 +660,7 @@ src/x_Who.cpp:
 # Not a target:
 src/x_Invite.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -668,7 +669,7 @@ src/x_Invite.cpp:
 obj/x_Error.o: src/x_Error.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Error'
-#  Last modified 2024-02-19 11:05:59
+#  Last modified 2024-02-21 10:35:43
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -680,7 +681,7 @@ obj/x_Error.o: src/x_Error.cpp | obj
 # Not a target:
 src/x_Notice.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -689,7 +690,7 @@ src/x_Notice.cpp:
 # Not a target:
 src/x_Stats.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -698,7 +699,7 @@ src/x_Stats.cpp:
 # Not a target:
 src/x_Admin.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -717,7 +718,7 @@ fclean: clean
 obj/x_Privmsg.o: src/x_Privmsg.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Privmsg'
-#  Last modified 2024-02-19 11:07:56
+#  Last modified 2024-02-21 10:35:47
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -728,7 +729,7 @@ obj/x_Privmsg.o: src/x_Privmsg.cpp | obj
 
 obj:
 #  Implicit rule search has not been done.
-#  Last modified 2024-02-19 11:12:33
+#  Last modified 2024-02-21 10:35:49
 #  File has been updated.
 #  Successfully updated.
 #  commands to execute (from `Makefile', line 35):
@@ -738,7 +739,7 @@ obj:
 # Not a target:
 src/x_Away.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -747,7 +748,7 @@ src/x_Away.cpp:
 # Not a target:
 src/x_Userhost.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -756,7 +757,7 @@ src/x_Userhost.cpp:
 # Not a target:
 src/Server.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 11:04:05
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -765,7 +766,7 @@ src/Server.cpp:
 # Not a target:
 src/x_Nick.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 11:11:01
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -780,7 +781,7 @@ src/x_Nick.cpp:
 # Not a target:
 src/x_Ping.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -789,7 +790,7 @@ src/x_Ping.cpp:
 obj/x_Kick.o: src/x_Kick.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Kick'
-#  Last modified 2024-02-19 11:06:00
+#  Last modified 2024-02-21 10:35:43
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -801,7 +802,7 @@ obj/x_Kick.o: src/x_Kick.cpp | obj
 # Not a target:
 src/x_Quit.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 11:08:06
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -810,7 +811,7 @@ src/x_Quit.cpp:
 # Not a target:
 src/x_Mode.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -819,20 +820,19 @@ src/x_Mode.cpp:
 obj/x_Summon.o: src/x_Summon.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Summon'
-#  Last modified 2024-02-19 11:08:07
+#  Last modified 2024-02-21 10:35:48
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 #  commands to execute (from `Makefile', line 29):
- 
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 	
 
 obj/x_Names.o: src/x_Names.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Names'
-#  Last modified 2024-02-19 11:06:01
+#  Last modified 2024-02-21 10:35:44
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -849,8 +849,9 @@ bot/obj/Client.o:
 
 # Not a target:
 src/x_Trace.cpp:
+ 
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -859,7 +860,7 @@ src/x_Trace.cpp:
 # Not a target:
 src/Utils.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -868,7 +869,7 @@ src/Utils.cpp:
 # Not a target:
 src/x_Rehash.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -883,7 +884,7 @@ re: fclean all
 obj/x_Info.o: src/x_Info.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Info'
-#  Last modified 2024-02-19 11:05:59
+#  Last modified 2024-02-21 10:35:43
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -895,7 +896,7 @@ obj/x_Info.o: src/x_Info.cpp | obj
 # Not a target:
 src/x_Kill.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -904,7 +905,7 @@ src/x_Kill.cpp:
 # Not a target:
 src/x_Connect.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -913,7 +914,7 @@ src/x_Connect.cpp:
 # Not a target:
 src/x_Restart.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -932,7 +933,7 @@ clean:
 # Not a target:
 src/x_Topic.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -941,7 +942,7 @@ src/x_Topic.cpp:
 obj/x_Part.o: src/x_Part.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Part'
-#  Last modified 2024-02-19 11:07:21
+#  Last modified 2024-02-21 10:35:46
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -953,7 +954,7 @@ obj/x_Part.o: src/x_Part.cpp | obj
 obj/x_Version.o: src/x_Version.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Version'
-#  Last modified 2024-02-19 11:08:08
+#  Last modified 2024-02-21 10:35:48
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -965,7 +966,7 @@ obj/x_Version.o: src/x_Version.cpp | obj
 # Not a target:
 src/x_Whowas.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -974,7 +975,7 @@ src/x_Whowas.cpp:
 obj/x_Topic.o: src/x_Topic.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Topic'
-#  Last modified 2024-02-19 11:08:08
+#  Last modified 2024-02-21 10:35:48
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -986,7 +987,7 @@ obj/x_Topic.o: src/x_Topic.cpp | obj
 # Not a target:
 src/x_Whois.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -995,7 +996,7 @@ src/x_Whois.cpp:
 obj/Room.o: src/Room.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `Room'
-#  Last modified 2024-02-19 11:05:56
+#  Last modified 2024-02-21 10:35:40
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1007,7 +1008,7 @@ obj/Room.o: src/Room.cpp | obj
 # Not a target:
 src/x_Pass.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 11:12:31
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1016,7 +1017,7 @@ src/x_Pass.cpp:
 # Not a target:
 src/main.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1025,7 +1026,7 @@ src/main.cpp:
 obj/x_Kill.o: src/x_Kill.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Kill'
-#  Last modified 2024-02-19 11:06:00
+#  Last modified 2024-02-21 10:35:43
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1037,7 +1038,7 @@ obj/x_Kill.o: src/x_Kill.cpp | obj
 # Not a target:
 src/x_Cap.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1046,7 +1047,7 @@ src/x_Cap.cpp:
 # Not a target:
 src/x_Oper.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1055,7 +1056,7 @@ src/x_Oper.cpp:
 obj/S_initSocket.o: src/S_initSocket.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `S_initSocket'
-#  Last modified 2024-02-19 11:05:57
+#  Last modified 2024-02-21 10:35:41
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1067,7 +1068,7 @@ obj/S_initSocket.o: src/S_initSocket.cpp | obj
 obj/x_Whowas.o: src/x_Whowas.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Whowas'
-#  Last modified 2024-02-19 11:08:09
+#  Last modified 2024-02-21 10:35:49
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1079,7 +1080,7 @@ obj/x_Whowas.o: src/x_Whowas.cpp | obj
 obj/x_Join.o: src/x_Join.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Join'
-#  Last modified 2024-02-19 11:05:59
+#  Last modified 2024-02-21 10:35:43
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1091,7 +1092,7 @@ obj/x_Join.o: src/x_Join.cpp | obj
 obj/x_Users.o: src/x_Users.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Users'
-#  Last modified 2024-02-19 11:08:08
+#  Last modified 2024-02-21 10:35:48
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1103,7 +1104,7 @@ obj/x_Users.o: src/x_Users.cpp | obj
 obj/x_Connect.o: src/x_Connect.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Connect'
-#  Last modified 2024-02-19 11:05:59
+#  Last modified 2024-02-21 10:35:43
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1113,10 +1114,9 @@ obj/x_Connect.o: src/x_Connect.cpp | obj
 	
 
 # Not a target:
- 
 src/TextEngine.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1125,7 +1125,7 @@ src/TextEngine.cpp:
 # Not a target:
 src/x_Ison.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1134,8 +1134,9 @@ src/x_Ison.cpp:
 # Not a target:
 src/x_Op.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
+ 
 #  Successfully updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
@@ -1143,7 +1144,7 @@ src/x_Op.cpp:
 obj/x_SQuit.o: src/x_SQuit.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_SQuit'
-#  Last modified 2024-02-19 11:08:07
+#  Last modified 2024-02-21 10:35:47
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1155,7 +1156,7 @@ obj/x_SQuit.o: src/x_SQuit.cpp | obj
 # Not a target:
 src/x_Error.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1164,7 +1165,7 @@ src/x_Error.cpp:
 obj/Client.o: src/Client.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `Client'
-#  Last modified 2024-02-19 11:05:56
+#  Last modified 2024-02-21 10:35:40
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1176,7 +1177,7 @@ obj/Client.o: src/Client.cpp | obj
 obj/x_User.o: src/x_User.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_User'
-#  Last modified 2024-02-19 11:08:08
+#  Last modified 2024-02-21 10:35:48
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1188,7 +1189,7 @@ obj/x_User.o: src/x_User.cpp | obj
 # Not a target:
 src/x_Pong.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 10:35:27
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1197,7 +1198,7 @@ src/x_Pong.cpp:
 obj/x_Who.o: src/x_Who.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Who'
-#  Last modified 2024-02-19 11:08:08
+#  Last modified 2024-02-21 10:35:49
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1209,7 +1210,7 @@ obj/x_Who.o: src/x_Who.cpp | obj
 obj/x_Invite.o: src/x_Invite.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Invite'
-#  Last modified 2024-02-19 11:05:59
+#  Last modified 2024-02-21 10:35:43
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1221,7 +1222,7 @@ obj/x_Invite.o: src/x_Invite.cpp | obj
 obj/x_Notice.o: src/x_Notice.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Notice'
-#  Last modified 2024-02-19 11:07:20
+#  Last modified 2024-02-21 10:35:45
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1233,7 +1234,7 @@ obj/x_Notice.o: src/x_Notice.cpp | obj
 # Not a target:
 src/x_Privmsg.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2024-02-19 11:07:55
+#  Last modified 2024-02-21 10:35:27
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1242,7 +1243,7 @@ src/x_Privmsg.cpp:
 obj/x_Stats.o: src/x_Stats.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Stats'
-#  Last modified 2024-02-19 11:08:07
+#  Last modified 2024-02-21 10:35:48
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1260,7 +1261,7 @@ bot/obj/main.o:
 obj/x_Admin.o: src/x_Admin.cpp | obj
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `x_Admin'
-#  Last modified 2024-02-19 11:05:58
+#  Last modified 2024-02-21 10:35:42
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -1282,6 +1283,6 @@ obj/x_Admin.o: src/x_Admin.cpp | obj
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Mon Feb 19 11:56:57 2024
+# Finished Make data base on Wed Feb 21 10:36:39 2024
 
  

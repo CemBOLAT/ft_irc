@@ -36,6 +36,7 @@ namespace
 	}
 
 }
+
 void Server::nick(C_STR_REF params, Client &client)
 {
 	if (!client.getIsPassworded())

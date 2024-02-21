@@ -14,7 +14,6 @@ c++ -std=c++98 -g  -Iinclude -c src/x_Cap.cpp -o obj/x_Cap.o
 c++ -std=c++98 -g  -Iinclude -c src/x_Connect.cpp -o obj/x_Connect.o
 c++ -std=c++98 -g  -Iinclude -c src/x_Error.cpp -o obj/x_Error.o
 c++ -std=c++98 -g  -Iinclude -c src/x_Info.cpp -o obj/x_Info.o
- 
 c++ -std=c++98 -g  -Iinclude -c src/x_Invite.cpp -o obj/x_Invite.o
 c++ -std=c++98 -g  -Iinclude -c src/x_Ison.cpp -o obj/x_Ison.o
 c++ -std=c++98 -g  -Iinclude -c src/x_Join.cpp -o obj/x_Join.o
@@ -36,7 +35,6 @@ c++ -std=c++98 -g  -Iinclude -c src/x_Quit.cpp -o obj/x_Quit.o
 c++ -std=c++98 -g  -Iinclude -c src/x_Rehash.cpp -o obj/x_Rehash.o
 c++ -std=c++98 -g  -Iinclude -c src/x_Restart.cpp -o obj/x_Restart.o
 c++ -std=c++98 -g  -Iinclude -c src/x_SQuit.cpp -o obj/x_SQuit.o
- 
 c++ -std=c++98 -g  -Iinclude -c src/x_Stats.cpp -o obj/x_Stats.o
 c++ -std=c++98 -g  -Iinclude -c src/x_Summon.cpp -o obj/x_Summon.o
 c++ -std=c++98 -g  -Iinclude -c src/x_Topic.cpp -o obj/x_Topic.o

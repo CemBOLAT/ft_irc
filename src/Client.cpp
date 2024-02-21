@@ -2,10 +2,10 @@
 #include <cstring>
 #include <unistd.h>
 Client::Client() :
-	_ip("\0"), _fd(-1), _port(-1), isRegistered(false), isPassworded(false) {}
+	_ip("\0"), _fd(-1), _port(-1), isRegistered(false), isPassworded(false), isAway(false) {}
 
 Client::Client(int fd, int port) :
-	_fd(fd), _port(port), isRegistered(false), isPassworded(false) {}
+	_fd(fd), _port(port), isRegistered(false), isPassworded(false), isAway(false) {}
 
 
 Client::Client(const Client &other){
@@ -27,6 +27,8 @@ Client &Client::operator=(const Client &other){
 		_serverName = other._serverName;
 		_realName = other._realName;
 		strcpy(_ip, other._ip);
+		isAway = other.isAway;
+		awayMSG = other.awayMSG;
 	}
 	return *this;
 }

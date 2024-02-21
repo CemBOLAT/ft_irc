@@ -11,8 +11,8 @@
 #define ERR_TOOMANYTARGETS(source, target) ": 407 " + source + " " + target + " :Duplicate recipients. No message" + "\r\n"
 
 #define ERR_NOORIGIN ": 409 :No origin specified" + "\r\n"
-#define ERR_NORECIPIENT(command) ": 411 " + command + " :No recipient given" + "\r\n"
-#define ERR_NOTEXTTOSEND ": 412 :No text to send" + "\r\n"
+#define ERR_NORECIPIENT(source, command) ": 411 " + source + " " + command + " :No recipient given" + "\r\n"
+#define ERR_NOTEXTTOSEND(source) ": 412 " + source + " :No text to send" + "\r\n"
 #define ERR_NOTOPLEVEL(mask) ": 413 " + mask + " :No toplevel domain specified" + "\r\n"
 #define ERR_WILDTOPLEVEL(mask) ": 414 " + mask + " :Wildcard in toplevel domain" + "\r\n"
 #define ERR_UNKNOWNCOMMAND(command) ": 421 " + command + " :Unknown command" + "\r\n"

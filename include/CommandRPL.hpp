@@ -2,15 +2,16 @@
 
 // my includes
 #define RPL_JOIN(source, channel) ":" + source + " JOIN " + channel + "\r\n"
+#define RPL_PRIVMSG(source, target, message) ":" + source + " PRIVMSG " + target + " :" + message + "\r\n"
 //
 
 #define RPL_WELCOME(nick, rfc1459) ": 001 " + nick + " :Welcome to the Internet Relay Network " + rfc1459 + "\r\n"
 #define RPL_NONE ": 300 :None" + "\r\n"
 #define RPL_USERHOST(nick, host) ": 302 " + nick + " :*1" + host + "\r\n"
 #define RPL_ISON(nick) ": 303 " + nick + " :is on IRC" + "\r\n"
-#define RPL_AWAY(nick, message) ": 301 " + nick + " :is away: " + message + "\r\n"
-#define RPL_UNAWAY ": 305 :You are no longer marked as being away" + "\r\n"
-#define RPL_NOWAWAY ": 306 :You have been marked as being away" + "\r\n"
+#define RPL_AWAY(source, nick, message) ": 301 " + source + " " + nick + " :is away: " + message + "\r\n"
+#define RPL_UNAWAY ": 305 :You are no longer marked as being away\r\n"
+#define RPL_NOWAWAY ": 306 :You have been marked as being away\r\n"
 #define RPL_WHOISUSER(nick, user, host, server, realname) ": 311 " + nick + " " + user + " " + host + " * : " + realname + "\r\n"
 #define RPL_WHOISSERVER(nick, server, serverinfo) ": 312 " + nick + " " + server + " : " + serverinfo + "\r\n"
 #define RPL_WHOISOPERATOR(nick) ": 313 " + nick + " :is an IRC operator" + "\r\n"

@@ -16,12 +16,33 @@
 
    Numeric Replies:
 
-           RPL_UNAWAY                      RPL_NOWAWAY
+	   RPL_UNAWAY		      RPL_NOWAWAY
 
    Examples:
 
    AWAY :Gone to lunch.  Back in 5 ; set away message to "Gone to lunch.
-                                   Back in 5".
+				   Back in 5".
 
-   :WiZ AWAY                       ; unmark WiZ as being away.
+   :WiZ AWAY		       ; unmark WiZ as being away.
 */
+
+#include "Server.hpp"
+#include "Client.hpp"
+#include "Define.hpp"
+#include "Utils.hpp"
+
+void    Server::away(C_STR_REF msg, Client &client) // hexchat testi
+{
+	if (msg.empty())
+	{
+		client.setIsAway(false);
+		client.setAwayMSG("");
+		Utils::instaWrite(client.getFd(), RPL_UNAWAY);
+	}
+	else
+	{
+		client.setIsAway(true);
+		client.setAwayMSG(msg);
+		Utils::instaWrite(client.getFd(), RPL_NOWAWAY);
+	}
+}
