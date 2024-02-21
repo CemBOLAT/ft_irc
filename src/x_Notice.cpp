@@ -29,28 +29,137 @@
 
    See PRIVMSG for more details on replies and examples.
 
+	PRIV
 
+	   Numeric Replies:
+
+           ERR_NORECIPIENT                 ERR_NOTEXTTOSEND
+           ERR_CANNOTSENDTOCHAN            ERR_NOTOPLEVEL
+           ERR_WILDTOPLEVEL                ERR_TOOMANYTARGETS
+           ERR_NOSUCHNICK
+           RPL_AWAY
+
+   Examples:
+
+:Angel PRIVMSG Wiz :Hello are you receiving this message ?
+                                ; Message from Angel to Wiz.
+
+PRIVMSG Angel :yes I'm receiving it !receiving it !'u>(768u+1n) .br ;
+                                Message to Angel.
+
+PRIVMSG jto@tolsun.oulu.fi :Hello !
+                                ; Message to a client on server
+
+                                tolsun.oulu.fi with username of "jto".
+
+PRIVMSG $*.fi :Server tolsun.oulu.fi rebooting.
+                                ; Message to everyone on a server which
+                                has a name matching *.fi.
+
+PRIVMSG #*.edu :NSFNet is undergoing work, expect interruptions
+                                ; Message to all users who come from a
+                                host which has a name matching *.edu.
 */
-void	Server::notice(std::string	&input, Client &fd){
-	//VECT_STR params = Utils::ft_split(input, " ");
-	//if (params.size() < 2){
-	//	Utils::instaWrite(fd.getFd(), ERR_NEEDMOREPARAMS(fd.getNick(), "NOTICE"));
-	//	return;
-	//}
-	//for (VECT_ITER_CLI it = this->getClients().begin(); it != this->getClients().end(); it++){
-	//	if (params[0] == (*it).getUserName() || params[0] == (*it).getNick()){
-	//		std::string message = Utils::ft_join(params, " ", 1);
-	//		if (params[1][0] == ':')
-	//			message = message.substr(1, message.length());
-	//		(*it).getmesagesFromServer().push_back(RPL_NOTICE(fd.getUserByHexChat(), params[0], message));
-	//		FD_SET((*it).getFd(), &this->writefds);
-	//	}
-	//	if (params[0][0] == '#' && isClientInRoom(*it, params[0])){
-	//		std::string message = Utils::ft_join(params, " ", 1);
-	//		if (params[1][0] == ':')
-	//			message = message.substr(1, message.length());
-	//		(*it).getmesagesFromServer().push_back(RPL_NOTICE(fd.getUserByHexChat(), params[0], message));
-	//		FD_SET((*it).getFd(), &this->writefds);
-	//	}
-	//}
+
+
+namespace
+        {
+        int isInRoom(Client &client, Server &server, std::string room) {
+        	for (VECT_ITER_CHA it = server.getRooms().begin(); it != server.getRooms().end(); it++) {
+        		if (it->getName() == room) {
+        			for (VECT_ITER_CLI it2 = it->getClients().begin(); it2 != it->getClients().end(); it2++) {
+        				if (it2->getFd() == client.getFd())
+        					return 1;
+        			}
+        		}
+        	}
+        	return 0;
+        }
+
+        int isNickExist(C_STR_REF s, C_VECT_CLI_R clients, int fd)
+        {
+                for (VECT_ITER_CONST_CLI it = clients.begin(); it != clients.end(); ++it)
+                {
+                        if (s == it->getNick() && it->getFd() != fd)
+                                return 1;
+                }
+                return 0;
+        }
+
+}
+
+void	Server::notice(C_STR_REF input, Client &client){
+	if (!client.getIsRegistered())
+	{
+		Utils::instaWrite(client.getFd(), ERR_NOTREGISTERED(client.getUserByHexChat()));
+		return;
+	}
+	if (input.empty())
+	{
+		Utils::instaWrite(client.getFd(), ERR_NORECIPIENT(client.getUserByHexChat(), "NOTICE"));
+		return;
+	}
+	VECT_STR	tokns = Utils::ft_split(input, " ");
+	if (tokns.size() < 2)
+	{
+		Utils::instaWrite(client.getFd(), ERR_NOTEXTTOSEND(client.getUserByHexChat()));
+		return;
+	}
+	string receiver = tokns[0];
+	string message = Utils::ft_join(tokns, " ", 1);
+	if (message[0] == ':')
+		message = message.substr(1);
+	if (receiver[0] == '#')
+	{
+		if (isRoom(receiver)){
+			Room &room = getRoom(receiver);
+			if (isInRoom(client, *this, receiver))
+            {
+                for (VECT_ITER_CLI it = room.getClients().begin(); it != room.getClients().end(); it++)
+                {
+                        if (it->getFd() != client.getFd())
+                        {
+							if (it->getIsAway())
+								Utils::instaWrite(client.getFd(), RPL_AWAY(client.getUserByHexChat(), receiver, it->getAwayMSG()));
+							else
+							{
+								Utils::instaWrite(it->getFd(), RPL_NOTICE(client.getUserByHexChat(), receiver, message));
+								//(*it).getmesagesFromServer().push_back(RPL_NOTICE(client.getUserByHexChat(), receiver, message));
+								//FD_SET(it->getFd(), &writefds);
+							}
+		                }
+                }
+			}
+            else {
+                    Utils::instaWrite(client.getFd(), ERR_CANNOTSENDTOCHAN(client.getUserByHexChat(), receiver));
+                    return;
+            }
+		}
+		else{
+			Utils::instaWrite(client.getFd(), ERR_NOSUCHCHANNEL(client.getUserByHexChat(), receiver));
+            return;
+		}
+	}
+	else
+	{
+		bool isExist = false;
+		for (VECT_ITER_CLI it = clients.begin(); it != clients.end(); it++)
+		{
+			if (it->getNick() == receiver)
+			{
+				isExist = true;
+				if (it->getIsAway())
+					Utils::instaWrite(client.getFd(), RPL_AWAY(client.getUserByHexChat(), receiver, it->getAwayMSG()));
+				else
+				{
+					Utils::instaWrite(it->getFd(), RPL_NOTICE(client.getUserByHexChat(), receiver, message));
+					//(*it).getmesagesFromServer().push_back(RPL_NOTICE(client.getUserByHexChat(), receiver, message));
+					//FD_SET(it->getFd(), &writefds);
+				}
+				return;
+			}
+		}
+		if (!isExist)
+			Utils::instaWrite(client.getFd(), ERR_NOSUCHNICK(client.getUserByHexChat(), receiver));
+	}
 }

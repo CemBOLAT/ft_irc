@@ -36,11 +36,11 @@ public:
 	void topic(C_STR_REF command, Client &client);
 	void ping(C_STR_REF params, Client &client);
 	void quit(Client &client);
-	void whois(std::string &s, Client &cli);
+	void whois(C_STR_REF, Client &cli);
 	void pong(C_STR_REF params, Client &client);
 	void list(C_STR_REF params, Client &client);
 	void names(C_STR_REF params, Client &fd);
-	void notice(std::string &input, Client &fd);
+	void notice(C_STR_REF input, Client &fd);
 	void kick(std::string &input, Client &fd);
 	void user(C_STR_REF params, Client &client);
 	void cap(C_STR_REF params, Client &client);

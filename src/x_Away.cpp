@@ -31,8 +31,13 @@
 #include "Define.hpp"
 #include "Utils.hpp"
 
-void    Server::away(C_STR_REF msg, Client &client) // hexchat testi
+void    Server::away(C_STR_REF msg, Client &client) // hexchat testi (testte sorun var np)
 {
+	if (client.getIsRegistered() == false)
+	{
+		Utils::instaWrite(client.getFd(), ERR_NOTREGISTERED(client.getUserByHexChat()));
+        return;
+	}
 	if (msg.empty())
 	{
 		client.setIsAway(false);

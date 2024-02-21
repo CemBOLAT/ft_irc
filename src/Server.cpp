@@ -376,21 +376,17 @@ void	Server::initFunctions() {
 	this->_commands["privmsg"] = &Server::privmsg;
 	this->_commands["join"] = &Server::join;
 	this->_commands["JOIN"] = &Server::join;
-
+	this->_commands["WHOIS"] = &Server::whois;
+	this->_commands["whois"] = &Server::whois;
+	this->_commands["NOTICE"] = &Server::notice;
+	this->_commands["notice"] = &Server::notice;
+	
 	//this->_commands["QUIT"] = &Server::quit;
-	//this->_commands["JOIN"] = &Server::join;
-	//this->_commands["PART"] = &Server::part;
-	//this->_commands["PRIVMSG"] = &Server::privmsg;
 	//this->_commands["OP"] = &Server::op;
-	//this->_commands["MODE"] = &Server::mode;
 	//this->_commands["WHO"] = &Server::who;
-	//this->_commands["TOPIC"] = &Server::topic;
 	//this->_commands["PING"] = &Server::ping;
 	//this->_commands["WHOIS"] = &Server::whois;
 	//this->_commands["PONG"] = &Server::pong;
-	//this->_commands["LIST"] = &Server::list;
-	//this->_commands["NAMES"] = &Server::names;
 	//this->_commands["NOTICE"] = &Server::notice;
 	//this->_commands["KICK"] = &Server::kick;
-	//this->_commands["PASS"] = &Server::pass;
 }

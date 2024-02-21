@@ -20,7 +20,7 @@
    indicating different statuses of each user which matches the nickmask
    (if you are entitled to see them).  If no wildcard is present in the
    <nickmask>, any information about that nick which you are allowed to
-   see is presented.  A comma (',') separated list of nicknames may be
+   see is presented.  A comma (',') separated list of nickNames may be
    given.
 
    The latter version sends the query to a specific server.  It is
@@ -31,10 +31,10 @@
 
    Numeric Replies:
 
-           ERR_NOSUCHSERVER                ERR_NONICKNAMEGIVEN
+           ERR_NOSUCHSERVER(no)                ERR_NONICKNAMEGIVEN(done)
            RPL_WHOISUSER                   RPL_WHOISCHANNELS
-           RPL_WHOISCHANNELS               RPL_WHOISSERVER
-           RPL_AWAY                        RPL_WHOISOPERATOR
+           RPL_WHOISCHANNELS               RPL_WHOISSERVER(no)
+           RPL_AWAY                        RPL_WHOISOPERATOR(no)
            RPL_WHOISIDLE                   ERR_NOSUCHNICK
            RPL_ENDOFWHOIS
    Examples:
@@ -47,15 +47,33 @@
 
 */
 
-void	Server::whois(std::string &s, Client &cli){
-	//VECT_STR cmd = Utils::ft_split(s, " ");
-	//std::string who = cmd[0];
-	//for(VECT_ITER_CLI it = this->clients.begin(); it != this->clients.end(); ++it) {
-	//	if (who == (*it).getNick()){
-	//		Utils::instaWrite(cli.getFd(), RPL_WHOISUSER((*it).getNick(), (*it).getUserName(), (*it)._ip));
-	//		Utils::instaWrite(cli.getFd(), RPL_WHOISSERVER((*it).getNick(), "user"));
-	//		Utils::instaWrite(cli.getFd(), RPL_ENDOFWHOIS((*it).getNick(), (*it).getNick()));
-	//		break;
-	//	}
-	//}
+void	Server::whois(C_STR_REF str, Client &cli){ // garip şekilde yolluyor evde (whois cemal cemal şeklinde saçma ama evet) (protocol tutmuyoooo hexchatini siktiğim)
+        if (cli.getIsRegistered() == false){
+            Utils::instaWrite(cli.getFd(), ERR_NOTREGISTERED(cli.getUserByHexChat()));
+            return;
+        }
+        if (str.empty()){
+            Utils::instaWrite(cli.getFd(), ERR_NONICKNAMEGIVEN(cli.getNick()));
+            return;
+        }
+        std::vector<std::string> vec = Utils::ft_split(str, " ");
+        for (size_t i = 0; i < vec.size(); i++){
+                for (size_t j = 0; j < clients.size(); j++){
+                        if (clients[j].getNick() == vec[i]){
+                                Utils::instaWrite(cli.getFd(), RPL_WHOISUSER(cli.getNick(),clients[j].getNick(), clients[j].getUserName(), clients[j].getHostName(), clients[j].getRealName()));
+                                for (size_t k = 0; k < channels.size(); k++){
+                                        if ((isClientInRoom(channels[k], clients[j]) && isClientInRoom(channels[k], cli)))
+                                                Utils::instaWrite(cli.getFd(), RPL_WHOISCHANNELS(cli.getNick(), clients[j].getNick(), channels[k].getName()));
+                                }
+                                Utils::instaWrite(cli.getFd(), RPL_ENDOFWHOIS(cli.getNick(), clients[j].getNick()));
+                                return; // değişecek dikkat et
+                        }
+                }
+        }
+
 }
+
+/*
+:choopa.nj.us.dal.net 311 cemal2 cemal_ ~cemalBO 8ff-79be-2b40-4e12-9e4d.10.95.ip * :realname
+:choopa.nj.us.dal.net 319 cemal2 cemal_ :@#31 
+*/

@@ -81,7 +81,9 @@ void Server::topic(C_STR_REF command, Client &client) // sa√ßma 1970 tarihini d√
 		Utils::instaWriteAll(room.getClients(), RPL_TOPIC(client.getUserByHexChat(), room.getName(), newtopic));
 		if (oldtopic != newtopic)
 		{
-			Utils::instaWriteAll(room.getClients(), RPL_TOPICSET(client.getUserByHexChat(), room.getName(), newtopic, Utils::getTime(), room.getTopic()));
+			time_t	now = time(0);
+			string response = Utils::itoa(now);
+			Utils::instaWriteAll(room.getClients(), RPL_TOPICSET(client.getUserByHexChat(), room.getName(), client.getNick(), response));
 		}
 		return;
 	}

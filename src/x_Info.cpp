@@ -22,13 +22,6 @@
    :Avalon INFO *.fi               ; INFO request from Avalon for first
                                    server found to match *.fi.
 
-
-
-Oikarinen & Reed                                               [Page 31]
-
-RFC 1459              Internet Relay Chat Protocol              May 1993
-
-
    INFO Angel                      ; request info from the server that
                                    Angel is connected to.
 */

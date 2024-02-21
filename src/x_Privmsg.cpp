@@ -66,20 +66,20 @@ PRIVMSG #*.edu :NSFNet is undergoing work, expect interruptions
                                 host which has a name matching *.edu.
 */
 
-int isInRoom(Client &client, Server &server, std::string room) {
-	for (VECT_ITER_CHA it = server.getRooms().begin(); it != server.getRooms().end(); it++) {
-		if (it->getName() == room) {
-			for (VECT_ITER_CLI it2 = it->getClients().begin(); it2 != it->getClients().end(); it2++) {
-				if (it2->getFd() == client.getFd())
-					return 1;
-			}
-		}
-	}
-	return 0;
-}
-
 namespace
-{
+        {
+        int isInRoom(Client &client, Server &server, std::string room) {
+        	for (VECT_ITER_CHA it = server.getRooms().begin(); it != server.getRooms().end(); it++) {
+        		if (it->getName() == room) {
+        			for (VECT_ITER_CLI it2 = it->getClients().begin(); it2 != it->getClients().end(); it2++) {
+        				if (it2->getFd() == client.getFd())
+        					return 1;
+        			}
+        		}
+        	}
+        	return 0;
+        }
+
         int isNickExist(C_STR_REF s, C_VECT_CLI_R clients, int fd)
         {
                 for (VECT_ITER_CONST_CLI it = clients.begin(); it != clients.end(); ++it)
@@ -122,7 +122,15 @@ void Server::privmsg(C_STR_REF input, Client &client) {
                                 {
                                         if (it->getFd() != client.getFd())
                                         {
-                                                Utils::instaWrite(it->getFd(), RPL_PRIVMSG(client.getUserByHexChat(), receiver, message));
+                                                if (it->getIsAway())
+                                                {
+                                                        Utils::instaWrite(client.getFd(), RPL_AWAY(client.getUserByHexChat(), receiver, it->getAwayMSG()));
+                                                }
+                                                else {
+                                                        Utils::instaWrite(it->getFd(), RPL_PRIVMSG(client.getUserByHexChat(), receiver, message));
+                                                        //(*it).getmesagesFromServer().push_back(RPL_PRIVMSG(client.getUserByHexChat(), receiver, message));
+                                                        //FD_SET(it->getFd(), &writefds);
+                                                }
                                         }
                                 }
                         }
@@ -138,23 +146,25 @@ void Server::privmsg(C_STR_REF input, Client &client) {
                 }
         }
         else {
-                if (isNickExist(receiver, clients, client.getFd()))
+                bool isExist = false;
+                for (VECT_ITER_CLI it = clients.begin(); it != clients.end(); it++)
                 {
-                        for (VECT_ITER_CLI it = clients.begin(); it != clients.end(); it++)
+                        if (it->getNick() == receiver)
                         {
-                                if (it->getNick() == receiver)
+                                isExist = true;
+                                if (it->getIsAway())
                                 {
-                                        if (it->getIsAway())
-                                        {
-                                                Utils::instaWrite(client.getFd(), RPL_AWAY(client.getUserByHexChat(), receiver, it->getAwayMSG()));
-                                        }
-                                        else {
-                                                Utils::instaWrite(it->getFd(), RPL_PRIVMSG(client.getUserByHexChat(), receiver, message));
-                                        }
+                                        Utils::instaWrite(client.getFd(), RPL_AWAY(client.getUserByHexChat(), receiver, it->getAwayMSG()));
                                 }
+                                else {
+                                        Utils::instaWrite(it->getFd(), RPL_PRIVMSG(client.getUserByHexChat(), receiver, message));
+					//(*it).getmesagesFromServer().push_back(RPL_PRIVMSG(client.getUserByHexChat(), receiver, message));
+					//FD_SET(it->getFd(), &writefds);
+                                }
+                                return;
                         }
                 }
-                else {
+                if (!isExist){
                         Utils::instaWrite(client.getFd(), ERR_NOSUCHNICK(client.getUserByHexChat(), receiver));
                         return;
                 }

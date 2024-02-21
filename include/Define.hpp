@@ -37,6 +37,6 @@
 # define RPL_NOTICE(source, target, message) ":" + source + " NOTICE " + target + " :" + message + "\r\n"
 # define RPL_PRIVMSG(source, target, message)		":" + source + " PRIVMSG " + target + " :" + message + "\r\n"
 #define RPL_QUIT(source, message)                   (std::string(":") + source + " QUIT :" + message + "\r\n")
-#define RPL_TOPICSET(nick, channel, topic, time, aa) ": 333 " + nick + " " + channel + " " + time + " " + aa + "\r\n"
+#define RPL_TOPICSET(nick, channel, operator, time) ": 333 " + nick + " " + channel + " " + operator + " " + time + "\r\n"
 
 # define ERR_OWNKICK(source, channel) ": 443 " + source + " " + channel + " :You can't kick yourself" + "\r\n"			
