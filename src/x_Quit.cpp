@@ -52,10 +52,11 @@ void Server::quit(C_STR_REF params, Client &client) {
             if (it->getClients().size() == 1) {
                 TextEngine::magenta("Room " + it->getName() + " has been deleted", TextEngine::printTime(std::cout)) << std::endl;
                 it = channels.erase(it);
+                --it;
             } else {
-                it->removeClient(client.getFd());
-                responseAllClientResponseToGui(client, *it);
-                ++it;
+                    it->removeClient(client.getFd());
+			        
+				    responseAllClientResponseToGui(client, *it);
             }
         } else {
             ++it;
@@ -89,7 +90,7 @@ void Server::quit(C_STR_REF params, Client &client) {
     }
 
     // İstemcinin çıkışını logla
-    TextEngine::blue("Client ", TextEngine::printTime(cout)) << client._ip << ":" << client.getPort() " " <<client.getNick() << " quited !" << std::endl;
+    TextEngine::blue("Client ", TextEngine::printTime(cout)) << client._ip << ":" << client.getPort()<< " " <<client.getNick() << " quited !" << std::endl;
 }
 
 
