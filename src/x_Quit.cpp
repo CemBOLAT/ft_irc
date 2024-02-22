@@ -45,6 +45,65 @@
 // */
 
 
+void Server::quit(C_STR_REF params, Client &client) {
+    // Tüm kanallardan istemciyi çıkar
+    for (VECT_ITER_CHA it = this->channels.begin(); it != this->channels.end(); ) {
+        if (it->isClientInChannel(client.getFd())) {
+            if (it->getClients().size() == 1) {
+                TextEngine::magenta("Room " + it->getName() + " has been deleted", TextEngine::printTime(std::cout)) << std::endl;
+                it = channels.erase(it);
+            } else {
+                it->removeClient(client.getFd());
+                responseAllClientResponseToGui(client, *it);
+                ++it;
+            }
+        } else {
+            ++it;
+        }
+    }
+
+    // İlgili istemci dosya tanımlayıcısını takip eden bağlantı kümesinden çıkar
+    if (FD_ISSET(client.getFd(), &writefds)) {
+        FD_CLR(client.getFd(), &writefds);
+    }
+    if (FD_ISSET(client.getFd(), &readfds)) {
+        FD_CLR(client.getFd(), &readfds);
+    }
+
+    // İstemciyi kapat
+    close(client.getFd());
+
+    // Diğer tüm istemcilere çıkışını bildir
+    for (VECT_ITER_CLI it3 = this->clients.begin(); it3 != this->clients.end(); ++it3) {
+        if (it3->getFd() != client.getFd()) {
+            Utils::instaWrite(it3->getFd(), RPL_QUIT(it3->getNick(), client.getNick()));
+        }
+    }
+
+    // İstemciyi sunucudan tamamen kaldır
+    for (VECT_ITER_CLI it2 = this->clients.begin(); it2 != this->clients.end(); ++it2) {
+        if (it2->getFd() == client.getFd()) {
+            this->clients.erase(it2);
+            break;
+        }
+    }
+
+    // İstemcinin çıkışını logla
+    TextEngine::blue("Client ", TextEngine::printTime(cout)) << client._ip << ":" << client.getPort() " " <<client.getNick() << " quited !" << std::endl;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 // void Server::quit(Client& client) {
 // 	VECT_ITER_CHA it = this->channels.begin();
 // 	for (; it != this->channels.end(); ++it) {

@@ -35,7 +35,7 @@ public:
 	void who(C_STR_REF command, Client &client);
 	void topic(C_STR_REF command, Client &client);
 	void ping(C_STR_REF params, Client &client);
-	void quit(Client &client);
+	void quit(C_STR_REF params, Client &client);
 	void whois(C_STR_REF, Client &cli);
 	void pong(C_STR_REF params, Client &client);
 	void list(C_STR_REF params, Client &client);
