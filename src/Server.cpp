@@ -80,8 +80,8 @@ Server::~Server()
 
 void Server::run()
 {
-	socklen_t templen = sizeof(sockaddr_in);
-	bool isReadyToSelect = true;
+	socklen_t templen = sizeof(sockaddr_in); 
+ 	bool isReadyToSelect = true;
 	int bytesRead = 0;
 
 	FD_ZERO(&readfds);
@@ -96,23 +96,23 @@ void Server::run()
 		{
 			readFdsCopy = readfds;
 			writeFdsCopy = writefds;
-			if (select(Utils::getMaxFd(clients, this->_socket) + 1, &readFdsCopy, &writeFdsCopy, NULL, 0) < 0)
+			if (select(Utils::getMaxFd(clients, this->_socket) + 1, &readFdsCopy, &writeFdsCopy, NULL, 0) < 0) //soketlerdeki değişiklikleri takip eder
 			{
 				throw Exception("Select failed");
 			}
 			isReadyToSelect = false;
 		}
-		if (FD_ISSET(this->_socket, &this->readFdsCopy))
+		if (FD_ISSET(this->_socket, &this->readFdsCopy)) // yeni bir bağlantı var mı kontrol eder
 		{
-			int newSocket = accept(this->_socket, (sockaddr *)&clientAddress, &templen);
+			int newSocket = accept(this->_socket, (sockaddr *)&clientAddress, &templen); // yeni bir bağlantı varsa kabul eder
 			if (newSocket < 0)
 			{
 				throw Exception("Accept failed");
 			}
-			if (fcntl(newSocket, F_SETFL, O_NONBLOCK) < 0)
+			if (fcntl(newSocket, F_SETFL, O_NONBLOCK) < 0) // non-blocking socket yapar
 				throw Exception("Fcntl failed on Client");
-			int port = ntohs(clientAddress.sin_port);
-			Client newClient(newSocket, port);
+			int port = ntohs(clientAddress.sin_port); 
+			Client newClient(newSocket, port); 
 			char	*ip = inet_ntoa(clientAddress.sin_addr);
 			strcpy(newClient._ip, ip);
 			clients.push_back(newClient);

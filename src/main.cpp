@@ -11,7 +11,7 @@ volatile sig_atomic_t sigint = 0;
 
 void	signalHandler(int signum){
 	sigint = 1;
-	std::cout << "\rCaught signal " << signum << std::endl;
+	std::cout << "\rCaught signal " << signum << std::endl; 
 	if (signum == SIGINT || signum == SIGTERM)
 	{
 		if (serverInstance){

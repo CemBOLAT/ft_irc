@@ -18,7 +18,7 @@
 
 void Server::initSocket()
 {
-	this->_socket = socket(AF_INET, SOCK_STREAM, 0); // Create socket 0 for macos and IPPROTO_IP for linux
+	this->_socket = socket(AF_INET, SOCK_STREAM, 0); // Create socket 0 for macos and IPPROTO_IP for linux ipv4
 	if (_socket < 0)
 	{
 		throw Exception("Socket creation failed");
@@ -28,7 +28,7 @@ void Server::initSocket()
 		TextEngine::green("Socket created successfully! ", TextEngine::printTime(cout)) << std::endl;
 	}
 	int dumb = 1;
-	if (setsockopt(this->_socket, SOL_SOCKET, SO_REUSEADDR, &dumb, sizeof(int)) < 0)
+	if (setsockopt(this->_socket, SOL_SOCKET, SO_REUSEADDR, &dumb, sizeof(int)) < 0) //soket ayarlarları için kullanılır SO_REUSEADDR soketin aynı portu kullanmasına izin verir SOL_SOCKET soket seviyesinde ayarlar
 	{
 		throw Exception("Socket option failed");
 	}
@@ -36,7 +36,7 @@ void Server::initSocket()
 	{
 		TextEngine::green("Socket option set successfully! ", TextEngine::printTime(cout)) << std::endl;
 	}
-	if (fcntl(this->_socket, F_SETFL, O_NONBLOCK) < 0)
+	if (fcntl(this->_socket, F_SETFL, O_NONBLOCK) < 0) // soketin bloklanmaması için kullanılır
 	{
 		throw Exception("Socket fcntl failed on Server");
 	}
@@ -45,12 +45,12 @@ void Server::initSocket()
 		TextEngine::green("Socket fcntl set successfully! ", TextEngine::printTime(cout)) << std::endl;
 	}
 
-	memset(&address, 0, sizeof(address)); 
-	address.sin_family = AF_INET;		  
-	address.sin_addr.s_addr = INADDR_ANY; 
-	address.sin_port = htons(this->port); 
+	memset(&address, 0, sizeof(address));  // Clear the structure
+	address.sin_family = AF_INET;		  // Set the address family ıpv4
+	address.sin_addr.s_addr = INADDR_ANY; // Set the address
+	address.sin_port = htons(this->port); // endianness big little endian conversion
 
-	if (::bind(this->_socket, (struct sockaddr *)&address, sizeof(address)) < 0)
+	if (::bind(this->_socket, (struct sockaddr *)&address, sizeof(address)) < 0) // bind the socket to the address and port number specified in addr
 	{
 		throw Exception("Socket bind failed");
 	}
@@ -62,7 +62,7 @@ void Server::initSocket()
 	/*
 	 * Maximum queue length specifiable by listen.
 	*/
-	if (listen(this->_socket, SOMAXCONN) < 0)
+	if (listen(this->_socket, SOMAXCONN) < 0) //dinleme başlatır maks 128 bağlantıyı kabul eder
 	{
 		throw Exception("Socket listen failed");
 	}

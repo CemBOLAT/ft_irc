@@ -1,5 +1,4 @@
 #include "Client.hpp"
-
 #include "Exception.hpp"
 #include "Client.hpp"
 #include "Server.hpp"
