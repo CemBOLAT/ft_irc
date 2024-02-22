@@ -18,7 +18,7 @@
 
 void Server::initSocket()
 {
-	this->_socket = socket(AF_INET, SOCK_STREAM, 0); // Create socket 0 for macos and IPPROTO_IP for linux ipv4
+	this->_socket = socket(AF_INET, SOCK_STREAM, 0); // Create socket 0 for macos and IPPROTO_IP for linux ipv4 protokolüne göre soket oluşturur tcp için SOCK_STREAM udp için SOCK_DGRAM
 	if (_socket < 0)
 	{
 		throw Exception("Socket creation failed");
