@@ -1,3 +1,19 @@
+#include "Client.hpp"
+
+#include "Exception.hpp"
+#include "Client.hpp"
+#include "Server.hpp"
+#include "Room.hpp"
+#include "Utils.hpp"
+#include "TextEngine.hpp"
+#include "Define.hpp"
+#include "ErrorRPL.hpp"
+
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
+
 /*
 5.8 Ison message
 
@@ -30,3 +46,29 @@
                                    ; Sample ISON request for 7 nicks.
 
 */
+
+// tam bitmedi 
+void Server::ison(C_STR_REF param, Client &client) {
+    std::istringstream iss(param);
+    std::string nick;
+    std::string response = "";
+    bool found = false;
+
+    while (iss >> nick) {
+        for (std::vector<Client>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
+            if (it->getNick() == nick) {
+                response += nick + " ";
+                found = true;
+                break;
+            }
+        }
+    }
+
+    if (found) {
+        response.erase(response.length() - 1); 
+        Utils::instaWrite(client.getFd(), "303 " + client.getNick() + " :" + response);
+    } else {
+
+        Utils::instaWrite(client.getFd(), "303 " + client.getNick() + " :");
+    }
+}

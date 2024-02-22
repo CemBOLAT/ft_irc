@@ -380,6 +380,9 @@ void	Server::initFunctions() {
 	this->_commands["whois"] = &Server::whois;
 	this->_commands["NOTICE"] = &Server::notice;
 	this->_commands["notice"] = &Server::notice;
+	this->_commands["ISON"] = &Server::ison;
+	this->_commands["ison"] = &Server::ison;
+
 	
 	//this->_commands["QUIT"] = &Server::quit;
 	//this->_commands["OP"] = &Server::op;
