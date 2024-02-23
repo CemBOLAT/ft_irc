@@ -104,7 +104,7 @@ void Server::join(C_STR_REF params, Client &client)
                         return;
                 }
                 Room &room = getRoom(roomName);
-                if (room.getKeycode() & FLAG_INV){
+                if ((room.getKeycode() & FLAG_INV) && !room.isInvite(client)){
                         Utils::instaWrite(client.getFd(), ERR_INVITEONLYCHAN(client.getUserByHexChat(), roomName));
                         return;
                 }
@@ -119,6 +119,9 @@ void Server::join(C_STR_REF params, Client &client)
                                 Utils::instaWrite(client.getFd(), ERR_CHANNELISFULL(client.getUserByHexChat(), roomName));
                                 return;
                         }
+                }
+                if (room.isInvite(client)){
+                        room.removeInvite(client);
                 }
                 room.addClient(client);
                 Utils::instaWriteAll(room.getClients(), RPL_JOIN(client.getUserByHexChat(), roomName));

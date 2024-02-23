@@ -385,7 +385,8 @@ void	Server::initFunctions() {
 	this->_commands["kick"] = &Server::kick;
 	this->_commands["INVITE"] = &Server::invite;
 	this->_commands["invite"] = &Server::invite;
-	//this->_commands["OP"] = &Server::op;
+	this->_commands["OP"] = &Server::op;
+	this->_commands["op"] = &Server::op;
 	//this->_commands["WHO"] = &Server::who;
 	//this->_commands["PING"] = &Server::ping;
 	//this->_commands["PONG"] = &Server::pong;

@@ -57,7 +57,6 @@ bool    Server::isClient(C_STR_REF nickname)
 }
 
 #define RPL_INVITE_TO_CLIENT(source, target, channel) (string(":") + source + " INVITE " + target + " :" + channel + "\r\n")
-#define RPL_INVITE_ALL(source, target, channel) (string(":") + channel + " :" + source + " invited " + target + " into channel " + channel + "\r\n")
 
 void    Server::invite(C_STR_REF input, Client &client)
 {
@@ -108,6 +107,7 @@ void    Server::invite(C_STR_REF input, Client &client)
         }
         Utils::instaWrite(target.getFd(), RPL_INVITE_TO_CLIENT(client.getUserByHexChat(),nickname,channel));
         Utils::instaWrite(client.getFd(), RPL_INVITING(client.getUserByHexChat(),nickname,channel));
+        room.addInvite(target);
 }
 
 /*

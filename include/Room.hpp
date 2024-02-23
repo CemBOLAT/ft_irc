@@ -47,7 +47,24 @@ public:
 	bool			isClientInChannel(int fd) const;
 	Client			&getClient(C_STR_REF nick);
 	bool			isOperator(const Client &client) const;
-
+	void			addInvite(const Client &client) { _inviteVector.push_back(client); }
+	void			removeInvite(const Client &client) {
+		for (vector<Client>::iterator it = _inviteVector.begin(); it != _inviteVector.end(); it++) {
+			if (it->getNick() == client.getNick()) {
+				_inviteVector.erase(it);
+				break;
+			}
+		}
+	}
+	bool			isInvite(const Client &client) const{
+		for (vector<Client>::const_iterator it = _inviteVector.begin(); it != _inviteVector.end(); it++) {
+			if (it->getNick() == client.getNick()) {
+				return true;
+			}
+		}
+		return false;
+	
+	}
 private:
 	vector<Client>	_clients; // bunun için pointer veya referans kullanılmalı
 	string			_name;

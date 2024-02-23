@@ -22,36 +22,57 @@ namespace
 	}
 }
 
+// op channel user
+
+#define ERR_ALREADYOPERATOR(nick, channel) (string(":") + "IRC" + " 482 " + nick + " " + channel + " :You're already an operator\r\n")
+
 void Server::op(C_STR_REF params, Client &client)
 {
-	//VECT_STR splitFirst = Utils::ft_split(params, " ");
-	//Room &room = getRoom(splitFirst[0]);
-	//if (client.getNick() == room.getOperator().getNick())
-	//{
-	//	VECT_ITER_CLI it = room.getClients().begin();
-	//	for (; it != room.getClients().end(); ++it)
-	//	{
-	//		if ((*it).getNick() == splitFirst[1])
-	//			break;
-	//	}
-	//	if (it == room.getClients().end())
-	//		return;
-	//	Client &newOp = *it;
-	//	Client &oldOp = room.getOperator();
-//
-	//	for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); it++)
-	//	{
-	//		if (splitFirst[0] == it->getName() && getClientPosInRoom(*it, oldOp) != -1 && getClientPosInRoom(*it, newOp) != -1)
-	//		{
-	//			it->setOperator(newOp);
-	//			Server::responseAllClientResponseToGui(newOp, room);
-	//			return;
-	//		}
-	//	}
-	//	Server::responseAllClientResponseToGui(newOp, room);
-	//}
-	//else
-	//{
-	//	Utils::instaWrite(client.getFd(), ERR_CHANOPRIVSNEEDED(client.getUserByHexChat(), room.getName()));
-	//}
+	if (client.getIsRegistered() == false)
+	{
+		Utils::instaWrite(client.getFd(), ERR_NOTREGISTERED(client.getNick()));
+		return;
+	}
+	VECT_STR splitFirst = Utils::ft_split(params, " ");
+	if (splitFirst.size() < 2)
+	{
+		Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "OP"));
+		return;
+	}
+	string channel = splitFirst[0];
+	string user = splitFirst[1];
+	if (isRoom(channel) == false)
+	{
+		Utils::instaWrite(client.getFd(), ERR_NOSUCHCHANNEL(client.getNick(), channel));
+		return;
+	}
+	Room &room = getRoom(channel);
+	if (isClientInRoom(room, client) == false)
+	{
+		Utils::instaWrite(client.getFd(), ERR_NOTONCHANNEL(client.getNick(), channel));
+		return;
+	}
+	if (room.isOperator(client) == false)
+	{
+		Utils::instaWrite(client.getFd(), ERR_CHANOPRIVSNEEDED(client.getNick(), channel));
+		return;
+	}
+	if (isClient(user) == false)
+	{
+		Utils::instaWrite(client.getFd(), ERR_NOSUCHNICK(client.getNick(), user));
+		return;
+	}
+	Client &target = getClientByNick(user);
+	if (isClientInRoom(room, target) == false)
+	{
+		Utils::instaWrite(client.getFd(), ERR_USERNOTINCHANNEL(user, channel));
+		return;
+	}
+	if (room.isOperator(target) == true)
+	{
+		Utils::instaWrite(client.getFd(), ERR_ALREADYOPERATOR(client.getNick(), channel));
+		return;
+	}
+	room.addOperator(target);
+	Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), splitFirst[0], "+o", splitFirst[1]));
 }

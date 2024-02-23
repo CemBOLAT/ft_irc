@@ -47,7 +47,13 @@
 
 */
 
+# define WHO_RPL(nick, channel, user, host, server, nickName, hops, realName) (std::string(":") + "IRC" + " 352 " + nick + " " + channel + " " + user + " " + host + " " + server + " " + nickName + " " + hops + " " + realName + " H :0 " + realName + "\r\n")
+
 void Server::who(C_STR_REF command, Client &client) {
+        if (client.getIsRegistered() == false) {
+                Utils::instaWrite(client.getFd(), ERR_NOTREGISTERED(client.getNick()));
+                return;
+        }
 	//VECT_STR params = Utils::ft_split(command, " ");
 	//if (params.empty()) {
 	//	Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "WHO"));
