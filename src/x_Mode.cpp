@@ -165,7 +165,8 @@ void Server::modeChannel(VECT_STR &params, Client &client)
 	}
 	Room &room = getRoom(params[0]);
 	if (params.size() == 1){
-		Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room))); // maybe Changeable
+		client.getmesagesFromServer().push_back(RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room))); // maybe Changeable
+		FD_SET(client.getFd(), &writefds);
 		return;
 	}
 	if (isClientInRoom(room, client) == false){
@@ -179,8 +180,7 @@ void Server::modeChannel(VECT_STR &params, Client &client)
 	if (params.size() > 3)
 	{
 		Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), params[1]));
-		return;
-	
+		return;	
 	}
 	if (params[1][0] == '+'){
 		for (size_t i = 1; i < params[1].size(); i++)

@@ -148,7 +148,7 @@ VECT_STR	Utils::ft_firstWord(C_STR_REF str)
 
 std::string	Utils::ft_join(C_VECT_STR_R vec, C_STR_REF delim, int start)
 {
-	std::string result;
+	std::string result = "";
 	for (size_t i = start; i < vec.size(); i++)
 	{
 		result += vec[i];

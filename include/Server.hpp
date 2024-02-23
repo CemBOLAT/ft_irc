@@ -41,12 +41,14 @@ public:
 	void list(C_STR_REF params, Client &client);
 	void names(C_STR_REF params, Client &fd);
 	void notice(C_STR_REF input, Client &fd);
-	void kick(std::string &input, Client &fd);
+	void kick(C_STR_REF input, Client &fd);
 	void user(C_STR_REF params, Client &client);
 	void cap(C_STR_REF params, Client &client);
 	void pass(C_STR_REF param, Client &client);
 	void away(C_STR_REF param, Client &client);
 	void ison(C_STR_REF param, Client &client);
+	void invite(C_STR_REF input, Client &client);
+	bool isClient(C_STR_REF nickname);
 
 	Room &getRoom(C_STR_REF name);
 

@@ -67,9 +67,10 @@ void Server::part(C_STR_REF params, Client &client)
 		if (room.getClients().size() == 1) // delete room.
 		{
 			TextEngine::magenta("Room " + room.getName() + " has been deleted", TextEngine::printTime(std::cout)) << std::endl;
+			it->removeClient(client.getFd());
 			channels.erase(it);	
 			//Utils::instaWriteAll(*it, RPL_PART(client.getUserByHexChat(), param[0]);
-			Utils::instaWriteAll(room.getClients(), RPL_PART(client.getUserByHexChat(), param[0], reason));
+			Utils::instaWrite(client.getFd(), RPL_PART(client.getUserByHexChat(), param[0], reason));
 			return ;
 		}
 		else if (room.isOperator(client)) // if client is operator

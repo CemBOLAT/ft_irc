@@ -28,18 +28,16 @@ public:
 
 	void			addOperator(const Client &client) { _operatorVector.push_back(client); }
 	void			removeOperator(const Client &client) {
-		for (size_t i = 0; i < _operatorVector.size(); i++)
-		{
-			if (_operatorVector[i].getFd() == client.getFd())
-			{
-				_operatorVector.erase(_operatorVector.begin() + i);
+		for (vector<Client>::iterator it = _operatorVector.begin(); it != _operatorVector.end(); it++) {
+			if (it->getNick() == client.getNick()) {
+				_operatorVector.erase(it);
 				break;
 			}
 		}
 	}
 	void			setName(C_STR_REF name) { _name = name; }
 	void			setTopic(C_STR_REF topic) { _topic = topic; }
-	void			addClient(Client client) { _clients.push_back(client); }
+	void			addClient(const Client &client) { _clients.push_back(client); }
 	void			setKeycode(int keycode) { _keycode = keycode; }
 	void			setKey(C_STR_REF key) { _key = key; }
 	void			setChanelLimit(int limit) { _chanelLimit = limit; }
@@ -58,4 +56,5 @@ private:
 	int				_keycode; //kanalın şifreli mi kullanıcı limiti var diye koyduğumuz flag
 	string			_key;
 	int				_chanelLimit;
+	vector<Client>	_inviteVector;
 };

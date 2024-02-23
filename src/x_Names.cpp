@@ -42,6 +42,10 @@
 */
 
 void    Server::names(C_STR_REF params, Client &fd){ // names otomatik aa yolluyor servera ? (saçma şekilde kendi sunucu adını yazıyor benim localhost yazdığım.)
+    if (fd.getIsRegistered() == false){
+        Utils::instaWrite(fd.getFd(), ERR_NOTREGISTERED(fd.getNick()));
+        return;
+    }
     if (params[0] != '#'){
         string  userSTR;
         for (VECT_ITER_CLI it = clients.begin(); it != clients.end(); it++){
