@@ -81,7 +81,7 @@ void Server::nick(C_STR_REF params, Client &client)
 			{
 				cit->setNick(nicks);
 				Utils::instaWriteAll(it->getClients(), RPL_NICK(oldNick, client.getUserName(), client._ip, nicks));
-				//responseAllClientResponseToGui(*cit, *it); // bu böyle mi olmalı hmm...
+				responseAllClientResponseToGui(*cit, *it); // bu böyle mi olmalı hmm...
 				break;
 			}
 		}

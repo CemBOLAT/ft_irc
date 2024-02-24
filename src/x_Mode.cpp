@@ -195,17 +195,17 @@ void Server::modeChannel(VECT_STR &params, Client &client)
 			else if (params[1][i] == 'i')
 			{
 				room.setKeycode(room.getKeycode() | FLAG_INV);
-				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "+" + params[1][i], params[2]));
+				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "+" + params[1][i], ""));
 			}
 			else if (params[1][i] == 't')
 			{
 				room.setKeycode(room.getKeycode() | FLAG_TOPIC);
-				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "+" + params[1][i], params[2]));
+				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "+" + params[1][i], ""));
 			}
 			else if (params[1][i] == 'n')
 			{
 				room.setKeycode(room.getKeycode() | FLAG_NOOUTSIDE);
-				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "+" + params[1][i], params[2]));
+				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "+" + params[1][i], ""));
 			}
 			else if (params[1][i] == 'l')
 			{
@@ -272,29 +272,29 @@ void Server::modeChannel(VECT_STR &params, Client &client)
 			else if (params[1][i] == 'i')
 			{
 				room.setKeycode(room.getKeycode() ^ FLAG_INV);
-				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "-" + params[1][i], params[2]));
+				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "-" + params[1][i], ""));
 			}
 			else if (params[1][i] == 't')
 			{
 				room.setKeycode(room.getKeycode() ^ FLAG_TOPIC);
-				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "-" + params[1][i], params[2]));
+				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "-" + params[1][i], ""));
 			}
 			else if (params[1][i] == 'n')
 			{
 				room.setKeycode(room.getKeycode() ^ FLAG_NOOUTSIDE);
-				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "-" + params[1][i], params[2]));
+				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "-" + params[1][i], ""));
 			}
 			else if (params[1][i] == 'l')
 			{
 				room.setKeycode(room.getKeycode() ^ FLAG_LIMIT);
 				room.setChanelLimit(0);
-				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "-" + params[1][i], params[2]));
+				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "-" + params[1][i], ""));
 			}
 			else if (params[1][i] == 'k')
 			{
 				room.setKeycode(room.getKeycode() ^ FLAG_KEY);
 				room.setKey("");
-				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "-" + params[1][i], params[2]));
+				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "-" + params[1][i], ""));
 			}
 			else
 			{
