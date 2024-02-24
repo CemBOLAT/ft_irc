@@ -34,3 +34,5 @@ https://chat.openai.com/share/b561ee12-e0db-4e9f-9a56-890daf9d8edd
 https://chat.openai.com/share/24f69f0e-dd89-42e4-8c0c-c51ff80841eb
 
 https://miro.com/app/board/uXjVNzGHGCU=/?share_link_id=513070917525
+
+https://excalidraw.com/#json=uYRVrm2iMmMZydkDVoxSz,TZQBg51MPZ9XUc5ExmM_Uw
