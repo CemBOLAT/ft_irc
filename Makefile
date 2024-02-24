@@ -14,7 +14,7 @@ INC := -I$(INC_DIR)
 
 # Derleyici ve Derleme Seçenekleri
 CC := c++
-CFLAGS := -std=c++98 -g #-Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror -std=c++98 -g
 
 # Hedefler
 all: $(NAME)

@@ -214,7 +214,7 @@ void Server::modeChannel(VECT_STR &params, Client &client)
 					Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getUserByHexChat(), "MODE"));
 					return;
 				}
-				else if (atoi(params[2].c_str()) < 0 && atoi(params[2].c_str()) < room.getClients().size())
+				else if (atoi(params[2].c_str()) < 0 && Utils::ft_atoi(params[2].c_str()) < room.getClients().size())
 				{
 					Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), "+l"));
 					return;

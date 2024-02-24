@@ -9,19 +9,6 @@
 #include <vector>
 #include "Define.hpp"
 
-namespace
-{
-	int getClientPosInRoom(Room &room, const Client &client)
-	{
-		for (size_t i = 0; i < room.getClients().size(); i++)
-		{
-			if (client.getNick() == room.getClients()[i].getNick())
-				return i;
-		}
-		return -1;
-	}
-}
-
 // op channel user
 
 #define ERR_ALREADYOPERATOR(nick, channel) (string(":") + "IRC" + " 482 " + nick + " " + channel + " :You're already an operator\r\n")

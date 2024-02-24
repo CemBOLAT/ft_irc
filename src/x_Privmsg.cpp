@@ -80,16 +80,6 @@ namespace
         	return 0;
         }
 
-        int isNickExist(C_STR_REF s, C_VECT_CLI_R clients, int fd)
-        {
-                for (VECT_ITER_CONST_CLI it = clients.begin(); it != clients.end(); ++it)
-                {
-                        if (s == it->getNick() && it->getFd() != fd)
-                                return 1;
-                }
-                return 0;
-        }
-
 }
 
 void Server::privmsg(C_STR_REF input, Client &client) {

@@ -196,3 +196,20 @@ std::string	Utils::itoa(int n)
 	ss >> result;
 	return result;
 }
+
+size_t	Utils::ft_atoi(const std::string& str)
+{
+	size_t result = 0;
+	size_t i = 0;
+
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+		{
+			throw Exception("Invalid Port Conversion");
+		}
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
+	return (result);
+}

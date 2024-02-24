@@ -389,4 +389,8 @@ void	Server::initFunctions() {
 	this->_commands["op"] = &Server::op;
 	this->_commands["WHO"] = &Server::who;
 	this->_commands["who"] = &Server::who;
+	this->_commands["PING"] = &Server::ping;
+	this->_commands["ping"] = &Server::ping;
+	this->_commands["PONG"] = &Server::pong;
+	this->_commands["pong"] = &Server::pong;
 }
