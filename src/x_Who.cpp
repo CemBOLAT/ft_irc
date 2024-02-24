@@ -47,31 +47,78 @@
 
 */
 
-# define WHO_RPL(nick, channel, user, host, server, nickName, hops, realName) (std::string(":") + "IRC" + " 352 " + nick + " " + channel + " " + user + " " + host + " " + server + " " + nickName + " " + hops + " " + realName + " H :0 " + realName + "\r\n")
+/*
+>> 352 Guest15072 #de ~XXX 7015-8555-4d1c-b732-4d5.247.88.ip abCw H :0 realname
+>> 352 Guest15072 #de ~XXX 7015-8555-4d1c-b732-4d5.247.88.ip Guest15072 H@ :0 realname
+>> 315 Guest15072 #de :End of /WHO list.
+*/
 
-void Server::who(C_STR_REF command, Client &client) {
-        if (client.getIsRegistered() == false) {
-                Utils::instaWrite(client.getFd(), ERR_NOTREGISTERED(client.getNick()));
-                return;
+
+#define RPL_WHOREPLY(nick, channel, user, host, server, nickname, hopsin, realname) (std::string(":") + "IRC" + " 352 " + nick + " " + channel + " " + user + " " + host + " " + server + " " + nickname + " " + hopsin + " :0 " + realname + "\r\n")
+#define RPL_ENDOFWHO(nick, name) (std::string(":") + "IRC" + " 315 " + nick + " " + name + " :End of /WHO list.\r\n")
+
+void Server::who(C_STR_REF str, Client &cli) {
+    if (cli.getIsRegistered() == false){
+        Utils::instaWrite(cli.getFd(), ERR_NOTREGISTERED(cli.getUserByHexChat()));
+        return;
+    }
+    if (str.empty()){
+        Utils::instaWrite(cli.getFd(), ERR_NONICKNAMEGIVEN(cli.getNick()));
+        return;
+    }
+
+    std::string name = str;
+    std::string o;
+    std::string::size_type pos = str.find(' ');
+    if (pos != std::string::npos){
+        name = str.substr(0, pos);
+        o = str.substr(pos + 1);
+    }
+
+    if (name == "0"){
+        name = "";
+    }
+
+    if (o == "o"){
+        o = "o";
+    } else {
+        o = "";
+    }
+
+    std::vector<Client>::iterator it;
+    for (it = this->clients.begin(); it != this->clients.end(); it++) {
+        if (name[0] == '#' && isClientInRoom(*it, name)) {
+                Room    &room = getRoom(name);
+                if (room.isOperator(it->getNick())){
+                        Utils::instaWrite(cli.getFd(), RPL_WHOREPLY(cli.getNick(), name, it->getUserByHexChat(), it->_ip, "IRC", it->getNick(), "H@", it->getRealName()));
+                }
+                else {
+                        Utils::instaWrite(cli.getFd(), RPL_WHOREPLY(cli.getNick(), name, it->getUserByHexChat(), it->_ip, "IRC", it->getNick(), "H", it->getRealName()));
+                }
         }
-	//VECT_STR params = Utils::ft_split(command, " ");
-	//if (params.empty()) {
-	//	Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getNick(), "WHO"));
-	//	return;
-	//}
-	//bool channelFound = false;
-	//for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); ++it) {
-	//	if (it->getName() == params[0]) {
-	//		for (VECT_ITER_CLI cit = it->getClients().begin(); cit != it->getClients().end(); ++cit) {
-	//			std::string operatorSymbol = it->isOperator(*cit) ? "@" : "";
-	//			Utils::instaWrite(client.getFd(), RPL_WHOREPLY(client.getNick(), it->getName(), cit->getUserName(), cit->getHostName(), cit->getServerName(), cit->getNick(), "0", cit->getRealName()));
-	//			channelFound = true;
-	//		}
-	//		Utils::instaWrite(client.getFd(), ":IRC 315 " + client.getNick() + " " + it->getName() + " :End of /WHO list.\r\n");
-	//		return;
-	//	}
-	//}
-	//if (!channelFound) {
-	//	Utils::instaWrite(client.getFd(), ERR_NOSUCHCHANNEL(client.getNick(), params[0]));
-	//}
+        else if (it->getNick() == name) {
+                Utils::instaWrite(cli.getFd(), RPL_WHOREPLY(cli.getNick(), name, it->getUserByHexChat(), it->_ip, "IRC", it->getNick(), "H", it->getRealName()));
+        }
+    }
+
+    Utils::instaWrite(cli.getFd(), RPL_ENDOFWHO(cli.getNick(), name));
 }
+
+/*
+>> :IRC 352 DDD #de DDD!~omgay@127.0.0.1 127.0.0.1 IRC DDD 0 oagay H :0 oagay
+>> :IRC 352 DDD #de ooolgay!~omgay@127.0.0.1 127.0.0.1 IRC ooolgay 0 oagay H :0 oagay
+>> :IRC 315 DDD #de :End of /WHO list.
+*/
+
+/*
+ who abC2
+ :IRC 352 ooolgay * abC2!~omgay@127.0.0.1 127.0.0.1 IRC abC2 0 oagay H :0 oagay
+ :IRC 315 ooolgay abC2 :End of /WHO list.
+*/
+
+
+/*
+>> 352 Guest15072 #de ~XXX 7015-8555-4d1c-b732-4d5.247.88.ip abCw H :0 realname
+>> 352 Guest15072 #de ~XXX 7015-8555-4d1c-b732-4d5.247.88.ip Guest15072 H@ :0 realname
+>> 315 Guest15072 #de :End of /WHO list.
+*/
