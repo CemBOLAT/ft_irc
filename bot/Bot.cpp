@@ -83,7 +83,7 @@ namespace {
         anthem.push_back("Sönmeden yurdumun üstünde tüten en son ocak.");
         anthem.push_back("O benim milletimin yıldızıdır, parlayacak;");
         anthem.push_back("O benimdir, o benim milletimindir ancak!");
-		
+
         anthem.push_back("Çatma, kurban olayım çehreni ey nazlı hilâl;");
         anthem.push_back("Kahraman ırkıma bir gül... ne bu şiddet bu celâl?...");
 
@@ -100,7 +100,7 @@ void	Bot::run(){
 		FD_SET(this->_socket, &readfds);
 		struct timeval timeout; // Set timeout because select is blocking and we want to check if the socket is ready to read
 		timeout.tv_sec = 0;
-		timeout.tv_usec = 100000;
+		timeout.tv_usec = 1000; // 10 microseconds
 
 		int ret = select(this->_socket + 1, &readfds, NULL, NULL, &timeout);
 

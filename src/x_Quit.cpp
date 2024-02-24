@@ -51,6 +51,7 @@ void Server::quit(C_STR_REF params, Client &client) {
         message = "Client has quited";
     }
     if (params[0] == ':') {
+        std::cout << "342" << std::endl;
         message = params.substr(1);
     }
     // Tüm kanallardan istemciyi çıkar
@@ -61,18 +62,18 @@ void Server::quit(C_STR_REF params, Client &client) {
                 TextEngine::magenta("Room " + it->getName() + " has been deleted", TextEngine::printTime(std::cout)) << std::endl;
                 it->removeClient(client.getFd());
                 this->channels.erase(it);
-                it = this->channels.begin();
+                --it;
             }
             else if (it->isOperator(client)){
                 it->removeClient(client.getFd());
                 it->removeOperator(client);
+                Utils::instaWriteAll(it->getClients(), RPL_QUIT(client.getUserByHexChat(), message));
                 responseAllClientResponseToGui(client, *it);
-                Utils::instaWriteAll(it->getClients(), RPL_QUIT(client.getUserByHexChat(),it->getName(), message));
             }
             else {
                 it->removeClient(client.getFd());
+                Utils::instaWriteAll(it->getClients(), RPL_QUIT(client.getUserByHexChat(), message));
                 responseAllClientResponseToGui(client, *it);
-                Utils::instaWriteAll(it->getClients(), RPL_QUIT(client.getUserByHexChat(), it->getName() ,message));
             }
         }
     }
@@ -88,16 +89,11 @@ void Server::quit(C_STR_REF params, Client &client) {
     // İstemciyi kapat
     close(client.getFd());
 
-    // İstemciyi sunucudan tamamen kaldır
-    for (VECT_ITER_CLI it2 = this->clients.begin(); it2 != this->clients.end(); ++it2) {
-        if (it2->getFd() == client.getFd()) {
-            this->clients.erase(it2);
-            break;
-        }
-    }
-
     // İstemcinin çıkışını logla
-    TextEngine::blue("Client ", TextEngine::printTime(cout)) << client._ip << ":" << client.getPort()<< " " <<client.getNick() << " quited !" << std::endl;
+    TextEngine::blue("Client ", TextEngine::printTime(cout)) << client._ip << ":" << client.getPort()<< " " << client.getNick() << " quited !" << std::endl;
+
+    // İstemciyi sunucudan tamamen kaldır
+    removeClient(client.getFd());
 }
 
 

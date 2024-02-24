@@ -21,7 +21,7 @@
 
 /*
 	4.2.3 Mode message
-	
+
 	Command: MODE
 
 	The MODE command is a dual-purpose command in IRC.  It allows both
@@ -116,21 +116,6 @@
 
 	MODE &oulu +b *!*@*.edu     ; prevent any user from a hostname
 	                            matching *.edu from joining.
-
-	        Use of user Modes:
-
-	:MODE WiZ -w                ; turns reception of WALLOPS messages
-	                            off for WiZ.
-
-	:Angel MODE Angel +i        ; Message from Angel to make themselves
-	                            invisible.
-
-	MODE WiZ -o                 ; WiZ 'deopping' (removing operator
-	                            status).  The plain reverse of this
-	                            command ("MODE WiZ +o") must not be
-	                            allowed from users since would bypass
-	                            the OPER command.
-
 */
 
 namespace {
@@ -165,8 +150,9 @@ void Server::modeChannel(VECT_STR &params, Client &client)
 	}
 	Room &room = getRoom(params[0]);
 	if (params.size() == 1){
-		client.getmesagesFromServer().push_back(RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room))); // maybe Changeable
-		FD_SET(client.getFd(), &writefds);
+		Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room))); // maybe Changeable
+		//client.getmesagesFromServer().push_back(RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room))); // maybe Changeable
+		//FD_SET(client.getFd(), &writefds);
 		return;
 	}
 	if (isClientInRoom(room, client) == false){
@@ -180,7 +166,7 @@ void Server::modeChannel(VECT_STR &params, Client &client)
 	if (params.size() > 3)
 	{
 		Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), params[1]));
-		return;	
+		return;
 	}
 	if (params[1][0] == '+'){
 		for (size_t i = 1; i < params[1].size(); i++)

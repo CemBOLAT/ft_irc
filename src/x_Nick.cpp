@@ -44,16 +44,17 @@ void Server::nick(C_STR_REF params, Client &client)
 		Utils::instaWrite(client.getFd(), ERR_NOTPASSWORDED(client.getUserByHexChat()));
 		return;
 	}
-	string nicks, hopcount;
+	string nicks;
 	vector<string> tokens = Utils::ft_split(params, " ");
 	if (tokens.size() < 1)
 	{
 		Utils::instaWrite(client.getFd(), ERR_NONICKNAMEGIVEN(client.getUserByHexChat()));
 		return;
 	}
-	else if (tokens.size() > 1)
+	else if (tokens.size() > 1 || tokens[0].size() > 9)
 	{
-		hopcount = tokens[1];
+		Utils::instaWrite(client.getFd(), ERR_ERRONEUSNICKNAME(client.getUserByHexChat(), tokens[0]));
+		return;
 	}
 	nicks = tokens[0];
 	if (nicks[0] == '#')
@@ -79,7 +80,8 @@ void Server::nick(C_STR_REF params, Client &client)
 			if (oldNick == cit->getNick())
 			{
 				cit->setNick(nicks);
-				responseAllClientResponseToGui(*cit, *it); // bu böyle mi olmalı hmm...
+				Utils::instaWriteAll(it->getClients(), RPL_NICK(oldNick, client.getUserName(), client._ip, nicks));
+				//responseAllClientResponseToGui(*cit, *it); // bu böyle mi olmalı hmm...
 				break;
 			}
 		}

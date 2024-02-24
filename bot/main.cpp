@@ -32,8 +32,6 @@ int main(int ac, char **av)
 		signal(SIGTERM, signalHandler);
 		signal(SIGINT, signalHandler);
 		bot->run();
-		//Bot	bot(av[1], av[2]);
-		//bot.run();
 	} catch (Exception &e) {
 		TextEngine::red(e.what(), cout) << endl;
 	}

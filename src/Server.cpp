@@ -80,7 +80,7 @@ Server::~Server()
 
 void Server::run()
 {
-	socklen_t templen = sizeof(sockaddr_in); 
+	socklen_t templen = sizeof(sockaddr_in);
  	bool isReadyToSelect = true;
 	int bytesRead = 0;
 
@@ -111,8 +111,8 @@ void Server::run()
 			}
 			if (fcntl(newSocket, F_SETFL, O_NONBLOCK) < 0) // non-blocking socket yapar
 				throw Exception("Fcntl failed on Client");
-			int port = ntohs(clientAddress.sin_port); 
-			Client newClient(newSocket, port); 
+			int port = ntohs(clientAddress.sin_port);
+			Client newClient(newSocket, port);
 			char	*ip = inet_ntoa(clientAddress.sin_addr);
 			strcpy(newClient._ip, ip);
 			clients.push_back(newClient);
@@ -216,7 +216,7 @@ void Server::runCommand(C_STR_REF command, Client &client)
 		}
 		else
 		{
-			Utils::instaWrite(client.getFd(), ERR_UNKNOWNCOMMAND(splitFirst[0]));
+			Utils::instaWrite(client.getFd(), ERR_UNKNOWNCOMMAND(client.getUserByHexChat(),splitFirst[0]));
 		}
 	}
 }
@@ -387,7 +387,6 @@ void	Server::initFunctions() {
 	this->_commands["invite"] = &Server::invite;
 	this->_commands["OP"] = &Server::op;
 	this->_commands["op"] = &Server::op;
-	//this->_commands["WHO"] = &Server::who;
-	//this->_commands["PING"] = &Server::ping;
-	//this->_commands["PONG"] = &Server::pong;
+	this->_commands["WHO"] = &Server::who;
+	this->_commands["who"] = &Server::who;
 }

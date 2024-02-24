@@ -46,7 +46,6 @@ public:
 	void cap(C_STR_REF params, Client &client);
 	void pass(C_STR_REF param, Client &client);
 	void away(C_STR_REF param, Client &client);
-	void ison(C_STR_REF param, Client &client);
 	void invite(C_STR_REF input, Client &client);
 	bool isClient(C_STR_REF nickname);
 

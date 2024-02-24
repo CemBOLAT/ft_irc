@@ -15,7 +15,7 @@
 #define ERR_NOTEXTTOSEND(source) ": 412 " + source + " :No text to send" + "\r\n"
 #define ERR_NOTOPLEVEL(mask) ": 413 " + mask + " :No toplevel domain specified" + "\r\n"
 #define ERR_WILDTOPLEVEL(mask) ": 414 " + mask + " :Wildcard in toplevel domain" + "\r\n"
-#define ERR_UNKNOWNCOMMAND(command) ": 421 " + command + " :Unknown command" + "\r\n"
+#define ERR_UNKNOWNCOMMAND(source, command) ": 421 " + source + " " + command + " :Unknown command" + "\r\n"
 #define ERR_NOMOTD ": 422 :MOTD File is missing" + "\r\n"
 #define ERR_NOADMININFO(server) ": 423 " + server + " :No administrative info available" + "\r\n"
 #define ERR_FILEERROR(file, fileop) ": 424 :File error doing " + fileop + " on " + file + "\r\n"

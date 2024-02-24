@@ -80,6 +80,8 @@ using namespace std;
 #define FLAG_NOOUTSIDE 8
 #define FLAG_LIMIT 16
 
+#define ERR_ALREADYJOINED(source, channel) ": 443 " + source + " " + channel + " :You are already in that channel\n\r"
+
 void Server::join(C_STR_REF params, Client &client)
 {
         if (client.getIsRegistered() == false){
@@ -100,7 +102,8 @@ void Server::join(C_STR_REF params, Client &client)
         }
         if (isRoom(roomName)){
                 if (getRoom(roomName).isClientInChannel(client.getFd())){
-                        Utils::instaWrite(client.getFd(), ERR_TOOMANYCHANNELS(client.getUserByHexChat(), roomName)); // my own implement
+                        Utils::instaWrite(client.getFd(), ERR_ALREADYJOINED(client.getUserByHexChat(), roomName));
+                        //Utils::instaWrite(client.getFd(), ERR_TOOMANYCHANNELS(client.getUserByHexChat(), roomName)); // my own implement
                         return;
                 }
                 Room &room = getRoom(roomName);
