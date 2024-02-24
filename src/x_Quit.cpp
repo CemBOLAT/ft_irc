@@ -51,7 +51,6 @@ void Server::quit(C_STR_REF params, Client &client) {
         message = "Client has quited";
     }
     if (params[0] == ':') {
-        std::cout << "342" << std::endl;
         message = params.substr(1);
     }
     // Tüm kanallardan istemciyi çıkar
