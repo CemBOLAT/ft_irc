@@ -66,7 +66,7 @@ void	Server::whois(C_STR_REF str, Client &cli){ // garip şekilde yolluyor evde 
                                                 Utils::instaWrite(cli.getFd(), RPL_WHOISCHANNELS(cli.getNick(), clients[j].getNick(), channels[k].getName()));
                                 }
                                 Utils::instaWrite(cli.getFd(), RPL_ENDOFWHOIS(cli.getNick(), clients[j].getNick()));
-                                return; // değişecek dikkat et
+                                return;
                         }
                 }
         }

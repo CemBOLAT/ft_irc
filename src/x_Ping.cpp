@@ -67,7 +67,6 @@ void Server::ping(C_STR_REF params, Client& client) {
     std::string targetNick = split[1];
     std::string timestamp = "";
     if (split.size() > 2) {
-        // Extract timestamp from the parameters
         timestamp = split[2];
     }
     

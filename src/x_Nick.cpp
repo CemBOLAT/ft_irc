@@ -81,7 +81,7 @@ void Server::nick(C_STR_REF params, Client &client)
 			{
 				cit->setNick(nicks);
 				Utils::instaWriteAll(it->getClients(), RPL_NICK(oldNick, client.getUserName(), client._ip, nicks));
-				responseAllClientResponseToGui(*cit, *it); // bu böyle mi olmalı hmm...
+				responseAllClientResponseToGui(*cit, *it);
 				break;
 			}
 		}
@@ -93,45 +93,3 @@ void Server::nick(C_STR_REF params, Client &client)
 		TextEngine::magenta("User " + client.getNick() + " has been registered", TextEngine::printTime(std::cout)) << std::endl;
 	}
 }
-
-// void Server::nicks(C_STR_REF params, Client &client, fd_set &writefdd)
-// {
-// 	//if (params.empty())
-// 	//{
-// 	//	Utils::instaWrite(client.getFd(), ERR_NICKNAMEEMPTY(client.getUserByHexChat()));
-// 	//}
-// 	//else if (isNickExist(params, getClients(), client.getFd()))
-// 	//{
-// 	//	Utils::instaWrite(client.getFd(), ERR_NICKNAMEINUSE(client.getUserByHexChat()));
-// 	//}
-// 	//else if (params[0] == '#'){
-// 	//	Utils::instaWrite(client.getFd(), ERR_ERRONEUSNICKNAME(client.getUserByHexChat()));
-// 	//}
-// 	//else
-// 	//{
-// 	//	string oldNick = client.getNick();
-// 	//	if (!client.getNick().empty())
-// 	//		TextEngine::magenta("User " + client.getNick() + " has been changed his nicks to " + params , TextEngine::printTime(std::cout)) << std::endl;
-// 	//	client.setNick(params); // set new nicks if not exist
-// 	//	client.getmesagesFromServer().push_back(RPL_NICK(oldNick, client.getUserName(), client._ip, params));
-// 	//	FD_SET(client.getFd(), &writefdd);
-// 	//	for (VECT_ITER_CHA it = channels.begin(); it != channels.end(); ++it)
-// 	//	{
-// 	//		for (VECT_ITER_CLI cit = it->getClients().begin(); cit != it->getClients().end(); ++cit)
-// 	//		{
-// 	//			if (oldNick == cit->getNick())
-// 	//			{
-// 	//				cit->setNick(params);
-// 	//				responseAllClientResponseToGui(*cit, *it); // response to all client in room
-// 	//				break;
-// 	//			}
-// 	//		}
-// 	//	}
-// 	//	if (client.getIsRegistered() == false && !client.getUserName().empty() && !client.getRealName().empty())
-// 	//	{
-// 	//		client.setRegistered(true);
-// 	//		Utils::instaWrite(client.getFd(), ": 001 " + client.getNick() + " :Welcome to the Internet Relay Network " + client.getNick() + "!" + client.getUserName() + "@" + client.getRealName() + "\r\n");
-// 	//		TextEngine::magenta("User " + client.getNick() + " has been registered", TextEngine::printTime(std::cout)) << std::endl;
-// 	//	}
-// 	//}
-// }

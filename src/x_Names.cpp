@@ -41,7 +41,7 @@
     NAMES                           ; list all visible channels and users
 */
 
-void    Server::names(C_STR_REF params, Client &fd){ // names otomatik aa yolluyor servera ? (saçma şekilde kendi sunucu adını yazıyor benim localhost yazdığım.)
+void    Server::names(C_STR_REF params, Client &fd){
     if (fd.getIsRegistered() == false){
         Utils::instaWrite(fd.getFd(), ERR_NOTREGISTERED(fd.getNick()));
         return;
@@ -53,7 +53,6 @@ void    Server::names(C_STR_REF params, Client &fd){ // names otomatik aa yolluy
         }
         Utils::instaWrite(fd.getFd(), RPL_NAMREPLY(fd.getNick(), "*", userSTR));
         Utils::instaWrite(fd.getFd(), RPL_ENDOFNAMES(fd.getNick(), "*"));
-        // kanallar içi ayrı rpl yok ve user yazdığı için mantıksız
     }
     else{
         VECT_STR splitted = Utils::ft_split(params, ",");

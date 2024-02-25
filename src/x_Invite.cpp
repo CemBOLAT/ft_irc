@@ -104,11 +104,3 @@ void    Server::invite(C_STR_REF input, Client &client)
         Utils::instaWrite(client.getFd(), RPL_INVITING(client.getUserByHexChat(),nickname,channel));
         room.addInvite(target);
 }
-
-/*
-3>> :cemal2!~cemalBO@b625-b781-848f-ec7a-14d.227.88.ip INVITE cemal_ :#de (çağrılan)
-
-
-3>> :atw.hu.eu.dal.net 341 cemal2 cemal_ #de (veren)
-3>> :sakura.jp.as.dal.net NOTICE @#de :cemal2 invited cemal_ into channel #de (veren)
-*/
