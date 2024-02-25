@@ -160,7 +160,7 @@ std::string	Utils::ft_join(C_VECT_STR_R vec, C_STR_REF delim, int start)
 
 int	Utils::getMaxFd(C_VECT_CLI_R vec,int server){
 	if (vec.size() == 0){
-		return (server); // maybe wrong
+		return (server);
 	}
 	int		max = vec[0].getFd();
 	for (vector<Client>::const_iterator it = vec.begin(); it != vec.end(); ++it){

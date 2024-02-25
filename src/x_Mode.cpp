@@ -146,8 +146,7 @@ void Server::modeChannel(VECT_STR &params, Client &client)
 	}
 	Room &room = getRoom(params[0]);
 	if (params.size() == 1){
-		//Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room))); // maybe Changeable
-		client.getmesagesFromServer().push_back(RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room))); // maybe Changeable
+		client.getmesagesFromServer().push_back(RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room)));
 		FD_SET(client.getFd(), &writefds);
 		return;
 	}
@@ -212,7 +211,7 @@ void Server::modeChannel(VECT_STR &params, Client &client)
 				}
 				else if (atoi(params[2].c_str()) < 0 || atoi(params[2].c_str()) < static_cast<int>(room.getClients().size()))
 				{
-					Utils::instaWrite(client.getFd(), ERR_BADLIMIT(client.getUserByHexChat(), params[2])); // maybe Changeable
+					Utils::instaWrite(client.getFd(), ERR_BADLIMIT(client.getUserByHexChat(), params[2]));
 					return;
 				}
 				room.setKeycode(room.getKeycode() | FLAG_LIMIT);

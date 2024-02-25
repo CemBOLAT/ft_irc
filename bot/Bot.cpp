@@ -106,7 +106,7 @@ void	Bot::run(){
 		FD_ZERO(&readfds);
 		FD_SET(this->_socket, &readfds);
 		struct timeval timeout; // Set timeout because select is blocking and we want to check if the socket is ready to read
-		timeout.tv_sec = 100;
+		timeout.tv_sec = 42;
 		timeout.tv_usec = 0; // 10 microseconds
 
 		int ret = select(this->_socket + 1, &readfds, NULL, NULL, &timeout);
@@ -123,7 +123,7 @@ void	Bot::run(){
 				throw Exception("Read failed");
 			}
 			else if (bytesRead == 0){
-				continue;
+				break;
 			}
 			else {
 				_buffer[bytesRead] = '\0';
