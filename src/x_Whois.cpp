@@ -72,8 +72,3 @@ void	Server::whois(C_STR_REF str, Client &cli){ // garip şekilde yolluyor evde 
         }
 
 }
-
-/*
-:choopa.nj.us.dal.net 311 cemal2 cemal_ ~cemalBO 8ff-79be-2b40-4e12-9e4d.10.95.ip * :realname
-:choopa.nj.us.dal.net 319 cemal2 cemal_ :@#31 
-*/

@@ -41,10 +41,6 @@ Bot::Bot(C_STR_REF port, C_STR_REF password) : _port(0), _password(password)
 void Bot::initSocket()
 {
 	this->_socket = socket(AF_INET, SOCK_STREAM, 0); // Create socket 0 for macos and IPPROTO_IP for linux
-	// AF_INE IPV4
-	// SOCK_STREAM TCP //SOCK_DGRAM UDP
-	// TCP: Transmission Control Protocol : Veri paketlerinin karşı tarafa ulaşmasını garanti eder. Yavaştır.
-	// UDP: User Datagram Protocol : Veri paketlerinin karşı tarafa ulaşmasını garanti etmez. Hızlıdır.
 	if (_socket < 0)
 	{
 		throw Exception("Socket creation failed");
@@ -53,17 +49,11 @@ void Bot::initSocket()
 	{
 		TextEngine::green("Socket created successfully", cout) << std::endl;
 	}
-	memset(&_bot_addr, 0, sizeof(_bot_addr));	   // Zeroing address
-	_bot_addr.sin_family = AF_INET;			   // IPv4
-	_bot_addr.sin_addr.s_addr = INADDR_ANY;	   // TCP
-	_bot_addr.sin_port = htons(this->_port);	   // ENDIANNESS
-
-	// Big Endinian : 1 2 3 4 5
-	// Little Endian : 5 4 3 2 1
-
-	// htons: Host to network short
-	// bind socket to port
-	if (connect(this->_socket, (struct sockaddr *)&_bot_addr, sizeof(_bot_addr)) < 0) //sockete baglanma
+	memset(&_bot_addr, 0, sizeof(_bot_addr));
+	_bot_addr.sin_family = AF_INET;			 
+	_bot_addr.sin_addr.s_addr = INADDR_ANY;	 
+	_bot_addr.sin_port = htons(this->_port);
+	if (connect(this->_socket, (struct sockaddr *)&_bot_addr, sizeof(_bot_addr)) < 0)
 	{
 		throw Exception("Connection failed");
 	}
@@ -71,7 +61,7 @@ void Bot::initSocket()
 	{
 		TextEngine::green("Connection established", cout) << std::endl;
 	}
-	if (fcntl(this->_socket, F_SETFL, O_NONBLOCK) < 0) // soketin bloklanmaması için kullanılır
+	if (fcntl(this->_socket, F_SETFL, O_NONBLOCK) < 0)
 	{
 		throw Exception("Socket fcntl failed on Bot");
 	}
@@ -105,9 +95,9 @@ void	Bot::run(){
 		fd_set	readfds;
 		FD_ZERO(&readfds);
 		FD_SET(this->_socket, &readfds);
-		struct timeval timeout; // Set timeout because select is blocking and we want to check if the socket is ready to read
+		struct timeval timeout;
 		timeout.tv_sec = 42;
-		timeout.tv_usec = 0; // 10 microseconds
+		timeout.tv_usec = 0;
 
 		int ret = select(this->_socket + 1, &readfds, NULL, NULL, &timeout);
 
@@ -144,4 +134,9 @@ void	Bot::run(){
 		}
 	}
 	close(this->_socket);
+}
+
+Bot::~Bot(){
+	if (this->_socket > 0)
+		close(this->_socket);
 }

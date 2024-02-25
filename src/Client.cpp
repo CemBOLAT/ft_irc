@@ -117,9 +117,13 @@ void Client::setServerName(C_STR_REF serverName) {
 	_serverName = serverName;
 }
 
-Client::~Client() { /* value sementics so no need to delete anything */ }
+Client::~Client() { /* value sementics so no need to delete anything (select error) */ }
 
 string Client::getUserByHexChat() const {
 	std::string strIP = this->_ip;
 	return this->_nick + (this->_userName.empty() ? "" : "!~" + this->_userName) + (strIP.empty() ? "" : "@" + strIP);
+}
+
+bool	Client::operator==(const Client &rhs) const {
+	return (rhs.getFd() == this->getFd());
 }

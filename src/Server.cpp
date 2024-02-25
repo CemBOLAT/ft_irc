@@ -96,20 +96,20 @@ void Server::run()
 		{
 			readFdsCopy = readfds;
 			writeFdsCopy = writefds;
-			if (select(Utils::getMaxFd(clients, this->_socket) + 1, &readFdsCopy, &writeFdsCopy, NULL, 0) < 0) //soketlerdeki değişiklikleri takip eder
+			if (select(Utils::getMaxFd(clients, this->_socket) + 1, &readFdsCopy, &writeFdsCopy, NULL, 0) < 0)
 			{
 				throw Exception("Select failed");
 			}
 			isReadyToSelect = false;
 		}
-		if (FD_ISSET(this->_socket, &this->readFdsCopy)) // yeni bir bağlantı var mı kontrol eder
+		if (FD_ISSET(this->_socket, &this->readFdsCopy))
 		{
-			int newSocket = accept(this->_socket, (sockaddr *)&clientAddress, &templen); // yeni bir bağlantı varsa kabul eder
+			int newSocket = accept(this->_socket, (sockaddr *)&clientAddress, &templen);
 			if (newSocket < 0)
 			{
 				throw Exception("Accept failed");
 			}
-			if (fcntl(newSocket, F_SETFL, O_NONBLOCK) < 0) // non-blocking socket yapar
+			if (fcntl(newSocket, F_SETFL, O_NONBLOCK) < 0)
 				throw Exception("Fcntl failed on Client");
 			int port = ntohs(clientAddress.sin_port);
 			Client newClient(newSocket, port);
@@ -221,27 +221,6 @@ void Server::runCommand(C_STR_REF command, Client &client)
 		else
 		{
 			Utils::instaWrite(client.getFd(), ERR_UNKNOWNCOMMAND(client.getUserByHexChat(),splitFirst[0]));
-		}
-	}
-}
-
-void Server::hexChatEntry(VECT_STR &params, Client &client)
-{
-	if (params[0] != "CAP" && params.size() != 1)
-	{
-		if (client.getIsPassworded() == false)
-		{
-			FD_CLR(client.getFd(), &readfds);
-			FD_CLR(client.getFd(), &writefds);
-			std::cout << "Invalid password" << std::endl;
-			close(client.getFd());
-			TextEngine::red("Client ", TextEngine::printTime(cout)) << client._ip << ":" << client.getPort() << " disconnected" << std::endl;
-			for (VECT_ITER_CLI it = clients.begin(); it != clients.end(); ++it){
-				if (it->getFd() == client.getFd()){
-					clients.erase(it);
-					break;
-				}
-			}
 		}
 	}
 }
@@ -395,6 +374,6 @@ void	Server::initFunctions() {
 	this->_commands["who"] = &Server::who;
 	this->_commands["PING"] = &Server::ping;
 	this->_commands["ping"] = &Server::ping;
-	this->_commands["PONG"] = &Server::pong;
-	this->_commands["pong"] = &Server::pong;
+	this->_commands["away"] = &Server::away;
+	this->_commands["AWAY"] = &Server::away;
 }

@@ -96,3 +96,32 @@ bool Room::isOperator(C_STR_REF nick) const
 	}
 	return false;
 }
+
+void	Room::removeOperator(const Client &client)
+{
+	for (vector<Client>::iterator it = _operatorVector.begin(); it != _operatorVector.end(); it++) {
+		if (it->getNick() == client.getNick()) {
+			_operatorVector.erase(it);
+			break;
+		}
+	}
+}
+
+void			Room::removeInvite(const Client &client) {
+	for (vector<Client>::iterator it = _inviteVector.begin(); it != _inviteVector.end(); it++) {
+		if (it->getNick() == client.getNick()) {
+			_inviteVector.erase(it);
+			break;
+		}
+	}
+}
+
+bool			Room::isInvite(const Client &client) const{
+	for (vector<Client>::const_iterator it = _inviteVector.begin(); it != _inviteVector.end(); it++) {
+		if (it->getNick() == client.getNick()) {
+			return true;
+		}
+	}
+	return false;
+
+}

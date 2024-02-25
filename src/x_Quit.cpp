@@ -53,7 +53,6 @@ void Server::quit(C_STR_REF params, Client &client) {
     if (params[0] == ':') {
         message = params.substr(1);
     }
-    // Tüm kanallardan istemciyi çıkar
     for (VECT_ITER_CHA it = this->channels.begin(); it != this->channels.end(); it++) {
         if (it->isClientInChannel(client.getFd())) {
             if (it->getClients().size() == 1)
@@ -77,7 +76,6 @@ void Server::quit(C_STR_REF params, Client &client) {
         }
     }
 
-    // İlgili istemci dosya tanımlayıcısını takip eden bağlantı kümesinden çıkar
     if (FD_ISSET(client.getFd(), &writefds)) {
         FD_CLR(client.getFd(), &writefds);
     }
@@ -85,68 +83,9 @@ void Server::quit(C_STR_REF params, Client &client) {
         FD_CLR(client.getFd(), &readfds);
     }
 
-    // İstemciyi kapat
     close(client.getFd());
 
-    // İstemcinin çıkışını logla
     TextEngine::blue("Client ", TextEngine::printTime(cout)) << client._ip << ":" << client.getPort()<< " " << client.getNick() << " quited !" << std::endl;
 
-    // İstemciyi sunucudan tamamen kaldır
     removeClient(client.getFd());
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-// void Server::quit(Client& client) {
-// 	VECT_ITER_CHA it = this->channels.begin();
-// 	for (; it != this->channels.end(); ++it) {
-// 		if (it->isClientInChannel(client.getFd())) {
-// 			if (it->getClients().size() == 1) // delete room.
-// 			{
-// 				TextEngine::magenta("Room " + it->getName() + " has been deleted", TextEngine::printTime(std::cout)) << std::endl;
-// 				channels.erase(it);
-// 				--it;
-// 			}
-// 			else if (client.getFd() == it->getOperator().getFd()){
-// 				it->removeClient(client.getFd());
-// 				it->setOperator(it->getClients()[0]);
-// 				responseAllClientResponseToGui(client, *it);
-// 			}
-// 			else {
-// 				it->removeClient(client.getFd());
-// 				responseAllClientResponseToGui(client, *it);
-// 			}
-// 		}
-// 	}
-// 	if (FD_ISSET(client.getFd(), &writefds)) {
-// 		FD_CLR(client.getFd(), &writefds);
-// 	}
-// 	if (FD_ISSET(client.getFd(), &readfds)) {
-// 		FD_CLR(client.getFd(), &readfds);
-// 	}
-// 	close(client.getFd());
-// 	VECT_ITER_CLI it3 = this->clients.begin();
-// 	for (; it3 != this->clients.end(); ++it3) {
-// 		if (it3->getFd() != client.getFd()) {
-// 			Utils::instaWrite(it3->getFd(), RPL_QUIT(it3->getNick(), client.getNick()));
-// 		}
-// 	}
-// 	VECT_ITER_CLI it2 = this->clients.begin();
-// 	for (; it2 != this->clients.end(); ++it2) {
-// 		if (it2->getFd() == client.getFd()) {
-// 			this->clients.erase(it2);
-// 			break;
-// 		}
-// 	}
-// 	TextEngine::blue("Client ", TextEngine::printTime(cout)) << client._ip << ":" << client.getPort() << " quited !" << std::endl;
-// }

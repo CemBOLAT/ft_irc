@@ -36,7 +36,6 @@
 #define RPL_PASS(source, nick) (string(":") + source + " 001 " + " :Password accepted\r\n")
 
 void Server::pass(C_STR_REF params, Client &client){
-	//std::cout << "#" << params << "#" << std::endl;
 	if (params.empty()){
 		Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getUserByHexChat(), "PASS"));
 	}

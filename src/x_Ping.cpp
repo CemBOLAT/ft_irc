@@ -45,31 +45,32 @@
 
 */
 
+
 void Server::ping(C_STR_REF params, Client& client) {
-    if (params.empty()) {
+    if (client.getIsRegistered() == false)
+    {
+        Utils::instaWrite(client.getFd(), ERR_NOTREGISTERED(client.getUserByHexChat()));
+        return;
+    }
+    if (params.empty())
+    {
+        Utils::instaWrite(client.getFd(), ERR_NORECIPIENT(client.getUserByHexChat(), "PING"));
         return;
     }
     
     VECT_STR split = Utils::ft_split(params, " ");
     
-    if (split.size() < 2) {
-        // Invalid ping request
+    if (split.size() < 2){
         return;
     }
     
     std::string targetNick = split[1];
-    std::string timestamp;
+    std::string timestamp = "";
     if (split.size() > 2) {
         // Extract timestamp from the parameters
         timestamp = split[2];
     }
     
-    std::string response = "PONG " + targetNick;
-    
-    if (!timestamp.empty()) {
-        // If there's a timestamp, include it in the response
-        response += " :" + timestamp;
-    }
-    
-    Utils::instaWrite(client.getFd(), ":" + client.getUserByHexChat() + " " + response + "\r\n");
+
+    Utils::instaWrite(client.getFd(), RPL_PING(client.getUserByHexChat(), targetNick, timestamp));
 }

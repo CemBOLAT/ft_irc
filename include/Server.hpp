@@ -37,7 +37,6 @@ public:
 	void ping(C_STR_REF params, Client &client);
 	void quit(C_STR_REF params, Client &client);
 	void whois(C_STR_REF, Client &cli);
-	void pong(C_STR_REF params, Client &client);
 	void list(C_STR_REF params, Client &client);
 	void names(C_STR_REF params, Client &fd);
 	void notice(C_STR_REF input, Client &fd);
@@ -77,9 +76,7 @@ private:
 	void	initSocket();
 	void	initFunctions();
 	void	modeChannel(VECT_STR &params, Client &client);
-	//void	modeUser(VECT_STR &params, Client &client);
 	void	runCommand(C_STR_REF command, Client &client);
-	void	hexChatEntry(VECT_STR &, Client &);
 
 	int					port;
 	string				password;

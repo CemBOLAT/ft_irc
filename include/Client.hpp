@@ -49,9 +49,7 @@ public:
 	virtual			~Client();
 	char			_ip[INET_ADDRSTRLEN]; // 123.123.123.123 + \0
 
-	bool			operator==(const Client &rhs) const {
-		return (rhs.getFd() == this->getFd());
-	}
+	bool			operator==(const Client &rhs) const;
 private:
 	int				_type; // 1:hex 3:bot
 	int				_fd;

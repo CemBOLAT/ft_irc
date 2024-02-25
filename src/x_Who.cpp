@@ -9,8 +9,6 @@
 #include <vector>
 #include <sstream>
 
-//#define RPL_WHOREPLY(nick, channel, user, host, server, nickName, hops, realName) (std::string(":") + "IRC" + " 352 " + nick + " " + channel + " " + user + " " + host + " " + server + " " + nickName + " " + hops + " " + realName + " H :0 " + realName + "\r\n")
-
 /*
 4.5.1 Who query
 
@@ -45,12 +43,6 @@
    WHO jto* o                      ; List all users with a match against
                                    "jto*" if they are an operator.
 
-*/
-
-/*
->> 352 Guest15072 #de ~XXX 7015-8555-4d1c-b732-4d5.247.88.ip abCw H :0 realname
->> 352 Guest15072 #de ~XXX 7015-8555-4d1c-b732-4d5.247.88.ip Guest15072 H@ :0 realname
->> 315 Guest15072 #de :End of /WHO list.
 */
 
 
@@ -103,22 +95,3 @@ void Server::who(C_STR_REF str, Client &cli) {
 
     Utils::instaWrite(cli.getFd(), RPL_ENDOFWHO(cli.getNick(), name));
 }
-
-/*
->> :IRC 352 DDD #de DDD!~omgay@127.0.0.1 127.0.0.1 IRC DDD 0 oagay H :0 oagay
->> :IRC 352 DDD #de ooolgay!~omgay@127.0.0.1 127.0.0.1 IRC ooolgay 0 oagay H :0 oagay
->> :IRC 315 DDD #de :End of /WHO list.
-*/
-
-/*
- who abC2
- :IRC 352 ooolgay * abC2!~omgay@127.0.0.1 127.0.0.1 IRC abC2 0 oagay H :0 oagay
- :IRC 315 ooolgay abC2 :End of /WHO list.
-*/
-
-
-/*
->> 352 Guest15072 #de ~XXX 7015-8555-4d1c-b732-4d5.247.88.ip abCw H :0 realname
->> 352 Guest15072 #de ~XXX 7015-8555-4d1c-b732-4d5.247.88.ip Guest15072 H@ :0 realname
->> 315 Guest15072 #de :End of /WHO list.
-*/

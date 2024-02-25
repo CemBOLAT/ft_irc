@@ -113,8 +113,6 @@ void	Server::notice(C_STR_REF input, Client &client){
 							else
 							{
 								Utils::instaWrite(it->getFd(), RPL_NOTICE(client.getUserByHexChat(), receiver, message));
-								//(*it).getmesagesFromServer().push_back(RPL_NOTICE(client.getUserByHexChat(), receiver, message));
-								//FD_SET(it->getFd(), &writefds);
 							}
 		                }
                 }
@@ -131,8 +129,6 @@ void	Server::notice(C_STR_REF input, Client &client){
 								else
 								{
 									Utils::instaWrite(it->getFd(), RPL_NOTICE(client.getUserByHexChat(), receiver, message));
-									//(*it).getmesagesFromServer().push_back(RPL_NOTICE(client.getUserByHexChat(), receiver, message));
-									//FD_SET(it->getFd(), &writefds);
 								}
 		        	        }
                 	}
@@ -161,8 +157,6 @@ void	Server::notice(C_STR_REF input, Client &client){
 				else
 				{
 					Utils::instaWrite(it->getFd(), RPL_NOTICE(client.getUserByHexChat(), receiver, message));
-					//(*it).getmesagesFromServer().push_back(RPL_NOTICE(client.getUserByHexChat(), receiver, message));
-					//FD_SET(it->getFd(), &writefds);
 				}
 				return;
 			}

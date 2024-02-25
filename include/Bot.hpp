@@ -14,18 +14,16 @@
 class Bot {
 	public:
 		Bot(C_STR_REF port, C_STR_REF password);
-		~Bot() {
-			close(this->_socket);
-		}
+		~Bot();
 		void	run();
 		void	initSocket();
 
 	private:
-		std::string	_name;
-		int			_socket;
-		int			_port;
-		std::string	_password;
+		std::string			_name;
+		int					_socket;
+		int					_port;
+		std::string			_password;
 		struct sockaddr_in	_bot_addr;
-		char		_buffer[1024];
+		char				_buffer[1024];
 
 };

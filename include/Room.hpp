@@ -27,14 +27,7 @@ public:
 	bool 			isOperator(C_STR_REF nick) const;
 
 	void			addOperator(const Client &client) { _operatorVector.push_back(client); }
-	void			removeOperator(const Client &client) {
-		for (vector<Client>::iterator it = _operatorVector.begin(); it != _operatorVector.end(); it++) {
-			if (it->getNick() == client.getNick()) {
-				_operatorVector.erase(it);
-				break;
-			}
-		}
-	}
+	void			removeOperator(const Client &client);
 	void			setName(C_STR_REF name) { _name = name; }
 	void			setTopic(C_STR_REF topic) { _topic = topic; }
 	void			addClient(const Client &client) { _clients.push_back(client); }
@@ -48,23 +41,8 @@ public:
 	Client			&getClient(C_STR_REF nick);
 	bool			isOperator(const Client &client) const;
 	void			addInvite(const Client &client) { _inviteVector.push_back(client); }
-	void			removeInvite(const Client &client) {
-		for (vector<Client>::iterator it = _inviteVector.begin(); it != _inviteVector.end(); it++) {
-			if (it->getNick() == client.getNick()) {
-				_inviteVector.erase(it);
-				break;
-			}
-		}
-	}
-	bool			isInvite(const Client &client) const{
-		for (vector<Client>::const_iterator it = _inviteVector.begin(); it != _inviteVector.end(); it++) {
-			if (it->getNick() == client.getNick()) {
-				return true;
-			}
-		}
-		return false;
-	
-	}
+	void			removeInvite(const Client &client);
+	bool			isInvite(const Client &client) const;
 private:
 	vector<Client>	_clients; // bunun için pointer veya referans kullanılmalı
 	string			_name;
