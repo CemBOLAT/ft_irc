@@ -188,7 +188,7 @@ std::string	Utils::ft_getNick(const std::string& str)
 	return (str.substr(start, end - start));
 }
 
-std::string	Utils::itoa(int n)
+std::string	Utils::ft_itoa(int n)
 {
 	std::string result;
 	std::stringstream ss;

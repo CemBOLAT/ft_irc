@@ -11,7 +11,7 @@ Room::Room()
 	_operatorVector.reserve(256);
 }
 
-Room::~Room() {}
+Room::~Room() {/* value sementic comes with close errors (select)*/}
 Room::Room(const Room &other)
 {
 	*this = other;

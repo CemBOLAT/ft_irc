@@ -126,7 +126,7 @@ namespace {
 			mode += "n";
 		if (room.getKeycode() & FLAG_LIMIT){
 			mode += "l";
-			modeValue = Utils::itoa(room.getChanelLimit());
+			modeValue = Utils::ft_itoa(room.getChanelLimit());
 		}
 		if (room.getKeycode() & FLAG_KEY){
 			mode += "k";

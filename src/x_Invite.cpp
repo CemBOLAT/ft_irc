@@ -100,11 +100,6 @@ void    Server::invite(C_STR_REF input, Client &client)
                 return;
         }
         Client &target = getClientByNick(nickname);
-        if (target.getIsAway() == true)
-        {
-                Utils::instaWrite(client.getFd(), RPL_AWAY(client.getUserByHexChat(),nickname,target.getAwayMSG()));
-                return;
-        }
         Utils::instaWrite(target.getFd(), RPL_INVITE_TO_CLIENT(client.getUserByHexChat(),nickname,channel));
         Utils::instaWrite(client.getFd(), RPL_INVITING(client.getUserByHexChat(),nickname,channel));
         room.addInvite(target);

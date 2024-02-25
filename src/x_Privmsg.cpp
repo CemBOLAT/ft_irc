@@ -113,13 +113,7 @@ void Server::privmsg(C_STR_REF input, Client &client) {
                                 {
                                         if (it->getFd() != client.getFd())
                                         {
-                                                if (it->getIsAway())
-                                                {
-                                                        Utils::instaWrite(client.getFd(), RPL_AWAY(client.getUserByHexChat(), receiver, it->getAwayMSG()));
-                                                }
-                                                else {
-                                                        Utils::instaWrite(it->getFd(), RPL_PRIVMSG(client.getUserByHexChat(), receiver, message));
-                                                }
+                                                Utils::instaWrite(it->getFd(), RPL_PRIVMSG(client.getUserByHexChat(), receiver, message));
                                         }
                                 }
                         }
@@ -134,13 +128,7 @@ void Server::privmsg(C_STR_REF input, Client &client) {
                                         {
                                                 if (it->getFd() != client.getFd())
                                                 {
-                                                        if (it->getIsAway())
-                                                        {
-                                                                Utils::instaWrite(client.getFd(), RPL_AWAY(client.getUserByHexChat(), receiver, it->getAwayMSG()));
-                                                        }
-                                                        else {
-                                                                Utils::instaWrite(it->getFd(), RPL_PRIVMSG(client.getUserByHexChat(), receiver, message));
-                                                        }
+                                                        Utils::instaWrite(it->getFd(), RPL_PRIVMSG(client.getUserByHexChat(), receiver, message));
                                                 }
                                 }
                                 }
@@ -159,13 +147,10 @@ void Server::privmsg(C_STR_REF input, Client &client) {
                         if (it->getNick() == receiver)
                         {
                                 isExist = true;
-                                if (it->getIsAway())
-                                {
-                                        Utils::instaWrite(client.getFd(), RPL_AWAY(client.getUserByHexChat(), receiver, it->getAwayMSG()));
-                                }
-                                else {
-                                        Utils::instaWrite(it->getFd(), RPL_PRIVMSG(client.getUserByHexChat(), receiver, message));
-                                }
+
+                                
+                                Utils::instaWrite(it->getFd(), RPL_PRIVMSG(client.getUserByHexChat(), receiver, message));
+                                
                                 return;
                         }
                 }

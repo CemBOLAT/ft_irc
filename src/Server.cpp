@@ -374,6 +374,4 @@ void	Server::initFunctions() {
 	this->_commands["who"] = &Server::who;
 	this->_commands["PING"] = &Server::ping;
 	this->_commands["ping"] = &Server::ping;
-	this->_commands["away"] = &Server::away;
-	this->_commands["AWAY"] = &Server::away;
 }
