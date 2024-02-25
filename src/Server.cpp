@@ -131,6 +131,8 @@ void Server::run()
 					for (VECT_ITER_CHA it = this->channels.begin(); it != this->channels.end(); it++){
 						if (it->isClientInChannel(a->getFd())){
 							it->removeClient(a->getFd());
+							Utils::instaWriteAll(it->getClients(), RPL_QUIT(a->getUserByHexChat(), "Leaving"));
+							responseAllClientResponseToGui(*a, *it);
 						}
 					}
 					FD_CLR(a->getFd(), &readfds);
@@ -181,6 +183,8 @@ void Server::run()
 					for (VECT_ITER_CHA it = this->channels.begin(); it != this->channels.end(); it++){
 						if (it->isClientInChannel(a->getFd())){
 							it->removeClient(a->getFd());
+							Utils::instaWriteAll(it->getClients(), RPL_QUIT(a->getUserByHexChat(), "Leaving"));
+							responseAllClientResponseToGui(*a, *it);
 						}
 					}
 					FD_CLR(a->getFd(), &writefds);

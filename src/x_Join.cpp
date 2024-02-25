@@ -74,11 +74,6 @@ using namespace std;
    :WiZ JOIN #Twilight_zone        ; JOIN message from WiZ
 */
 
-#define FLAG_KEY 1
-#define FLAG_INV 2
-#define FLAG_TOPIC 4
-#define FLAG_NOOUTSIDE 8
-#define FLAG_LIMIT 16
 
 #define ERR_ALREADYJOINED(source, channel) ": 443 " + source + " " + channel + " :You are already in that channel\n\r"
 

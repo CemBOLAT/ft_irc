@@ -51,7 +51,7 @@ void Server::nick(C_STR_REF params, Client &client)
 		Utils::instaWrite(client.getFd(), ERR_NONICKNAMEGIVEN(client.getUserByHexChat()));
 		return;
 	}
-	else if (tokens.size() > 1 || tokens[0].size() > 9)
+	else if (tokens.size() > 1 || tokens[0].size() > 9 || tokens.size() > 1)
 	{
 		Utils::instaWrite(client.getFd(), ERR_ERRONEUSNICKNAME(client.getUserByHexChat(), tokens[0]));
 		return;

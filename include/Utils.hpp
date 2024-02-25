@@ -26,5 +26,4 @@ namespace Utils {
 	int					getMaxFd(const vector<Client> &v, int serverfd);
 	std::string			ft_getNick(const std::string& str);
 	std::string			itoa(int n);
-	size_t				ft_atoi(const std::string& str);
 }

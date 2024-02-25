@@ -8,11 +8,7 @@
 #include <vector>
 #include <sstream>
 #include "Define.hpp"
-#define FLAG_KEY 1
-#define FLAG_INV 2
-#define FLAG_TOPIC 4
-#define FLAG_NOOUTSIDE 8
-#define FLAG_LIMIT 16
+
 /*
 	4.2.4 Topic message
 

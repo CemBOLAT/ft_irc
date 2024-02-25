@@ -82,6 +82,7 @@ namespace
 
 }
 
+
 void Server::privmsg(C_STR_REF input, Client &client) {
         if (!client.getIsRegistered())
         {
@@ -125,8 +126,28 @@ void Server::privmsg(C_STR_REF input, Client &client) {
                                 }
                         }
                         else {
-                                Utils::instaWrite(client.getFd(), ERR_CANNOTSENDTOCHAN(client.getUserByHexChat(), receiver));
-                                return;
+                                if (room.getKeycode() & FLAG_NOOUTSIDE){
+                                        Utils::instaWrite(client.getFd(), ERR_CANNOTSENDTOCHAN(client.getUserByHexChat(), receiver));
+                                        return;
+                                }
+                                else
+                                {
+                                        for (VECT_ITER_CLI it = room.getClients().begin(); it != room.getClients().end(); it++)
+                                        {
+                                                if (it->getFd() != client.getFd())
+                                                {
+                                                        if (it->getIsAway())
+                                                        {
+                                                                Utils::instaWrite(client.getFd(), RPL_AWAY(client.getUserByHexChat(), receiver, it->getAwayMSG()));
+                                                        }
+                                                        else {
+                                                                Utils::instaWrite(it->getFd(), RPL_PRIVMSG(client.getUserByHexChat(), receiver, message));
+                                                                //(*it).getmesagesFromServer().push_back(RPL_PRIVMSG(client.getUserByHexChat(), receiver, message));
+                                                                //FD_SET(it->getFd(), &writefds);
+                                                        }
+                                                }
+                                }
+                                }
                         }
 
                 }

@@ -53,7 +53,6 @@ void Bot::initSocket()
 	{
 		TextEngine::green("Socket created successfully", cout) << std::endl;
 	}
-
 	memset(&_bot_addr, 0, sizeof(_bot_addr));	   // Zeroing address
 	_bot_addr.sin_family = AF_INET;			   // IPv4
 	_bot_addr.sin_addr.s_addr = INADDR_ANY;	   // TCP
@@ -71,6 +70,14 @@ void Bot::initSocket()
 	else
 	{
 		TextEngine::green("Connection established", cout) << std::endl;
+	}
+	if (fcntl(this->_socket, F_SETFL, O_NONBLOCK) < 0) // soketin bloklanmaması için kullanılır
+	{
+		throw Exception("Socket fcntl failed on Bot");
+	}
+	else
+	{
+		TextEngine::green("Socket fcntl set successfully", cout) << std::endl;
 	}
 }
 
@@ -100,7 +107,7 @@ void	Bot::run(){
 		FD_SET(this->_socket, &readfds);
 		struct timeval timeout; // Set timeout because select is blocking and we want to check if the socket is ready to read
 		timeout.tv_sec = 0;
-		timeout.tv_usec = 1000; // 10 microseconds
+		timeout.tv_usec = 10000; // 10 microseconds
 
 		int ret = select(this->_socket + 1, &readfds, NULL, NULL, &timeout);
 

@@ -41,6 +41,7 @@
 #define ERR_INVITEONLYCHAN(source, channel) ": 473 " + source + " " + channel + " :Cannot join channel (+i)" + "\r\n"
 #define ERR_BANNEDFROMCHAN(channel) ": 474 " + channel + " :Cannot join channel (+b)" + "\r\n"
 #define ERR_BADCHANNELKEY(source, channel) ": 475 " + source + " " + channel + " :Cannot join channel (+k)" + "\r\n"
+#define ERR_BADLIMIT(source, channel) ": 476 " + source + " " + channel + " :Bad channel limit" + "\r\n"
 #define ERR_NOPRIVILEGES ": 481 :Permission Denied- You're not an IRC operator" + "\r\n"
 #define ERR_CHANOPRIVSNEEDED(source, channel) ": 482 " + source + " " + channel + " :You're not channel operator" + "\r\n"
 #define ERR_CANTKILLSERVER ": 483 :You cant kill a server!" + "\r\n"

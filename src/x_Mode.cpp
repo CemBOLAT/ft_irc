@@ -13,11 +13,7 @@
 #include <vector>
 #include <cstdlib>
 
-#define FLAG_KEY 1
-#define FLAG_INV 2
-#define FLAG_TOPIC 4
-#define FLAG_NOOUTSIDE 8
-#define FLAG_LIMIT 16
+
 
 /*
 	4.2.3 Mode message
@@ -150,9 +146,9 @@ void Server::modeChannel(VECT_STR &params, Client &client)
 	}
 	Room &room = getRoom(params[0]);
 	if (params.size() == 1){
-		Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room))); // maybe Changeable
-		//client.getmesagesFromServer().push_back(RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room))); // maybe Changeable
-		//FD_SET(client.getFd(), &writefds);
+		//Utils::instaWrite(client.getFd(), RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room))); // maybe Changeable
+		client.getmesagesFromServer().push_back(RPL_CHANNELMODEIS(client.getUserByHexChat(), params[0], calcMode(room))); // maybe Changeable
+		FD_SET(client.getFd(), &writefds);
 		return;
 	}
 	if (isClientInRoom(room, client) == false){
@@ -185,7 +181,7 @@ void Server::modeChannel(VECT_STR &params, Client &client)
 				}
 				if (room.isOperator(params[2]) == true)
 				{
-					Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), "+" + params[1][i]));
+					Utils::instaWrite(client.getFd(), ERR_ALREADYOPERATOR(client.getNick(), room.getName()));
 					return;
 				}
 				Client &cli = getClientByNick(params[2]);
@@ -214,9 +210,9 @@ void Server::modeChannel(VECT_STR &params, Client &client)
 					Utils::instaWrite(client.getFd(), ERR_NEEDMOREPARAMS(client.getUserByHexChat(), "MODE"));
 					return;
 				}
-				else if (atoi(params[2].c_str()) < 0 && Utils::ft_atoi(params[2].c_str()) < room.getClients().size())
+				else if (atoi(params[2].c_str()) < 0 || atoi(params[2].c_str()) < static_cast<int>(room.getClients().size()))
 				{
-					Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), "+l"));
+					Utils::instaWrite(client.getFd(), ERR_BADLIMIT(client.getUserByHexChat(), params[2])); // maybe Changeable
 					return;
 				}
 				room.setKeycode(room.getKeycode() | FLAG_LIMIT);
@@ -263,10 +259,7 @@ void Server::modeChannel(VECT_STR &params, Client &client)
 					return;
 				}
 				Client &cli = getClientByNick(params[2]);
-				if (cli.getNick() != client.getNick())
-				{
-					room.removeOperator(cli);
-				}
+				room.removeOperator(cli);
 				Utils::instaWriteAll(room.getClients(), RPL_MODE(client.getUserByHexChat(), params[0], "-" + params[1][i], params[2]));
 			}
 			else if (params[1][i] == 'i')

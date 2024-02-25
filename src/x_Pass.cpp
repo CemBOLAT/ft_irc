@@ -7,6 +7,7 @@
 #include "Utils.hpp"
 #include "ErrorRPL.hpp"
 #include "Define.hpp"
+#include "TextEngine.hpp"
 
 /*
 	4.1.1 Password message
@@ -44,6 +45,7 @@ void Server::pass(C_STR_REF params, Client &client){
 	}
 	else if (params != password){
 		Utils::instaWrite(client.getFd(), ERR_PASSWDMISMATCH(client.getUserByHexChat()));
+		quit("", client);
 	}
 	else{
 		client.setPassworded(true);

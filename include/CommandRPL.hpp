@@ -1,8 +1,17 @@
 #pragma once
 
+#define FLAG_KEY 1
+#define FLAG_INV 2
+#define FLAG_TOPIC 4
+#define FLAG_NOOUTSIDE 8
+#define FLAG_LIMIT 16
+
+
 // my includes
 #define RPL_JOIN(source, channel) ":" + source + " JOIN " + channel + "\r\n"
 #define RPL_PRIVMSG(source, target, message) ":" + source + " PRIVMSG " + target + " :" + message + "\r\n"
+#define ERR_ALREADYOPERATOR(nick, channel) (string(":") + "IRC" + " 482 " + nick + " " + channel + " :You're already an operator\r\n")
+
 //
 
 #define RPL_WELCOME(nick, rfc1459) ": 001 " + nick + " :Welcome to the Internet Relay Network " + rfc1459 + "\r\n"
