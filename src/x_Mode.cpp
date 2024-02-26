@@ -254,7 +254,7 @@ void Server::modeChannel(VECT_STR &params, Client &client)
 				}
 				if (room.isOperator(params[2]) == false)
 				{
-					Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), "+" + params[1][i]));
+					Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), "-" + params[1][i]));
 					return;
 				}
 				Client &cli = getClientByNick(params[2]);
