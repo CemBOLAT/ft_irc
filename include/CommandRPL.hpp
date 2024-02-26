@@ -12,7 +12,6 @@
 #define RPL_PRIVMSG(source, target, message) ":" + source + " PRIVMSG " + target + " :" + message + "\r\n"
 #define ERR_ALREADYOPERATOR(nick, channel) (string(":") + "IRC" + " 482 " + nick + " " + channel + " :You're already an operator\r\n")
 
-//
 
 #define RPL_WELCOME(nick, rfc1459) ": 001 " + nick + " :Welcome to the Internet Relay Network " + rfc1459 + "\r\n"
 #define RPL_NONE ": 300 :None" + "\r\n"
@@ -39,8 +38,6 @@
 #define RPL_INVITING(source, channel, nick) ": 341 " + source + " " + channel + " " + nick + "\r\n"
 #define RPL_SUMMONING(user) ": 342 " + user + " :Summoning user to IRC" + "\r\n"
 #define RPL_VERSION(version, debuglevel, server, comments) ": 351 " + version + " " + debuglevel + " " + server + " : " + comments + "\r\n"
-//#define RPL_WHOREPLY(channel, user, host, server, nick, flags, hopcount, realname) ": 352 " + channel + " " + user + " " + host + " " + server + " " + nick + " " + flags + " " + hopcount + " " + realname + "\r\n"
-//#define RPL_ENDOFWHO(channel) ": 315 " + channel + " :End of WHO list" + "\r\n"
 #define RPL_NAMREPLY(nick, channel, users)			": 353 " + nick + " = " + channel + " :" + users + "\r\n"
 #define RPL_ENDOFNAMES(nick, channel) ": 366 " + nick + " " + channel + " :End of NAMES list" + "\r\n"
 #define RPL_LINKS(mask, server, hopcount, serverinfo) ": 364 " + mask + " " + server + " " + hopcount + " " + serverinfo + "\r\n"

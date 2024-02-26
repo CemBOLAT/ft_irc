@@ -64,11 +64,11 @@ void Server::part(C_STR_REF params, Client &client)
 			Utils::instaWrite(client.getFd(), ERR_NOTONCHANNEL(client.getNick(), room.getName()));
 			return ;
 		}
-		if (room.getClients().size() == 1) // delete room.
+		if (room.getClients().size() == 1) // delete room
 		{
 			TextEngine::magenta("Room " + room.getName() + " has been deleted", TextEngine::printTime(std::cout)) << std::endl;
 			it->removeClient(client.getFd());
-			channels.erase(it);	
+			channels.erase(it);
 			Utils::instaWrite(client.getFd(), RPL_PART(client.getUserByHexChat(), param[0], reason));
 			return ;
 		}

@@ -50,8 +50,8 @@ void Bot::initSocket()
 		TextEngine::green("Socket created successfully", cout) << std::endl;
 	}
 	memset(&_bot_addr, 0, sizeof(_bot_addr));
-	_bot_addr.sin_family = AF_INET;			 
-	_bot_addr.sin_addr.s_addr = INADDR_ANY;	 
+	_bot_addr.sin_family = AF_INET;
+	_bot_addr.sin_addr.s_addr = INADDR_ANY;
 	_bot_addr.sin_port = htons(this->_port);
 	if (connect(this->_socket, (struct sockaddr *)&_bot_addr, sizeof(_bot_addr)) < 0)
 	{
@@ -119,7 +119,6 @@ void	Bot::run(){
 				_buffer[bytesRead] = '\0';
 				VECT_STR messages = Utils::ft_split(_buffer, " ");
 				TextEngine::blue(_buffer, TextEngine::printTime(cout)) << std::endl;
-				// size control et
 				if (messages[1] == "PRIVMSG" || messages[1] == "PING"){
 					string	nick = Utils::ft_trim(Utils::ft_getNick(messages[0]), "\r\n");
 					if (messages[1] == "PING"){

@@ -44,11 +44,11 @@ public:
 	void			removeInvite(const Client &client);
 	bool			isInvite(const Client &client) const;
 private:
-	vector<Client>	_clients; // bunun için pointer veya referans kullanılmalı
+	vector<Client>	_clients;
 	string			_name;
 	string 			_topic;
 	vector<Client>	_operatorVector;
-	int				_keycode; //kanalın şifreli mi kullanıcı limiti var diye koyduğumuz flag
+	int				_keycode;
 	string			_key;
 	int				_chanelLimit;
 	vector<Client>	_inviteVector;

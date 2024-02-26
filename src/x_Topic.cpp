@@ -36,7 +36,7 @@
 	   TOPIC #test                     ; check the topic for #test.
 */
 
-void Server::topic(C_STR_REF command, Client &client) // saçma 1970 tarihini düzelt
+void Server::topic(C_STR_REF command, Client &client)
 {
 	if (client.getIsRegistered() == false){
 		Utils::instaWrite(client.getFd(), ERR_NOTREGISTERED(client.getUserByHexChat()));

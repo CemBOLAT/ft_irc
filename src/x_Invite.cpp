@@ -91,7 +91,7 @@ void    Server::invite(C_STR_REF input, Client &client)
         }
         if (isClientInRoom(room, nickname) == true)
         {
-                Utils::instaWrite(client.getFd(), ERR_USERONCHANNEL(nickname,nickname)); // bakacaz
+                Utils::instaWrite(client.getFd(), ERR_USERONCHANNEL(nickname,nickname));
                 return;
         }
         if (isClient(nickname) == false)

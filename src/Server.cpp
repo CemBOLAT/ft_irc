@@ -212,7 +212,7 @@ void Server::runCommand(C_STR_REF command, Client &client)
 	{
 		string trimmedLine = Utils::ft_trim(softSplit[i], " \t\r");
 		if (trimmedLine.empty()) return;
-		VECT_STR splitFirst = Utils::ft_firstWord(trimmedLine); // kelimeyi ayırır komut ve parametreleri
+		VECT_STR splitFirst = Utils::ft_firstWord(trimmedLine);
 		std::map<std::string, void (Server::*)(const string &, Client &)> ::iterator it = this->_commands.find(splitFirst[0]);
 		if (it != this->_commands.end())
 		{

@@ -8,7 +8,6 @@
 using std::string;
 using std::vector;
 
-// #include in.h
 
 class Client
 {
