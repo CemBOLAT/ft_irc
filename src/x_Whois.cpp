@@ -47,7 +47,7 @@
 
 */
 
-void	Server::whois(C_STR_REF str, Client &cli){ // garip şekilde yolluyor evde (whois cemal cemal şeklinde saçma ama evet) (protocol tutmuyoooo hexchatini siktiğim)
+void	Server::whois(C_STR_REF str, Client &cli){
         if (cli.getIsRegistered() == false){
             Utils::instaWrite(cli.getFd(), ERR_NOTREGISTERED(cli.getUserByHexChat()));
             return;

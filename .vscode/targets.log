@@ -1,4 +1,703 @@
-make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --question
-'make.exe' is not recognized as an internal or external command,
-operable program or batch file.
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.
+# There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
 
+# This program built for i386-apple-darwin11.3.0
+ 
+
+# Make data base, printed on Mon Feb 26 11:38:21 2024
+
+# Variables
+
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# makefile (from `Makefile', line 10)
+BOT_SRC := bot/Bot.cpp bot/Client.cpp bot/TextEngine.cpp bot/Utils.cpp bot/main.cpp
+# makefile (from `Makefile', line 11)
+OBJ := obj/Client.o obj/Room.o obj/S_initSocket.o obj/Server.o obj/TextEngine.o obj/Utils.o obj/main.o obj/x_Cap.o obj/x_Invite.o obj/x_Join.o obj/x_Kick.o obj/x_List.o obj/x_Mode.o obj/x_Names.o obj/x_Nick.o obj/x_Notice.o obj/x_Op.o obj/x_Part.o obj/x_Pass.o obj/x_Ping.o obj/x_Privmsg.o obj/x_Quit.o obj/x_Topic.o obj/x_User.o obj/x_Who.o obj/x_Whois.o
+# environment
+VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
+# makefile (from `Makefile', line 9)
+SRC := src/Client.cpp src/Room.cpp src/S_initSocket.cpp src/Server.cpp src/TextEngine.cpp src/Utils.cpp src/main.cpp src/x_Cap.cpp src/x_Invite.cpp src/x_Join.cpp src/x_Kick.cpp src/x_List.cpp src/x_Mode.cpp src/x_Names.cpp src/x_Nick.cpp src/x_Notice.cpp src/x_Op.cpp src/x_Part.cpp src/x_Pass.cpp src/x_Ping.cpp src/x_Privmsg.cpp src/x_Quit.cpp src/x_Topic.cpp src/x_User.cpp src/x_Who.cpp src/x_Whois.cpp
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# automatic
+@F = $(notdir $@)
+# makefile
+CURDIR := /Users/cembolat/Desktop/FT_IRC-Internet_Relay_Chat
+# makefile
+SHELL = /bin/sh
+# makefile (from `Makefile', line 5)
+BOT_DIR := bot
+# environment
+VSCODE_NLS_CONFIG = {"locale":"tr","osLocale":"tr-tr","availableLanguages":{"*":"tr"},"_languagePackId":"2d324705cb3ad2c5b6a4e8ee9ecb78f2.tr","_translationsConfigFile":"/Users/cembolat/Library/Application Support/Code/clp/2d324705cb3ad2c5b6a4e8ee9ecb78f2.tr/tcf.json","_cacheRoot":"/Users/cembolat/Library/Application Support/Code/clp/2d324705cb3ad2c5b6a4e8ee9ecb78f2.tr","_resolvedLanguagePackCoreLocation":"/Users/cembolat/Library/Application Support/Code/clp/2d324705cb3ad2c5b6a4e8ee9ecb78f2.tr/903b1e9d8990623e3d7da1df3d33db3e42d80eda","_corruptedFile":"/Users/cembolat/Library/Application Support/Code/clp/2d324705cb3ad2c5b6a4e8ee9ecb78f2.tr/corrupted.info","_languagePackSupport":true}
+# environment
+_ = /usr/bin/make
+# makefile (from `Makefile', line 17)
+CFLAGS := -Wall -Wextra -Werror -std=c++98 -g
+# makefile (from `Makefile', line 12)
+BOT_OBJ := bot/obj/Bot.o bot/obj/Client.o bot/obj/TextEngine.o bot/obj/Utils.o bot/obj/main.o
+# makefile (from `Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
+# makefile (from `Makefile', line 6)
+OBJ_DIR := obj
+# environment
+__CFBundleIdentifier = com.microsoft.VSCode
+# environment
+INFOPATH = /opt/homebrew/share/info:
+# environment
+VSCODE_CWD = /
+# environment
+PATH = /usr/local/opt/openjdk@20/bin:/usr/local/opt/openjdk@16/bin:/usr/local/opt/openjdk@16/bin:/usr/local/opt/openjdk@16/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin
+# environment
+LSCOLORS = ExFxCxDxBxegedabagacad
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# default
+.FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
+# environment
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.pQIOJs29ZD/Listeners
+# automatic
+%F = $(notdir $%)
+# makefile (from `Makefile', line 7)
+BOT_OBJ_DIR := bot/obj
+# environment
+PWD = /Users/cembolat/Desktop/FT_IRC-Internet_Relay_Chat
+# environment
+HOMEBREW_CELLAR = /opt/homebrew/Cellar
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# makefile (from `Makefile', line 8)
+INC_DIR := include
+# environment
+MANPATH = /opt/homebrew/share/man::
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /Users/cembolat
+# default
+MAKEFILEPATH := /Applications/Xcode.app/Contents/Developer/Makefiles
+# environment
+VSCODE_CODE_CACHE_PATH = /Users/cembolat/Library/Application Support/Code/CachedData/903b1e9d8990623e3d7da1df3d33db3e42d80eda
+# environment
+LOGNAME = cembolat
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+XPC_FLAGS = 0x0
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+SHLVL = 1
+# makefile (from `Makefile', line 16)
+CC := c++
+# default
+MAKE_VERSION := 3.81
+# environment
+USER = cembolat
+# makefile
+.DEFAULT_GOAL := all
+# makefile (from `Makefile', line 2)
+NAME := ircserv
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# default
+MAKE_COMMAND := /Applications/Xcode.app/Contents/Developer/usr/bin/make
+# makefile (from `Makefile', line 13)
+INC := -Iinclude
+# default
+.VARIABLES := 
+# environment
+TMPDIR = /var/folders/fl/4cbxkn7160543t0kxp8dwt5r0000gn/T/
+# automatic
+*F = $(notdir $*)
+# environment
+VSCODE_IPC_HOOK = /Users/cembolat/Library/Application Support/Code/1.86-main.sock
+# environment
+MallocNanoZone = 0
+# makefile
+MAKEFLAGS = Rrqp
+# environment
+MFLAGS = -Rrqp
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.20995168.20995174
+# environment
+HOMEBREW_PREFIX = /opt/homebrew
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# environment
+HOMEBREW_REPOSITORY = /opt/homebrew
+# environment
+__CF_USER_TEXT_ENCODING = 0x1F5:0x23:0x18
+# environment
+COMMAND_MODE = unix2003
+# default
+MAKEFILES := 
+# makefile (from `Makefile', line 4)
+SRC_DIR := src
+# automatic
+<F = $(notdir $<)
+# environment
+LC_ALL = C
+# makefile (from `Makefile', line 3)
+BOT_NAME := turco
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# default
+.INCLUDE_DIRS = /usr/local/include
+# environment
+MAKELEVEL := 0
+# environment
+CLICOLOR = 1
+# environment
+LANG = C
+# environment
+VSCODE_PID = 12283
+# variable set hash-table stats:
+# Load=80/1024=8%, Rehash=0, Collisions=5/132=4%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 16777231, inode 21296411): 14 files, no impossibilities.
+# bot (device 16777231, inode 21296498): 8 files, no impossibilities.
+# src (device 16777231, inode 21296516): 28 files, no impossibilities.
+
+# 50 files, no impossibilities in 3 directories.
+
+# Implicit Rules
+
+obj/%.o: src/%.cpp | obj
+#  commands to execute (from `Makefile', line 29):
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	
+
+bot/obj/%.o: bot/%.cpp | bot/obj
+#  commands to execute (from `Makefile', line 32):
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	
+
+# 2 implicit rules, 0 (0.0%) terminal.
+
+# Files
+
+# Not a target:
+bot/obj/TextEngine.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+turco: bot/obj/Bot.o bot/obj/Client.o bot/obj/TextEngine.o bot/obj/Utils.o bot/obj/main.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 23):
+	$(CC) $(CFLAGS) $(INC) $^ -o $@
+	
+
+# Not a target:
+src/x_Kick.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2024-02-26 10:36:30
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+obj/Server.o: src/Server.cpp | obj
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: `Server'
+#  Last modified 2024-02-26 10:36:42
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 29):
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	
+
+all: ircserv
+#  Phony target (prerequisite of .PHONY).
+#  Command-line target.
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/5=0%
+
+# Not a target:
+obj/x_Nick.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+.PHONY: all clean fclean re
+ 
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+obj/x_Ping.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+obj/x_Quit.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+obj/x_Mode.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+obj/Utils.o: src/Utils.cpp | obj
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: `Utils'
+#  Last modified 2024-02-26 10:36:43
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 29):
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	
+
+# Not a target:
+bot/obj/Bot.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+obj/x_Pass.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/Room.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2024-02-26 10:36:30
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
+src/S_initSocket.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2024-02-26 10:36:30
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
+obj/x_Whois.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+obj/main.o: src/main.cpp | obj
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: `main'
+#  Last modified 2024-02-26 10:36:43
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 29):
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	
+
+obj/x_Cap.o: src/x_Cap.cpp | obj
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: `x_Cap'
+#  Last modified 2024-02-26 10:36:44
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 29):
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/x_Join.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2024-02-26 10:36:30
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+bot/obj:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 38):
+	mkdir -p $(BOT_OBJ_DIR)
+	
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2024-02-26 10:36:29
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+ircserv: obj/Client.o obj/Room.o obj/S_initSocket.o obj/Server.o obj/TextEngine.o obj/Utils.o obj/main.o obj/x_Cap.o obj/x_Invite.o obj/x_Join.o obj/x_Kick.o obj/x_List.o obj/x_Mode.o obj/x_Names.o obj/x_Nick.o obj/x_Notice.o obj/x_Op.o obj/x_Part.o obj/x_Pass.o obj/x_Ping.o obj/x_Privmsg.o obj/x_Quit.o obj/x_Topic.o obj/x_User.o obj/x_Who.o obj/x_Whois.o
+#  Implicit rule search has not been done.
+#  Last modified 2024-02-26 10:36:50
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/5=0%
+#  commands to execute (from `Makefile', line 26):
+	$(CC) $(CFLAGS) $(INC) $^ -o $@
+	
+
+# Not a target:
+src/x_List.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2024-02-26 11:07:33
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+obj/TextEngine.o: src/TextEngine.cpp | obj
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: `TextEngine'
+#  Last modified 2024-02-26 10:36:43
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 29):
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	
+
+# Not a target:
+obj/x_Op.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+obj/x_List.o: src/x_List.cpp | obj
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: `x_List'
+#  Last modified 2024-02-26 10:36:45
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := obj/x_List.o
+# automatic
+# % := 
+# automatic
+# * := x_List
+# automatic
+# + := src/x_List.cpp
+# automatic
+# | := obj
+# automatic
+# < := src/x_List.cpp
+# automatic
+# ^ := src/x_List.cpp
+# automatic
+# ? := src/x_List.cpp
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/15=7%
+#  commands to execute (from `Makefile', line 29):
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	
+
+# Not a target:
+src/Client.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2024-02-26 10:36:30
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
+src/x_Invite.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2024-02-26 10:36:30
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+fclean: clean
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 45):
+	rm -f $(NAME)
+	rm -f $(BOT_NAME)
+	
+
+# Not a target:
+obj/x_Privmsg.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+obj:
+#  Implicit rule search has not been done.
+#  Last modified 2024-02-26 10:36:50
+#  File has been updated.
+#  Successfully updated.
+#  commands to execute (from `Makefile', line 35):
+	mkdir -p $(OBJ_DIR)
+	
+
+# Not a target:
+src/Server.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2024-02-26 10:36:30
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+obj/x_Kick.o: src/x_Kick.cpp | obj
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: `x_Kick'
+#  Last modified 2024-02-26 10:36:45
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 29):
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	
+
+# Not a target:
+obj/x_Names.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+bot/obj/Client.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/Utils.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2024-02-26 10:36:30
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+re: fclean all
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+clean:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 41):
+	rm -rf $(OBJ_DIR)
+	rm -rf $(BOT_OBJ_DIR)
+	
+
+# Not a target:
+obj/x_Part.o:
+#  Implicit rule search has not been done.
+ 
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+obj/x_Topic.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+obj/Room.o: src/Room.cpp | obj
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: `Room'
+#  Last modified 2024-02-26 10:36:42
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 29):
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	
+
+# Not a target:
+src/main.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2024-02-26 10:36:30
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
+src/x_Cap.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2024-02-26 10:36:30
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+obj/S_initSocket.o: src/S_initSocket.cpp | obj
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: `S_initSocket'
+#  Last modified 2024-02-26 10:36:42
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 29):
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	
+
+# Not a target:
+obj/x_Who.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+obj/x_Join.o: src/x_Join.cpp | obj
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: `x_Join'
+#  Last modified 2024-02-26 10:36:44
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 29):
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	
+
+# Not a target:
+src/TextEngine.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2024-02-26 10:36:30
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+obj/Client.o: src/Client.cpp | obj
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: `Client'
+#  Last modified 2024-02-26 10:36:41
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 29):
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	
+
+# Not a target:
+obj/x_User.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+bot/obj/Utils.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+obj/x_Invite.o: src/x_Invite.cpp | obj
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: `x_Invite'
+#  Last modified 2024-02-26 10:36:44
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 29):
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	
+
+# Not a target:
+obj/x_Notice.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+bot/obj/main.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# files hash-table stats:
+# Load=55/1024=5%, Rehash=0, Collisions=7/167=4%
+# VPATH Search Paths
+
+# No `vpath' search paths.
+
+# No general (`VPATH' variable) search path.
+
+# # of strings in strcache: 1
+# # of strcache buffers: 1
+# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+# strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
+
+# Finished Make data base on Mon Feb 26 11:38:21 2024
+
+ 

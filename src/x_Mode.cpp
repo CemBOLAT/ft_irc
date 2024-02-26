@@ -290,7 +290,7 @@ void Server::modeChannel(VECT_STR &params, Client &client)
 			}
 			else
 			{
-				Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), "+" + params[1][i]));
+				Utils::instaWrite(client.getFd(), ERR_UNKNOWNMODE(client.getUserByHexChat(), "-" + params[1][i]));
 				return;
 			}
 		}
